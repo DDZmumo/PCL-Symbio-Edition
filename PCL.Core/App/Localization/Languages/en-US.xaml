@@ -2246,6 +2246,7 @@
 
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.AbnormalIp">Abnormal login attempts from this IP.&#xA;Please check your network settings or try again later.</sys:String>
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.Banned">This account appears to have been banned by Microsoft and cannot log in.</sys:String>
+    <sys:String x:Key="Minecraft.Launch.Login.Microsoft.InvalidAppRegistration">The client ID in use has not been approved by Mojang for third-party applications, so the Minecraft login API rejects the request (HTTP 403).&#xA;&#xA;This is unrelated to your network, VPN or proxy. Submit your app for review at https://aka.ms/mce-reviewappid, or use an approved client ID.</sys:String>
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.ChangeBirthDate.Message">Please modify the account's date of birth on the opened webpage (change to at least 18 years old).&#xA;Wait one minute after the modification is successful, then return to PCL SE and you can log in normally!</sys:String>
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.ChangeBirthDate.SupportMessage">Please modify the account's date of birth on the opened webpage (change to at least 18 years old).&#xA;Wait one minute after the modification is successful, then return to PCL SE and you can log in normally!</sys:String>
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.CreateProfile.Button">Create profile</sys:String>

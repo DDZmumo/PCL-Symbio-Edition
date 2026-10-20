@@ -2246,6 +2246,7 @@
 
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.AbnormalIp">当前 IP 的登录尝试异常。&#xA;如果你使用了 VPN 或加速器，请把它们关掉或更换节点后再试！</sys:String>
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.Banned">该账号似乎已被微软封禁，无法登录。</sys:String>
+    <sys:String x:Key="Minecraft.Launch.Login.Microsoft.InvalidAppRegistration">当前使用的客户端 ID 未通过 Mojang 的第三方应用审核，因此无法调用 Minecraft 登录接口（HTTP 403）。&#xA;&#xA;这与网络环境、VPN 或加速器无关。请在 https://aka.ms/mce-reviewappid 提交应用审核，或改用已通过审核的客户端 ID。</sys:String>
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.ChangeBirthDate.Message">请在打开的网页中修改账号的出生日期（至少改为 18 岁以上）。&#xA;在修改成功后等待一分钟，然后再回到 PCL SE，就可以正常登录了！</sys:String>
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.ChangeBirthDate.SupportMessage">请在打开的网页中修改账号的出生日期（至少改为 18 岁以上）。&#xA;在修改成功后等待一分钟，然后再回到 PCL SE，就可以正常登录了！</sys:String>
     <sys:String x:Key="Minecraft.Launch.Login.Microsoft.CreateProfile.Button">创建档案</sys:String>

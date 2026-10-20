@@ -1220,6 +1220,10 @@ public static class ModLaunch
                     if (response.StatusCode == HttpStatusCode.Forbidden)
                     {
                         ModBase.Log($"正版验证 Step 4 汇报 403（第 {attempt}/{maxAttempts} 次尝试），响应：{result}");
+                        // Mojang 对第三方启动器的 Azure 应用实行白名单审核，
+                        // 未通过审核的客户端 ID 会固定返回 403 Invalid app registration，重试无意义
+                        if (result.ContainsF("Invalid app registration", true))
+                            throw new Exception(Lang.Text("Minecraft.Launch.Login.Microsoft.InvalidAppRegistration"));
                         if (attempt < maxAttempts)
                         {
                             Thread.Sleep(2000 * attempt);
