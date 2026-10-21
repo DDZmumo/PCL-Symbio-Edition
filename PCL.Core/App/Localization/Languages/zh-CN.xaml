@@ -2512,9 +2512,6 @@
 
     <sys:String x:Key="Setup.About.Community.Info">Plain Craft Launcher Community Edition 的开发团队！</sys:String>
     <sys:String x:Key="Setup.About.Community.Name">PCL CE</sys:String>
-    <sys:String x:Key="Setup.About.Contributors.Title">贡献者们</sys:String>
-    <sys:String x:Key="Setup.About.Contributors.ViewMore">查看更多</sys:String>
-    <sys:String x:Key="Setup.About.Error.LoadContributorsFailed">加载贡献者信息失败</sys:String>
     <sys:String x:Key="Setup.About.GitHubHome">GitHub 主页</sys:String>
     <sys:String x:Key="Setup.About.Licenses.Title">许可与版权声明</sys:String>
     <sys:String x:Key="Setup.About.Licenses.ViewLicense">查看许可文档</sys:String>
@@ -2574,14 +2571,12 @@
     <sys:String x:Key="Setup.About.SpecialThanks.GoBlog">转到博客</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Info.BedrockBoot">提供了基岩版旧版本启动方案与实现参考</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Info.Bmclapi">提供 BMCLAPI 镜像源和 Forge 安装工具，详见 https://bmclapi.bangbang93.com</sys:String>
-    <sys:String x:Key="Setup.About.SpecialThanks.Info.Cloud">提供了 PCL SE 的相关云服务</sys:String>
+    <sys:String x:Key="Setup.About.SpecialThanks.Info.Cloud">提供了 PCL CE 的相关云服务</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Info.Hydrogen">PCL Symbio Edition 的维护者</sys:String>
-    <sys:String x:Key="Setup.About.SpecialThanks.Info.IconDesign">设计并制作了 PCL SE 的图标</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Info.Mcim">提供了 MCIM 中国模组下载镜像源和帮助库图床！</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Info.Mcmod">提供了模组名称的中文翻译和更多相关信息！</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Name.BedrockBoot">BedrockBoot @ Round Studio</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Name.Bangbang93">bangbang93</sys:String>
-    <sys:String x:Key="Setup.About.SpecialThanks.Name.Emperormummy">Emperormummy</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Name.Hydrogen">过氧化氢 Hydrogen</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Name.Mcmod">MC 百科</sys:String>
     <sys:String x:Key="Setup.About.SpecialThanks.Name.Pysio">Pysio @ Akaere Network</sys:String>

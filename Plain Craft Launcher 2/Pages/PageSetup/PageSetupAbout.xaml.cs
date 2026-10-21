@@ -1,10 +1,6 @@
-using System.Collections.ObjectModel;
-using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Input;
 using PCL.Core.App.Localization;
-using PCL.Core.IO.Net.Http;
-using PCL.Core.Utils;
 
 namespace PCL;
 
@@ -20,8 +16,6 @@ public partial class PageSetupAbout
         InitializeComponent();
         Loaded += PageOtherAbout_Loaded;
     }
-
-    public ObservableCollection<GitHubContributor> Contributors { get; set; } = new();
 
     private void PageOtherAbout_Loaded(object sender, RoutedEventArgs e)
     {
@@ -43,28 +37,6 @@ public partial class PageSetupAbout
             BtnMcmod.Visibility = Visibility.Collapsed;
             ImgMcmod.Visibility = Visibility.Collapsed;
             RowMcmod.Height = new GridLength(0);
-        }
-
-        LoadContributersAsync();
-    }
-
-    private async void LoadContributersAsync()
-    {
-        try
-        {
-            using (var response = await HttpRequest
-                       .Create("https://api.github.com/repos/Hydrogen-Peroxide/PCL-Symbio-Edition/contributors").SendAsync())
-            {
-                response.EnsureSuccessStatusCode();
-                var cos = await response.AsJsonAsync<List<GitHubContributor>>(JsonCompat.SerializerOptions);
-                Contributors.Clear();
-                foreach (var item in cos)
-                    Contributors.Add((GitHubContributor)item);
-            }
-        }
-        catch (Exception ex)
-        {
-            ModBase.Log(ex, Lang.Text("Setup.About.Error.LoadContributorsFailed"));
         }
     }
 
@@ -188,16 +160,5 @@ public partial class PageSetupAbout
                 ModAnimation.AaTranslateX(sender, -mx, 0, 100), ModAnimation.AaTranslateY(sender, -my, 0, 100)
             });
         }
-    }
-
-    public class GitHubContributor
-    {
-        [JsonPropertyName("login")] public string Login { get; set; }
-
-        [JsonPropertyName("avatar_url")] public string AvatarUrl { get; set; }
-
-        [JsonPropertyName("html_url")] public string HtmlUrl { get; set; }
-
-        [JsonPropertyName("contributions")] public int Contributions { get; set; }
     }
 }

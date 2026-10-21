@@ -113,7 +113,6 @@
                         <RowDefinition Height="45" />
                         <RowDefinition Height="45" />
                         <RowDefinition Height="45" />
-                        <RowDefinition Height="45" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="40" />
@@ -194,26 +193,18 @@
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Margin="-5,0,0,0"
-                        Info="{DynamicResource Setup.About.SpecialThanks.Info.IconDesign}"
-                        IsHitTestVisible="False"
-                        Title="{DynamicResource Setup.About.SpecialThanks.Name.Emperormummy}" />
-                    <local:MyListItem
-                        Grid.Row="6"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        Margin="-5,0,0,0"
                         Info="{DynamicResource Setup.About.SpecialThanks.Info.Hydrogen}"
                         IsHitTestVisible="False"
                         Title="{DynamicResource Setup.About.SpecialThanks.Name.Hydrogen}" />
                     <local:MyButton
-                        Grid.Row="6"
+                        Grid.Row="5"
                         Grid.Column="2"
                         Height="35"
                         local:CustomEventService.EventData="https://github.com/Hydrogen-Peroxide"
                         local:CustomEventService.EventType="OpenUrl"
                         Text="{DynamicResource Setup.About.GitHubHome}" />
                     <local:MyListItem
-                        Grid.Row="7"
+                        Grid.Row="6"
                         Grid.Column="1"
                         Grid.ColumnSpan="2"
                         Margin="-5,0,0,0"
@@ -221,7 +212,7 @@
                         IsHitTestVisible="False"
                         Title="{DynamicResource Setup.About.SpecialThanks.Name.BedrockBoot}" />
                     <local:MyButton
-                        Grid.Row="7"
+                        Grid.Row="6"
                         Grid.Column="2"
                         Height="35"
                         local:CustomEventService.EventData="https://github.com/Round-Studio/BedrockBoot"
@@ -286,7 +277,18 @@
                     <Image
                         Grid.Row="5"
                         Margin="3"
-                        Source="/Plain Craft Launcher 2;component/Images/Heads/Emperormummy.png">
+                        Source="/Plain Craft Launcher 2;component/Images/Heads/Hydrogen.jpg">
+                        <Image.Clip>
+                            <EllipseGeometry
+                                Center="17 17"
+                                RadiusX="17"
+                                RadiusY="17" />
+                        </Image.Clip>
+                    </Image>
+                    <Image
+                        Grid.Row="6"
+                        Margin="3"
+                        Source="/Plain Craft Launcher 2;component/Images/Heads/BedrockBoot.png">
                         <Image.Clip>
                             <EllipseGeometry
                                 Center="17 17"
@@ -296,57 +298,6 @@
                     </Image>
                 </Grid>
             </local:MyCard>
-            <local:MyCard
-                Margin="0,0,0,15"
-                DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PageSetupAbout}}"
-                Title="{DynamicResource Setup.About.Contributors.Title}">
-                <Grid Margin="17,42,15,20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="5" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <ItemsControl ItemsSource="{Binding Contributors}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel
-                                    Width="72"
-                                    Margin="4,8"
-                                    HorizontalAlignment="Center"
-                                    Orientation="Vertical">
-                                    <local:MyImage
-                                        Width="36"
-                                        Height="36"
-                                        CornerRadius="18"
-                                        RenderOptions.BitmapScalingMode="HighQuality"
-                                        Source="{Binding AvatarUrl}" />
-                                    <local:MyTextButton
-                                        MaxWidth="90"
-                                        Margin="0,8,0,0"
-                                        HorizontalAlignment="Center"
-                                        FontSize="14"
-                                        local:CustomEventService.EventData="{Binding HtmlUrl}"
-                                        local:CustomEventService.EventType="OpenUrl"
-                                        Text="{Binding Login}"
-                                        ToolTip="{Binding Login}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                    <local:MyTextButton
-                        Grid.Row="2"
-                        HorizontalAlignment="Center"
-                        local:CustomEventService.EventData="https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/graphs/contributors"
-                        local:CustomEventService.EventType="OpenUrl"
-                        Text="{DynamicResource Setup.About.Contributors.ViewMore}" />
-                </Grid>
-            </local:MyCard>
-
             <local:MyCard
                 Margin="0,0,0,15"
                 CanSwap="True"
