@@ -59,15 +59,30 @@ public partial class PageSetupFeedback
 
     public void FeedbackListGet(ModLoader.LoaderTask<bool, List<Feedback>> task)
     {
-        var list = Requester.FetchJson(
-            "https://api.github.com/repos/PCL-Community/PCL2-CE/issues?state=all&sort=created&per_page=200",
-            new RequestParam
-            {
-                Retries = 3,
-                UseBrowserUserAgent = true
-            }) as JsonArray; // 获取近期 200 条数据就够了
+        JsonArray? list;
+        try
+        {
+            list = Requester.FetchJson(
+                "https://api.github.com/repos/Hydrogen-Peroxide/PCL-Symbio-Edition/issues?state=all&sort=created&per_page=200",
+                new RequestParam
+                {
+                    Retries = 3,
+                    UseBrowserUserAgent = true
+                }) as JsonArray; // 获取近期 200 条数据就够了
+        }
+        catch (Exception ex)
+        {
+            // 仓库未开启 Issue 或网络不可用时，展示空列表而不是报错
+            ModBase.Log(ex, "[Setup] 无法获取反馈列表");
+            task.output = new List<Feedback>();
+            return;
+        }
+
         if (list is null)
-            throw new Exception(Lang.Text("Setup.Feedback.LoadFailed"));
+        {
+            task.output = new List<Feedback>();
+            return;
+        }
         var res = new List<Feedback>();
         foreach (var i in list)
         {

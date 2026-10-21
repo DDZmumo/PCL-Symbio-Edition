@@ -19,7 +19,6 @@ public partial class PageSetupLeft
         if (ItemLaunch.Checked && hide.SetupLaunch) isHiddenPage = true;
         if (ItemJava.Checked && hide.SetupJava) isHiddenPage = true;
         if (ItemGameManage.Checked && hide.SetupGameManage)  isHiddenPage = true;
-        if (ItemGameLink.Checked && hide.SetupGameLink) isHiddenPage = true;
         if (ItemUI.Checked && hide.SetupUi) isHiddenPage = true;
         if (ItemLauncherLanguage.Checked && hide.SetupLauncherLanguage) isHiddenPage = true;
         if (ItemLauncherMisc.Checked && hide.SetupLauncherMisc) isHiddenPage = true;
@@ -44,8 +43,6 @@ public partial class PageSetupLeft
             ItemJava.SetChecked(true, false, false);    
         else if (!hideCfg.SetupGameManage) 
             ItemGameManage.SetChecked(true, false, false);
-        else if (!hideCfg.SetupGameLink) 
-            ItemGameLink.SetChecked(true, false, false);    
         else if (!hideCfg.SetupUi) 
             ItemUI.SetChecked(true, false, false);
         else if (!hideCfg.SetupLauncherLanguage)
@@ -108,18 +105,6 @@ public partial class PageSetupLeft
 
                 break;
             }
-            case (double)FormMain.PageSubType.SetupGameLink:
-            {
-                if (ModMain.MyMsgBox(Lang.Text("Setup.Left.Reset.GameLink.Message"), Lang.Text("Setup.Left.Reset.Title"), button2: Lang.Text("Common.Action.Cancel"), isWarn: true) == 1)
-                {
-                    if (ModMain.frmSetupGameLink is null)
-                        ModMain.frmSetupGameLink = new PageSetupGameLink();
-                    ModMain.frmSetupGameLink.Reset();
-                    ItemGameLink.Checked = true;
-                }
-
-                break;
-            }
             case (double)FormMain.PageSubType.SetupLauncherLanguage:
             {
                 if (ModMain.MyMsgBox(Lang.Text("Setup.Left.Reset.Language.Message"), Lang.Text("Setup.Left.Reset.Title"), button2: Lang.Text("Common.Action.Cancel"), isWarn: true) == 1)
@@ -163,7 +148,7 @@ public partial class PageSetupLeft
                 }
                 case 2:
                 {
-                    ModBase.OpenWebsite("https://github.com/PCL-Community/PCL2-CE/issues/");
+                    ModBase.OpenWebsite("https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition");
                     break;
                 }
             }
@@ -209,8 +194,6 @@ public partial class PageSetupLeft
             pageID = FormMain.PageSubType.SetupJava;
         else if (!hideCfg.SetupGameManage)
             pageID = FormMain.PageSubType.SetupGameManage;
-        else if (!hideCfg.SetupGameLink)
-            pageID = FormMain.PageSubType.SetupGameLink;    
         else if (!hideCfg.SetupUi)
             pageID = FormMain.PageSubType.SetupUI;
         else if (!hideCfg.SetupLauncherLanguage)
@@ -285,12 +268,6 @@ public partial class PageSetupLeft
                 if (ModMain.frmSetupFeedback is null)
                     ModMain.frmSetupFeedback = new PageSetupFeedback();
                 return ModMain.frmSetupFeedback;
-            }
-            case FormMain.PageSubType.SetupGameLink:
-            {
-                if (ModMain.frmSetupGameLink is null)
-                    ModMain.frmSetupGameLink = new PageSetupGameLink();
-                return ModMain.frmSetupGameLink;
             }
             case FormMain.PageSubType.SetupLauncherLanguage:
             {

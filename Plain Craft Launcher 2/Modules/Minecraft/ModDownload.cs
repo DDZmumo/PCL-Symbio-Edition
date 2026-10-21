@@ -2525,9 +2525,11 @@ public static class ModDownload
 
     /// <summary>
     ///     获取基岩版下载 URL 列表。
-    ///     返回多个 CDN 源的 URL 和 MD5。
+    ///     返回多个 CDN 源的 URL、MD5 与包类型（UWP / GDK）。
+    ///     UWP 旧版本的 MetaData 是 UpdateID（GUID），需要经 FE3 接口解析为真实下载地址。
     /// </summary>
-    public static (List<string> Urls, string? Md5)? GetBedrockDownloadUrls(string versionKey)
+    public static async Task<(List<string> Urls, string? Md5, string BuildType)?> GetBedrockDownloadUrlsAsync(
+        string versionKey)
     {
         if (cachedBedrockRawData is null) return null;
 
@@ -2554,18 +2556,26 @@ public static class ModDownload
         var metadata = selectedVar["MetaData"] as JsonArray;
         if (metadata is null || metadata.Count == 0) return null;
 
-        var firstMeta = (string?)metadata[0];
-        if (string.IsNullOrEmpty(firstMeta)) return null;
+        // BedrockLauncher.Core / BedrockBoot 均取最后一条 MetaData
+        var lastMeta = (string?)metadata[^1];
+        if (string.IsNullOrEmpty(lastMeta)) return null;
 
         var buildType = (string)verData["BuildType"] ?? "UWP";
         List<string> urls;
 
-        if (buildType == "GDK" && firstMeta.StartsWith("http"))
+        if (!lastMeta.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+        {
+            // 旧版 UWP：MetaData 为 UpdateID（GUID），通过 FE3 接口解析真实下载地址
+            var resolved = await ModBedrockUwp.ResolveDownloadUrlAsync(lastMeta).ConfigureAwait(false);
+            if (string.IsNullOrEmpty(resolved)) return null;
+            urls = new List<string> { resolved };
+        }
+        else if (buildType == "GDK")
         {
             // GDK 版本：从 MetaData URL 提取路径，分发到多个 CDN
             try
             {
-                var uri = new Uri(firstMeta);
+                var uri = new Uri(lastMeta);
                 var router = uri.AbsolutePath;
                 urls = BedrockCDNSources
                     .Select(s => s.UrlTemplate.Replace("{router}", router))
@@ -2573,78 +2583,68 @@ public static class ModDownload
             }
             catch
             {
-                urls = new List<string> { firstMeta };
+                urls = new List<string> { lastMeta };
             }
         }
         else
         {
-            // UWP 或无法解析：直接使用 MetaData URL 或回退到 MCAPPX 网页
-            if (firstMeta.StartsWith("http"))
-                urls = new List<string> { firstMeta };
-            else
-                return null; // GUID 类型，需要 BedrockLauncher.Core 解析
+            urls = new List<string> { lastMeta };
         }
 
-        return (urls, string.IsNullOrEmpty(md5) ? null : md5);
+        return (urls, string.IsNullOrEmpty(md5) ? null : md5, buildType);
+    }
+
+    /// <summary>
+    ///     获取基岩版某个版本的包类型（UWP / GDK）。
+    /// </summary>
+    public static string GetBedrockBuildType(string versionKey)
+    {
+        return cachedBedrockRawData?[versionKey] is JsonObject verData
+            ? (string)verData["BuildType"] ?? "UWP"
+            : "UWP";
     }
 
     /// <summary>
     ///     将 MCAPPX 格式的版本数据转换为统一的版本列表格式。
-    ///     按大版本分组，每组取最新 Release 版本。
+    ///     列出全部 Release 版本（含旧小版本），按版本号降序排列。
     /// </summary>
     private static JsonObject ConvertMcAppxToVersionList(JsonObject source)
     {
-        // 收集所有版本，按版本号数字排序
-        var allVersions = new List<(string Key, JsonObject Data, long VersionNumber)>();
+        // 收集全部 Release 版本
+        var allVersions = new List<(string Key, JsonObject Data)>();
 
         foreach (var kv in source)
         {
             if (kv.Value is not JsonObject verData) continue;
-            var versionKey = kv.Key;
-            var versionNum = BedrockVersionToLong(versionKey);
-            allVersions.Add((versionKey, verData, versionNum));
+            if ((string)verData["Type"] != "Release") continue;
+            allVersions.Add((kv.Key, verData));
         }
 
-        // 按版本号降序排列
-        allVersions.Sort((a, b) => b.VersionNumber.CompareTo(a.VersionNumber));
+        // 按版本号降序排列；同版本号按发布日期降序
+        allVersions.Sort((a, b) =>
+        {
+            var result = CompareBedrockVersions(b.Key, a.Key);
+            return result != 0
+                ? result
+                : string.CompareOrdinal((string)b.Data["Date"] ?? "", (string)a.Data["Date"] ?? "");
+        });
 
-        // 按大版本分组（取前两位，如 1.21）
-        var majorGroups = new Dictionary<string, (string Key, JsonObject Data, long VersionNumber)>();
+        var versions = new JsonArray();
         foreach (var ver in allVersions)
         {
-            var type = (string)ver.Data["Type"] ?? "";
-            // 只取 Release 版本
-            if (type != "Release") continue;
-
-            var parts = ver.Key.Split('.');
-            if (parts.Length < 2) continue;
-            var major = parts[0] + "." + parts[1]; // e.g., "1.21"
-
-            if (!majorGroups.ContainsKey(major))
-                majorGroups[major] = ver;
-        }
-
-        // 生成版本列表
-        var versions = new JsonArray();
-        foreach (var group in majorGroups.OrderByDescending(g =>
-        {
-            var p = g.Key.Split('.');
-            return int.Parse(p[0]) * 1000 + int.Parse(p[1]);
-        }))
-        {
-            var ver = group.Value;
-            var versionKey = ver.Key;
-            var verData = ver.Data;
-            var buildType = (string)verData["BuildType"] ?? "UWP";
-            var date = (string)verData["Date"] ?? "";
+            var buildType = (string)ver.Data["BuildType"] ?? "UWP";
+            var date = (string)ver.Data["Date"] ?? "";
 
             versions.Add(new JsonObject
             {
-                ["id"] = versionKey,
-                ["name"] = $"Bedrock {versionKey}",
+                ["id"] = ver.Key,
+                ["name"] = $"Bedrock {ver.Key}",
                 ["type"] = "release",
                 ["releaseDate"] = date,
-                ["buildType"] = buildType
+                ["buildType"] = buildType,
+                ["packageVersion"] = (string)ver.Data["ID"] ?? "",
+                ["series"] = GetBedrockVersionSeries(ver.Key),
+                ["available"] = HasBedrockDownloadSource(ver.Data)
             });
         }
 
@@ -2652,22 +2652,82 @@ public static class ModDownload
     }
 
     /// <summary>
-    ///     将基岩版版本号转为可比较的长整数。
+    ///     比较两个基岩版版本号，返回大于 0 表示 a 比 b 新。
+    ///     逐段比较数字，缺失段视为 0；括号后缀（如 1.21.72(02)）作为附加段参与比较。
+    ///     2026-02 起版本号从 1.21.x 改为 26.x，不能用累积数字直接比较。
     /// </summary>
-    private static long BedrockVersionToLong(string version)
+    public static int CompareBedrockVersions(string? a, string? b)
     {
-        try
+        var partsA = ParseBedrockVersion(a);
+        var partsB = ParseBedrockVersion(b);
+        if (partsA.Count == 0 && partsB.Count == 0) return 0;
+
+        var count = Math.Max(partsA.Count, partsB.Count);
+        for (var i = 0; i < count; i++)
         {
-            var parts = version.Split('.');
-            long result = 0;
-            for (int i = 0; i < Math.Min(parts.Length, 4); i++)
-            {
-                if (int.TryParse(parts[i], out var num))
-                    result = result * 1000 + num;
-            }
-            return result;
+            var valueA = i < partsA.Count ? partsA[i] : 0;
+            var valueB = i < partsB.Count ? partsB[i] : 0;
+            if (valueA != valueB) return valueA.CompareTo(valueB);
         }
-        catch { return 0; }
+
+        return 0;
+    }
+
+    /// <summary>
+    ///     解析版本号为数字段列表，括号后缀会作为独立的一段追加到末尾。
+    /// </summary>
+    private static List<long> ParseBedrockVersion(string? version)
+    {
+        var result = new List<long>();
+        if (string.IsNullOrWhiteSpace(version)) return result;
+
+        var text = version.Trim();
+        var suffixMatch = System.Text.RegularExpressions.Regex.Match(text, @"\((\d+)\)");
+        if (suffixMatch.Success) text = text[..suffixMatch.Index];
+
+        foreach (var part in text.Split('.'))
+        {
+            var match = System.Text.RegularExpressions.Regex.Match(part, @"^\d+");
+            result.Add(match.Success && long.TryParse(match.Value, out var number) ? number : 0);
+        }
+
+        if (suffixMatch.Success && long.TryParse(suffixMatch.Groups[1].Value, out var suffix))
+            result.Add(suffix);
+
+        return result;
+    }
+
+    /// <summary>
+    ///     获取版本所属的系列名，用于列表分组。
+    ///     26.x 这类年份版本号按主版本分组（26.x），旧版本按主.次分组（1.21.x）。
+    /// </summary>
+    public static string GetBedrockVersionSeries(string? version)
+    {
+        var parts = ParseBedrockVersion(version);
+        if (parts.Count == 0) return "其他";
+        if (parts[0] >= 20 || parts.Count < 2) return $"{parts[0]}.x";
+        return $"{parts[0]}.{parts[1]}.x";
+    }
+
+    /// <summary>
+    ///     判断该版本是否提供了可下载的包（早期版本的 MetaData 为空）。
+    /// </summary>
+    private static bool HasBedrockDownloadSource(JsonObject verData)
+    {
+        if (verData["Variations"] is not JsonArray variations || variations.Count == 0) return false;
+
+        JsonObject? selectedVar = null;
+        foreach (var variation in variations)
+        {
+            if (variation is JsonObject obj && (string)obj["Arch"] == "x64")
+            {
+                selectedVar = obj;
+                break;
+            }
+        }
+
+        selectedVar ??= variations[0] as JsonObject;
+        return selectedVar?["MetaData"] is JsonArray metadata && metadata.Count > 0;
     }
 
     /// <summary>

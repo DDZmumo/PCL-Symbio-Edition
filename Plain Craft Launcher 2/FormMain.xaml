@@ -158,7 +158,7 @@
                                                  Padding="2,0" Check="BtnTitleSelect_Click"
                                                  LogoScale="0.9"
                                                  SvgIcon="lucide/play" />
-                            <local:MyRadioButton x:Name="BtnTitleSelect1" Text="基岩版" Tag="13" Margin="5,0" Padding="2,0"
+                            <local:MyRadioButton x:Name="BtnTitleSelect1" Text="{DynamicResource Main.Tab.Bedrock}" Tag="13" Margin="5,0" Padding="2,0"
                                                  Check="BtnTitleSelect_Click"
                                                  LogoScale="0.9"
                                                  SvgIcon="lucide/box" />

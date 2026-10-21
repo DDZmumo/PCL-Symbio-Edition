@@ -50,7 +50,7 @@ public partial class PageLaunchRight : IRefreshable
         if (string.IsNullOrWhiteSpace(input))
             return;
         input = new string(input.Where(char.IsAsciiLetter).ToArray()).ToLower();
-        if (input.Contains("pclcommunity"))
+        if (input.Contains("hydrogenperoxide"))
         {
             ModAnimation.AniDispose(PanHint, true);
             States.Hint.CEMessage = false;

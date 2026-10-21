@@ -423,7 +423,7 @@ public class ModSetup
                     Lang.Text("Setup.Ui.Homepage.NetUpdate.Hint");
                 CustomEventService.SetEventType(ModMain.frmSetupUI.HintCustom, EventType.OpenUrl);
                 CustomEventService.SetEventData(ModMain.frmSetupUI.HintCustom,
-                    "https://github.com/PCL-Community/PCL-CE/discussions");
+                    "https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/wiki");
                 break;
             }
             case 3: // 预设

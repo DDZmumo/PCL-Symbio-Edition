@@ -14,13 +14,7 @@ public static class UpdateManager
 
     public static UpdatesWrapperModel remoteServer = new(new List<IUpdateSource>
     {
-        new UpdatesMirrorChyanModel(),
-        new UpdatesRandomModel(new[]
-        {
-            new UpdatesMinioModel("https://s3.pysio.online/pcl2-ce/", "Pysio"),
-            new UpdatesMinioModel("https://staticassets.naids.com/resources/pclce/", "Naids")
-        }),
-        new UpdatesMinioModel("https://github.com/PCL-Community/PCL2_CE_Server/raw/main/", "GitHub")
+        new UpdatesGitHubModel("Hydrogen-Peroxide", "PCL-Symbio-Edition")
     });
 
     public static bool IsCurrentVersionBeta
@@ -82,7 +76,7 @@ public static class UpdateManager
                     SystemInfo.IsArm64System ? UpdateArch.arm64 : UpdateArch.x64
                 );
 
-                ModBase.WriteFile($"{ModBase.pathTemp}CEUpdateLog.md", version.Changelog);
+                ModBase.WriteFile($"{ModBase.pathTemp}SEUpdateLog.md", version.Changelog);
                 ModBase.Log($"[Update] 远程最新版本: {version.VersionName}, 当前版本: {ModBase.versionBaseName}");
                 if (!(SemVer.Parse(version.VersionName) > SemVer.Parse(ModBase.versionBaseName)))
                     return;
@@ -201,10 +195,10 @@ public static class UpdateManager
     internal static void DownloadLatestPCL(ModLoader.LoaderBase loaderToSyncProgress = null)
     {
         // 注意：如果要自行实现这个功能，请换用另一个文件路径，以免与官方版本冲突
-        var latestPCLPath = Path.Combine(ModBase.pathTemp, "CE-Latest.exe");
+        var latestPCLPath = Path.Combine(ModBase.pathTemp, "SE-Latest.exe");
         var target = remoteServer.GetLatestVersion(UpdateChannel.stable,
             SystemInfo.IsArm64System ? UpdateArch.arm64 : UpdateArch.x64);
-        if (target is null)
+        if (target is null || string.IsNullOrWhiteSpace(target.Sha256))
             throw new Exception(Lang.Text("Update.Error.UnableToGetUpdate"));
         if (File.Exists(latestPCLPath) && (ModBase.GetFileSHA256(latestPCLPath) ?? "") == (target.Sha256 ?? ""))
         {

@@ -39,7 +39,7 @@ public partial class FormMain
     {
         ModBase.RunInNewThread(() =>
         {
-            var changelogFile = $"{ModBase.pathTemp}CEUpdateLog.md";
+            var changelogFile = $"{ModBase.pathTemp}SEUpdateLog.md";
             string changelog;
             if (File.Exists(changelogFile))
                 changelog = ModBase.ReadFile(changelogFile);
@@ -47,7 +47,7 @@ public partial class FormMain
                 changelog = Lang.Text("Main.UpdateLog.Empty");
             if (ModMain.MyMsgBoxMarkdown(changelog,
                     Lang.Text("Main.UpdateLog.Title", ModBase.versionBranchName, ModBase.versionBaseName), Lang.Text("Common.Action.Confirm"), Lang.Text("Main.UpdateLog.FullChangelog")) ==
-                2) ModBase.OpenWebsite("https://github.com/PCL-Community/PCL2-CE/releases");
+                2) ModBase.OpenWebsite("https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition");
         }, "UpdateLog Output");
     }
 
@@ -241,7 +241,7 @@ public partial class FormMain
                         $"{hint}{"\r\n"}{"\r\n"}{Lang.Text("Main.SpecialVersion.HideHintNotice")}",
                         Lang.Text("Main.SpecialVersion.Title"), Lang.Text("Main.SpecialVersion.IUnderstand"), Lang.Text("Main.SpecialVersion.OpenDownloadPageAndExit"), isWarn: true, button2Action: () =>
                         {
-                            ModBase.OpenWebsite("https://github.com/PCL-Community/PCL2-CE/releases/latest");
+                            ModBase.OpenWebsite("https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition");
                             EndProgram(false);
                         });
                 }
@@ -272,6 +272,19 @@ public partial class FormMain
                                 Lang.Text("Main.Telemetry.Message"),
                                 Lang.Text("Main.Telemetry.Title"), Lang.Text("Common.Action.Agree"), Lang.Text("Common.Action.Decline"));
                     Config.System.TelemetryConfig.SetValue(selection == 1, forceNewValue: true);
+                }
+                // SE 版本说明（仅首次启动时显示）
+                if (!States.System.SeVersionNoticeShown)
+                {
+                    States.System.SeVersionNoticeShown = true;
+                    ModMain.MyMsgBoxMarkdown(
+                        "**PCL Symbio Edition** 是 PCL CE 的第三方修改版，原作者为龙腾猫跃及原项目贡献者；" +
+                        "原作版权归成都瓜皮龙科技有限公司，来源与许可详见「更多 → 关于」。\n\n" +
+                        "### 本版本功能与限制说明\n\n" +
+                        "- **CurseForge 下载**：临时可用，正在等待正式 API Key 下发\n" +
+                        "- **启动器更新**：已接入 Hydrogen-Peroxide/PCL-Symbio-Edition 的 GitHub Releases，可在设置中检查更新\n" +
+                        "- **主题切换**：这是需要赞助解锁的纪念性质的功能，别让赞助者太伤心啦……",
+                        "版本说明", "我知道了");
                 }
                 // 启动加载器池
                 try
@@ -517,8 +530,6 @@ public partial class FormMain
                 return;
         }
 
-        // 关闭联机大厅
-        // Await LobbyController.CloseAsync().ConfigureAwait(False)
         // 存储上次使用的档案编号
         ModProfile.SaveProfile();
         // 关闭
@@ -577,8 +588,6 @@ public partial class FormMain
         bool force = true, bool isUpdating = false)
     {
         // On Error Resume Next
-        // 关闭联机大厅
-        // Await LobbyController.CloseAsync().ConfigureAwait(False)
         ModBase.isProgramEnded = true;
         ModAnimation.AniControlEnabled += 1;
         if (UpdateManager.isUpdateWaitingRestart && !isUpdating)
@@ -588,7 +597,7 @@ public partial class FormMain
             if (!isLogShown)
             {
                 ModBase.FeedbackInfo();
-                ModBase.Log("请在 https://github.com/PCL-Community/PCL2-CE/issues 提交错误报告，以便于社区解决此问题！（这也有可能是原版 PCL 的问题）");
+                ModBase.Log("请在 https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition 提交错误报告，以便于解决此问题！（这也有可能是原版 PCL 的问题）");
                 isLogShown = true;
                 ModBase.ShellOnly(LogWrapper.CurrentLogger.CurrentLogFiles.Last());
             }
@@ -1450,12 +1459,10 @@ public partial class FormMain
         SetupAbout = 4,
         SetupLog = 5,
         SetupFeedback = 6,
-        SetupGameLink = 7,
         SetupJava = 9,
         SetupLauncherMisc = 10,
         SetupLauncherLanguage = 11,
 
-        ToolsGameLink = 1,
         ToolsTest = 3,
 
         VersionOverall = 0,

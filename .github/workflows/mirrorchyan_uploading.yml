@@ -33,8 +33,8 @@ jobs:
           mirrorchyan_rid: PCL2-CE
 
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          owner: PCL-Community
-          repo: PCL2-CE
+          owner: Hydrogen-Peroxide
+          repo: PCL-Symbio-Edition
           upload_token: ${{ secrets.MirrorChyanUploadToken }}
           os: win
           arch: ${{ inputs.arch }}

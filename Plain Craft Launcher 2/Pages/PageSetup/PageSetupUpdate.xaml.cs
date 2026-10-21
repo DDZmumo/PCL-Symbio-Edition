@@ -256,7 +256,7 @@ public partial class PageSetupUpdate
 
     private void BtnChangelog_Click(object sender, MouseButtonEventArgs e)
     {
-        ModBase.OpenWebsite("https://github.com/PCL-Community/PCL2-CE/releases/v" + ModBase.versionBaseName);
+        ModBase.OpenWebsite("https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/releases");
     }
 
     public string VersionNameFormat(string str)

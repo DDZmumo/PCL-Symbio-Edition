@@ -3,62 +3,83 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:local="clr-namespace:PCL">
     <local:MyScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" x:Name="PanBack">
-        <StackPanel Name="PanMain" Margin="25,25,25,10">
-            <!-- 启动区域 -->
-            <Grid Margin="0,0,0,15">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+        <StackPanel Name="PanMain" Margin="25,25,25,10" Grid.IsSharedSizeScope="True">
 
-                <!-- 状态信息 -->
-                <local:MyCard Grid.Row="0" Title="基岩版状态">
-                    <StackPanel Margin="25,38,23,15">
-                        <TextBlock x:Name="LabStatus" Text="正在检测基岩版..."
-                                   FontSize="14" Margin="0,0,0,8" />
-                        <TextBlock x:Name="LabDetail" Text="请稍候..."
-                                   TextWrapping="Wrap" FontSize="13" Margin="0,0,0,5"
+            <!-- 状态 -->
+            <local:MyCard Title="{DynamicResource Bedrock.Status.Title}">
+                <Grid Margin="25,38,23,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,15,0">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,7">
+                            <Ellipse x:Name="ShapeStatusDot" Width="8" Height="8" Margin="0,0,8,0"
+                                     VerticalAlignment="Center" Fill="{DynamicResource ColorBrushGray4}" />
+                            <TextBlock x:Name="LabStatus" Text="{DynamicResource Bedrock.Status.Detecting}"
+                                       FontSize="14" FontWeight="Bold" />
+                        </StackPanel>
+                        <TextBlock x:Name="LabDetail" Text="{DynamicResource Bedrock.Status.PleaseWait}"
+                                   TextWrapping="Wrap" FontSize="12" Margin="16,0,0,5"
                                    Foreground="{DynamicResource ColorBrushGray3}" />
                         <TextBlock x:Name="LabVersion" Text=""
-                                   FontSize="12"
+                                   FontSize="12" Margin="16,0,0,0"
                                    Foreground="{DynamicResource ColorBrushGray4}" />
                     </StackPanel>
-                </local:MyCard>
 
-                <!-- 启动按钮 -->
-                <Grid Grid.Row="1" Margin="0,10,0,0">
-                    <local:MyButton x:Name="BtnLaunch" Height="54" Margin="20,0"
-                                    Text="启动基岩版" ColorType="Highlight"
-                                    Click="BtnLaunch_Click"
-                                    Padding="30,0,30,15" IsEnabled="False" />
-                    <TextBlock x:Name="LabSelectedVersion" Text="未检测到基岩版" Margin="35,0,35,10"
-                               IsHitTestVisible="False"
-                               VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                               TextTrimming="CharacterEllipsis"
-                               FontSize="11" Foreground="{DynamicResource ColorBrushGray3}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <local:MyButton x:Name="BtnLaunch" Height="46" Text="{DynamicResource Bedrock.Action.Launch}"
+                                        ColorType="Highlight" Click="BtnLaunch_Click"
+                                        Padding="20,0,20,0" />
+                        <TextBlock x:Name="LabSelectedVersion" Text="{DynamicResource Bedrock.Status.NotFound}" Margin="0,6,0,0"
+                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                   FontSize="11" Foreground="{DynamicResource ColorBrushGray3}" />
+                        <local:MyButton x:Name="BtnUpdate" Height="32" Text="{DynamicResource Bedrock.Action.UpdateToLatest}"
+                                        ColorType="Normal" Click="BtnUpdate_Click"
+                                        Padding="12,0,12,0" Margin="0,8,0,0"
+                                        Visibility="Collapsed" />
+                    </StackPanel>
                 </Grid>
-            </Grid>
+            </local:MyCard>
 
             <!-- 已下载版本 -->
-            <TextBlock x:Name="LabLocalTitle" Text="已下载版本" FontSize="14" FontWeight="Bold" Margin="5,0,0,8" />
-            <StackPanel Name="PanLocalVersions" Margin="5,0,5,5"
-                        Grid.IsSharedSizeScope="True" />
-
-            <!-- 在线版本下载 -->
-            <local:MyCard Margin="0,10,0,15" Title="基岩版下载">
-                <StackPanel Margin="25,38,23,15">
-                    <TextBlock Text="选择版本下载基岩版安装包，下载完成后可在上方「已下载版本」中安装。"
-                               TextWrapping="Wrap" FontSize="13" Margin="0,0,0,10"
-                               Foreground="{DynamicResource ColorBrushGray3}" />
+            <local:MyCard Margin="0,12,0,0" Title="{DynamicResource Bedrock.Local.Title}">
+                <StackPanel Margin="15,38,15,15">
+                    <Grid Margin="5,0,5,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                   Text="{DynamicResource Bedrock.Local.Description}"
+                                   TextWrapping="Wrap" FontSize="12"
+                                   Foreground="{DynamicResource ColorBrushGray3}" />
+                        <local:MyButton Grid.Column="1" x:Name="BtnImport" Text="{DynamicResource Bedrock.Action.Import}"
+                                        Height="30" Padding="14,0,14,0" Margin="10,0,0,0"
+                                        Click="ImportPackage_Click" />
+                    </Grid>
+                    <StackPanel Name="PanLocalVersions" Margin="0,4,0,0" />
                 </StackPanel>
             </local:MyCard>
 
-            <!-- 可用版本标题 -->
-            <TextBlock Text="可用版本" FontSize="14" FontWeight="Bold" Margin="5,0,0,8" />
+            <!-- 搜索 -->
+            <local:MySearchBox x:Name="SearchBox" Margin="0,12,0,0" HintText="{DynamicResource Bedrock.Search.Hint}" />
 
-            <!-- 版本列表区域 -->
-            <StackPanel Name="PanVersionList" Margin="5,0,5,20"
-                        Grid.IsSharedSizeScope="True" />
+            <!-- 在线版本 -->
+            <local:MyCard Margin="0,12,0,0" Title="{DynamicResource Bedrock.Download.Title}">
+                <StackPanel Margin="15,38,15,15">
+                    <StackPanel Orientation="Horizontal" Margin="5,0,0,10">
+                        <local:MyRadioButton x:Name="FilterAll" Text="{DynamicResource Bedrock.Filter.All}" ColorType="Highlight" Checked="True" />
+                        <local:MyRadioButton x:Name="FilterUwp" Text="{DynamicResource Bedrock.Filter.Uwp}" ColorType="Highlight" Margin="8,0,0,0" />
+                        <local:MyRadioButton x:Name="FilterGdk" Text="{DynamicResource Bedrock.Filter.Gdk}" ColorType="Highlight" Margin="8,0,0,0" />
+                    </StackPanel>
+                    <TextBlock x:Name="LabVersionSummary" Text="{DynamicResource Bedrock.Download.Loading}" FontSize="12" Margin="5,0,0,6"
+                               Foreground="{DynamicResource ColorBrushGray3}" />
+                    <StackPanel Name="PanVersionList" Margin="0,4,0,0" />
+                </StackPanel>
+            </local:MyCard>
+
         </StackPanel>
     </local:MyScrollViewer>
 </local:MyPageRight>

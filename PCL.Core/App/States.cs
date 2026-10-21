@@ -218,6 +218,11 @@ public static partial class States
         [ConfigItem<bool>("SystemEula", false)] public partial bool LauncherEula { get; set; }
 
         /// <summary>
+        /// 是否已显示 SE 版本说明。
+        /// </summary>
+        [ConfigItem<bool>("SeVersionNoticeShown", false)] public partial bool SeVersionNoticeShown { get; set; }
+
+        /// <summary>
         /// 启动器打开次数。
         /// </summary>
         [ConfigItem<int>("SystemCount", 0, ConfigSource.SharedEncrypt)] public partial int StartupCount { get; set; }
@@ -285,43 +290,6 @@ public static partial class States
         /// 最新 MC 快照版
         /// </summary>
         [ConfigItem<string>("ToolUpdateSnapshotLast", "")] public partial string LastSnapshot { get; set; }
-    }
-
-    /// <summary>
-    /// 联机大厅状态。
-    /// </summary>
-    [ConfigGroup("Link")] partial class LinkStatesGroup
-    {
-        /// <summary>
-        /// 大厅最终用户许可协议。
-        /// </summary>
-        [ConfigItem<bool>("LinkEula", false)] public partial bool LinkEula { get; set; }
-
-        /// <summary>
-        /// 公告缓存。
-        /// </summary>
-        [ConfigItem<string>("LinkAnnounceCache", "", ConfigSource.SharedEncrypt)] public partial string AnnounceCache { get; set; }
-
-        /// <summary>
-        /// 公告缓存版本。
-        /// </summary>
-        [ConfigItem<int>("LinkAnnounceCacheVer", 0)] public partial int AnnounceCacheVer { get; set; }
-
-        /// <summary>
-        /// Natayark ID 刷新令牌。
-        /// </summary>
-        [ConfigItem<string>("LinkNaidRefreshToken", "", ConfigSource.SharedEncrypt)] public partial string NaidRefreshToken { get; set; }
-
-        /// <summary>
-        /// Natayark ID 令牌过期时间。
-        /// </summary>
-        [ConfigItem<string>("LinkNaidRefreshExpiresAt", "", ConfigSource.SharedEncrypt)] public partial string NaidRefreshExpireTime { get; set; }
-
-        /// <summary>
-        /// 首次网络测试状态。
-        /// </summary>
-        [ConfigItem<bool>("LinkFirstTimeNetTest", true, ConfigSource.SharedEncrypt)] public partial bool DoFirstTimeNetTest { get; set; }
-
     }
 
     /// <summary>

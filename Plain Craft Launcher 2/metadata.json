@@ -1,5 +1,5 @@
 {
-  "name": "Plain Craft Launcher Community Edition",
+  "name": "Plain Craft Launcher Symbio Edition",
   "version": {
     "base": "2.15.0",
     "upstream": "2.12.1",
@@ -9,9 +9,9 @@
   "licenses": [
     {
       "name": "PCL.Core",
-      "info": "Copyright © PCL Community",
-      "website": "https://github.com/PCL-Community/PCL-CE/tree/dev/PCL.Core",
-      "license": "https://github.com/PCL-Community/PCL-CE/blob/dev/LICENSE"
+      "info": "Copyright © PCL Symbio Edition",
+      "website": "https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/tree/dev/PCL.Core",
+      "license": "https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/blob/dev/LICENSE"
     },
     {
       "name": "LegacyFix",

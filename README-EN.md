@@ -4,70 +4,144 @@
 
 <img src="Plain Craft Launcher 2/Images/icon.ico" alt="Logo" width="80" height="80">
 
-# PCL Community Edition
+# PCL Symbio Edition
 
-[![Stars](https://img.shields.io/github/stars/PCL-Community/PCL-CE?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTggLjI1YS43NS43NSAwIDAgMSAuNjczLjQxOGwxLjg4MiAzLjgxNSA0LjIxLjYxMmEuNzUuNzUgMCAwIDEgLjQxNiAxLjI3OWwtMy4wNDYgMi45Ny43MTkgNC4xOTJhLjc1MS43NTEgMCAwIDEtMS4wODguNzkxTDggMTIuMzQ3bC0zLjc2NiAxLjk4YS43NS43NSAwIDAgMS0xLjA4OC0uNzlsLjcyLTQuMTk0TC44MTggNi4zNzRhLjc1Ljc1IDAgMCAxIC40MTYtMS4yOGw0LjIxLS42MTFMNy4zMjcuNjY4QS43NS43NSAwIDAgMSA4IC4yNVoiIGZpbGw9IiNlYWM1NGYiLz48L3N2Zz4=&logoSize=auto&label=stars&labelColor=444444&color=eac54f)](https://github.com/PCL-Community/PCL-CE/)
-![GitHub Release](https://img.shields.io/github/v/release/PCL-Community/PCL-CE?label=release&logo=github&style=for-the-badge)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PCL-Community/PCL-CE/build-test.yml?style=for-the-badge)
+[![Stars](https://img.shields.io/github/stars/Hydrogen-Peroxide/PCL-Symbio-Edition?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTggLjI1YS43NS43NSAwIDAgMSAuNjczLjQxOGwxLjg4MiAzLjgxNSA0LjIxLjYxMmEuNzUuNzUgMCAwIDEgLjQxNiAxLjI3OWwtMy4wNDYgMi45Ny43MTkgNC4xOTJhLjc1MS43NTEgMCAwIDEtMS4wODguNzkxTDggMTIuMzQ3bC0zLjc2NiAxLjk4YS43NS43NSAwIDAgMS0xLjA4OC0uNzlsLjcyLTQuMTk0TC44MTggNi4zNzRhLjc1Ljc1IDAgMCAxIC40MTYtMS4yOGw0LjIxLS42MTFMNy4zMjcuNjY4QS43NS43NSAwIDAgMSA4IC4yNVoiIGZpbGw9IiNlYWM1NGYiLz48L3N2Zz4=&logoSize=auto&label=stars&labelColor=444444&color=eac54f)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Hydrogen-Peroxide/PCL-Symbio-Edition/build-test.yml?style=for-the-badge)
 
-[![Issues](https://img.shields.io/github/issues/PCL-Community/PCL-CE?style=for-the-badge&label=issues&labelColor=444444&color=1F883D&logo=github)](https://github.com/PCL-Community/PCL-CE/issues)
-[![Pull requests](https://img.shields.io/github/issues-pr/PCL-Community/PCL-CE?style=for-the-badge&label=pull%20requests&labelColor=444444&color=1F883D&logo=github)](https://github.com/PCL-Community/PCL-CE/pulls)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/PCL-Community/PCL-CE/total?style=for-the-badge)
-[![Bilibili](https://img.shields.io/badge/Threads-bilibili-00A4DB?style=for-the-badge&labelColor=444444&logo=bilibili)](https://space.bilibili.com/3546847192811755/dynamic) <br />
+[![Pull requests](https://img.shields.io/github/issues-pr/Hydrogen-Peroxide/PCL-Symbio-Edition?style=for-the-badge&label=pull%20requests&labelColor=444444&color=1F883D&logo=github)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/pulls)
 
-<a href="https://trendshift.io/repositories/21800?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-21800" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/21800/daily?language=C%23" alt="PCL-Community%2FPCL-CE | Trendshift" width="250" height="55"/></a>
-<a href="https://trendshift.io/repositories/21800" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21800" alt="PCL-Community%2FPCL-CE | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+[Download PCL SE](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/releases) |
+[Upstream repository](https://github.com/Meloong-Git/PCL)
 
-[download](https://github.com/PCL-Community/PCL-CE/releases/latest) |
-[Upstream repo](https://github.com/Meloong-Git/PCL)
-
-[Submit issues](https://github.com/PCL-Community/PCL-CE/issues/new/choose) |
-[Contribution Guidelines](https://github.com/PCL-Community/PCL-CE/wiki/开发指南)
+[Submit issues](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/issues) |
+[Contribution guidelines](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/blob/dev/CONTRIBUTING.md)
 
 </div>
 
-PCL CE is a community edition developed as a secondary project based on PCL’s open-source code. It includes features and improvements that have not yet been implemented in the main branch.
+PCL SE (Plain Craft Launcher Symbio Edition) is a third-party Minecraft launcher maintained by Hydrogen-Peroxide. Built on PCL's open-source code, it keeps the familiar interaction while adding Bedrock edition support, instance management and resource downloads.
 
-The version numbers of the community edition do not strictly correspond to those of the main branch, so please do not report community edition issues to the official repository.
+- Current version: `2.15.0`
+- Upstream baseline: PCL `2.12.1`
+- Tech stack: C# / WPF / .NET 10
 
-Everyone is welcome to try it out!
+PCL SE has no affiliation with the official PCL, so please do not report PCL SE issues to the official repository.
 
-**Developing group:** [599620549](https://qm.qq.com/q/PNQA4Md8wc) | **User group 1:** [1028074835](https://qm.qq.com/q/qrMGJo8BQQ) | **User group 2:** [1070029541](https://qm.qq.com/q/lBywbDMWhG)
+## Features
 
-## 💻 Supported Platforms
+### Java Edition
+
+- One-click installation of official releases, snapshots and historical versions, with automatic dependency completion and Java runtime selection
+- 8 installation options: Forge, NeoForge, Fabric, Legacy Fabric, OptiFine, LiteLoader, Cleanroom, LabyMod
+- Modpack installation and mod loader switching
+
+### Bedrock Edition
+
+- Detects the Minecraft Bedrock editions installed on your system, distinguishing legacy UWP builds from GDK builds
+- Imports installation packages and unpacks them into a separate directory without affecting other versions
+- Built-in Xbox account sign-in, so you can launch right after logging in
+- Filter by version type, search by version number and manage local installs
+
+### Resource downloads
+
+- Dual-source search across CurseForge and Modrinth
+- Covers mods, modpacks, shaders, resource packs, datapacks and worlds, placing downloads into the correct directories automatically
+
+### Instance management
+
+- Each instance keeps its own mods, saves, screenshots and configuration
+- Disable individual mods at any time to troubleshoot conflicts
+- Browse and back up saves and screenshots, and open their folders in one click
+- Keep a list of frequently used servers per instance and export the whole instance as an archive
+
+### User experience
+
+- 7 interface languages: Simplified Chinese, Traditional Chinese, English (US), English (UK), Japanese, French, Spanish
+- Customizable color theme and background, with transition animations for page switching and list scrolling
+- Automatic Java scanning to reduce manual configuration
+- Log analysis on failed launches, with readable causes and suggestions
+
+> This fork does not include the multiplayer lobby; the related modules have been removed from the codebase.
+
+## Supported platforms
 
 | Operating System | Support Status | Requirements |
 |---|---|---|
-| Windows 10 1809 (17763) or later | ✅ Fully supported | [.NET 10 Desktop Runtime](http://get.dot.net/10) |
-| Windows 8 to Windows 10 1809 (17763) | ⚠️ Expected to run; community support offered at discretion | [.NET 10 Desktop Runtime](http://get.dot.net/10) |
-| Windows 7 or earlier | ❌ Not supported | N/A |
-| macOS / Linux / Other OS | ⚠️ Cross-platform development only (cross-compilation) | [.NET 10 SDK](http://get.dot.net/10) |
+| Windows 10 1809 (17763) or later | Fully supported | [.NET 10 Desktop Runtime](https://get.dot.net/10) |
+| Windows 8 to Windows 10 1809 (17763) | Expected to run; support offered at discretion | [.NET 10 Desktop Runtime](https://get.dot.net/10) |
+| Windows 7 or earlier | Not supported | N/A |
+| macOS / Linux / Other OS | Cross-compilation only; cannot run directly | [.NET 10 SDK](https://get.dot.net/10) |
 
-**✅ Fully supported**: We will provide as much support as possible, but you must ensure you are using the latest version of the launcher.
+**Fully supported**: We will provide as much support as possible, but you must ensure you are using the latest version of the launcher.
 
-**⚠️ Expected to run; community support offered at discretion**: PCL CE is expected to run on these platforms, but full functionality is not guaranteed. You may need to upgrade to a fully supported OS version to receive further community technical support.
+**Expected to run; support offered at discretion**: PCL SE is expected to run on these platforms, but full functionality is not guaranteed. You may need to upgrade to a fully supported OS version to receive further technical support.
 
-**❌ Not supported**: PCL CE may not be usable on these platforms and might not even launch at all. Please upgrade your OS to use PCL CE.
+**Not supported**: PCL SE may not be usable on these platforms and might not even launch at all. Please upgrade your OS to use PCL SE.
 
-**⚠️ Cross-platform development only (cross-compilation)**: PCL CE’s source code can be built on macOS and Linux, but it cannot run directly. As a developer, you can develop on these platforms and then move the build artifacts to Windows for testing.
+**Cross-compilation only**: The source code can be built on macOS and Linux but cannot run there directly. As a developer, you can develop on these platforms and move the build artifacts to Windows for testing.
 
-**Note**:     
-The community only supports the latest version of the launcher.    
-Depending on the nature of certain issues (e.g., an incomplete system environment), you may still need to upgrade your OS to continue receiving support.    
-PCL CE always recommends using the latest version of your OS for the best experience.    
-You can still try using the latest launcher version on unsupported platforms, but you may encounter many additional problems.
+**Note**: Only the latest version of the launcher is supported. Depending on the nature of certain issues (e.g., an incomplete system environment), you may still need to upgrade your OS to continue receiving support. You can still try using PCL SE on unsupported platforms, but you may encounter many additional problems.
 
-## 🔒 License
+## Download and usage
 
-- `Plain Craft Launcher 2/` uses [Custom License](https://github.com/PCL-Community/PCL-CE/blob/dev/Plain%20Craft%20Launcher%202/LICENCE)
-- `All other directories` use [Apache License 2.0](https://github.com/PCL-Community/PCL-CE/blob/dev/LICENSE)
+1. Download the latest release from [Releases](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/releases)
+2. Extract it to any directory (the launcher is portable and does not write to system directories)
+3. Run `Plain Craft Launcher 2.exe`, pick Java or Bedrock edition and launch the game
 
-## 🌟 Statistic
-![Alt](https://repobeats.axiom.co/api/embed/3e46296e6e3a134991a783480fd2f62723bb0353.svg "Repobeats analytics image")
+Official release builds are framework-dependent and require the [.NET 10 Desktop Runtime](https://get.dot.net/10); self-contained builds you compile yourself do not.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=PCL-Community/PCL-CE&type=Date)](https://www.star-history.com/#PCL-Community/PCL-CE&Date)
+## Building from source
 
-**Views** (Total / Today): [![Hits](https://hits.zkitefly.eu.org/?tag=https://github.com/PCL-Community/PCL-CE)](https://hits.zkitefly.eu.org/?tag=https://github.com/PCL-Community/PCL-CE&web=true)
-## ❤️ Contributors
+Requires the [.NET 10 SDK](https://get.dot.net/10). Run the following in the repository root:
 
-[![](https://contrib.rocks/image?repo=PCL-Community/PCL-CE)](https://github.com/PCL-Community/PCL-CE/graphs/contributors)
+```powershell
+# Framework-dependent publish, matching CI
+dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
+  -c Release -p:Platform=x64 -p:PublishSingleFile=true `
+  -p:DeleteExistingFiles=true -o ./artifact --no-self-contained
+
+# Self-contained single-file publish (bundles the runtime, much larger output)
+dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
+  -c Release -p:Platform=x64 -p:PublishSingleFile=true --self-contained true -o ./publish
+```
+
+Replace `-p:Platform=x64` with `-p:Platform=ARM64` to build for ARM64.
+
+Available configurations (`-c`): `Release`, `Beta`, `Debug`, `CI`. Available platforms (`-p:Platform`): `x64`, `ARM64`, `AnyCPU`.
+
+## Project structure
+
+| Directory | Description |
+|---|---|
+| `Plain Craft Launcher 2/` | WPF application: UI, pages and Minecraft launching logic |
+| `PCL.Core/` | Core library: configuration, networking and downloads, Java, saves, animation, localization, logging |
+| `PCL.Core.SourceGenerators/` | Source generators for configuration and dependency injection |
+| `PCL.Core.Test/` | Unit tests for PCL.Core |
+| `.github/` | CI build and release workflows |
+
+## Differences from upstream
+
+- Added Bedrock edition management: version detection, package import, Xbox sign-in and local filtering
+- Removed the multiplayer lobby and its modules; no lobby or multiplayer entry points are provided
+- Uses an independent version number (`2.15.0`) based on PCL `2.12.1`
+
+## License
+
+- `Plain Craft Launcher 2/` uses a [custom license](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/blob/dev/Plain%20Craft%20Launcher%202/LICENCE)
+- All other directories use [Apache License 2.0](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/blob/dev/LICENSE)
+
+## Acknowledgements
+
+- [PCL](https://github.com/Meloong-Git/PCL) — original author 龙腾猫跃 (LTCat)
+- PCL CE — community-maintained branch and the direct upstream of this project
+- Plus open-source projects such as Dapper, Downloader, Markdig.Wpf, NAudio, Microsoft.Data.Sqlite, protobuf-net and Lucide. See [metadata.json](Plain%20Craft%20Launcher%202/metadata.json) and the launcher's "About" page for the complete list of third-party components and licenses
+
+## Statistics
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Hydrogen-Peroxide/PCL-Symbio-Edition&type=Date)](https://www.star-history.com/#Hydrogen-Peroxide/PCL-Symbio-Edition&Date)
+
+**Views** (Total / Today): [![Hits](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition)](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition&web=true)
+
+## Contributors
+
+[![](https://contrib.rocks/image?repo=Hydrogen-Peroxide/PCL-Symbio-Edition)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/graphs/contributors)

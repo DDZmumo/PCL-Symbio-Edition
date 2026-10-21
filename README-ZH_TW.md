@@ -4,70 +4,144 @@
 
 <img src="Plain Craft Launcher 2/Images/icon.ico" alt="Logo" width="80" height="80">
 
-# PCL Community Edition
+# PCL Symbio Edition
 
-[![Stars](https://img.shields.io/github/stars/PCL-Community/PCL-CE?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTggLjI1YS43NS43NSAwIDAgMSAuNjczLjQxOGwxLjg4MiAzLjgxNSA0LjIxLjYxMmEuNzUuNzUgMCAwIDEgLjQxNiAxLjI3OWwtMy4wNDYgMi45Ny43MTkgNC4xOTJhLjc1MS43NTEgMCAwIDEtMS4wODguNzkxTDggMTIuMzQ3bC0zLjc2NiAxLjk4YS43NS43NSAwIDAgMS0xLjA4OC0uNzlsLjcyLTQuMTk0TC44MTggNi4zNzRhLjc1Ljc1IDAgMCAxIC40MTYtMS4yOGw0LjIxLS42MTFMNy4zMjcuNjY4QS43NS43NSAwIDAgMSA4IC4yNVoiIGZpbGw9IiNlYWM1NGYiLz48L3N2Zz4=&logoSize=auto&label=stars&labelColor=444444&color=eac54f)](https://github.com/PCL-Community/PCL-CE/)
-![GitHub Release](https://img.shields.io/github/v/release/PCL-Community/PCL-CE?label=release&logo=github&style=for-the-badge)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PCL-Community/PCL-CE/build-test.yml?style=for-the-badge)
+[![Stars](https://img.shields.io/github/stars/Hydrogen-Peroxide/PCL-Symbio-Edition?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTggLjI1YS43NS43NSAwIDAgMSAuNjczLjQxOGwxLjg4MiAzLjgxNSA0LjIxLjYxMmEuNzUuNzUgMCAwIDEgLjQxNiAxLjI3OWwtMy4wNDYgMi45Ny43MTkgNC4xOTJhLjc1MS43NTEgMCAwIDEtMS4wODguNzkxTDggMTIuMzQ3bC0zLjc2NiAxLjk4YS43NS43NSAwIDAgMS0xLjA4OC0uNzlsLjcyLTQuMTk0TC44MTggNi4zNzRhLjc1Ljc1IDAgMCAxIC40MTYtMS4yOGw0LjIxLS42MTFMNy4zMjcuNjY4QS43NS43NSAwIDAgMSA4IC4yNVoiIGZpbGw9IiNlYWM1NGYiLz48L3N2Zz4=&logoSize=auto&label=stars&labelColor=444444&color=eac54f)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Hydrogen-Peroxide/PCL-Symbio-Edition/build-test.yml?style=for-the-badge)
 
-[![Issues](https://img.shields.io/github/issues/PCL-Community/PCL-CE?style=for-the-badge&label=issues&labelColor=444444&color=1F883D&logo=github)](https://github.com/PCL-Community/PCL-CE/issues)
-[![Pull requests](https://img.shields.io/github/issues-pr/PCL-Community/PCL-CE?style=for-the-badge&label=pull%20requests&labelColor=444444&color=1F883D&logo=github)](https://github.com/PCL-Community/PCL-CE/pulls)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/PCL-Community/PCL-CE/total?style=for-the-badge)
-[![嗶哩嗶哩](https://img.shields.io/badge/貼文-bilibili-00A4DB?style=for-the-badge&labelColor=444444&logo=bilibili)](https://space.bilibili.com/3546847192811755/dynamic) <br />
+[![Pull requests](https://img.shields.io/github/issues-pr/Hydrogen-Peroxide/PCL-Symbio-Edition?style=for-the-badge&label=pull%20requests&labelColor=444444&color=1F883D&logo=github)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/pulls)
 
-<a href="https://trendshift.io/repositories/21800?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-21800" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/21800/daily?language=C%23" alt="PCL-Community%2FPCL-CE | Trendshift" width="250" height="55"/></a>
-<a href="https://trendshift.io/repositories/21800" target="_blank"><img src="https://trendshift.io/api/badge/repositories/21800" alt="PCL-Community%2FPCL-CE | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-
-[社群版下載](https://github.com/PCL-Community/PCL-CE/releases/latest) |
+[下載 PCL SE](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/releases) |
 [上游儲存庫](https://github.com/Meloong-Git/PCL)
 
-[提交問題](https://github.com/PCL-Community/PCL-CE/issues/new/choose) |
-[貢獻指南](https://github.com/PCL-Community/PCL-CE/wiki/开发指南)
+[提交問題](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/issues) |
+[貢獻指南](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/blob/dev/CONTRIBUTING.md)
 
 </div>
 
-PCL CE 是基於 PCL 開放原始碼二次開發的社群版本，包括了主線暫未製作的功能和改進！
+PCL SE（Plain Craft Launcher Symbio Edition）是由 Hydrogen-Peroxide 維護的第三方 Minecraft 啟動器，基於 PCL 開源程式碼開發，在保留原有互動習慣的基礎上補齊了基岩版支援、實例管理與資源下載等能力。
 
-社群版的版本號與主線並非嚴格對應關係，也請不要向官方儲存庫回饋社群版問題。
+- 目前版本：`2.15.0`
+- 上游基線：PCL `2.12.1`
+- 技術棧：C# / WPF / .NET 10
 
-歡迎大家來用用看！
+PCL SE 與 PCL 官方版沒有隸屬關係，請不要向官方儲存庫回報 PCL SE 的問題。
 
-**開發群:** [599620549](https://qm.qq.com/q/PNQA4Md8wc) | **使用者 1 群:** [1028074835](https://qm.qq.com/q/qrMGJo8BQQ) | **使用者 2 群:** [1070029541](https://qm.qq.com/q/lBywbDMWhG)
+## 功能概覽
 
-## 💻 支援平台
+### Java 版
 
-| 作業系統 | 支援情況 | 環境要求 |
+- 官方正式版、快照與歷史版本一鍵安裝，自動補全依賴並選擇合適的 Java 執行環境
+- 8 種安裝選項：Forge、NeoForge、Fabric、Legacy Fabric、OptiFine、LiteLoader、Cleanroom、LabyMod
+- 支援整合包安裝與模組載入器切換
+
+### 基岩版
+
+- 讀取系統中已安裝的 Minecraft 基岩版，區分 UWP 舊版與 GDK 新版
+- 支援匯入安裝包並解包到獨立目錄，不影響其他版本
+- 內建 Xbox 帳號登入，登入後可直接啟動
+- 依版本類型篩選，支援依版本號搜尋與本機管理
+
+### 資源下載
+
+- CurseForge 與 Modrinth 雙來源檢索
+- 涵蓋模組、整合包、光影、資源包、資料包與世界存檔，下載後自動放入對應目錄
+
+### 實例管理
+
+- 每個實例擁有獨立的模組、存檔、截圖與設定
+- 單一模組可隨時停用，便於排查衝突
+- 存檔與截圖集中瀏覽、備份，並可一鍵開啟所在目錄
+- 實例內維護常用伺服器清單，支援整體打包匯出
+
+### 使用體驗
+
+- 7 種介面語言：簡體中文、繁體中文、English (US)、English (UK)、日本語、Français、Español
+- 主題配色與背景可自訂，頁面切換與清單捲動帶有過場動畫
+- 自動掃描本機 Java，減少手動設定
+- 啟動失敗時分析日誌，給出可讀的原因與建議
+
+> 本分支不包含多人遊戲大廳功能，相關模組已從程式碼庫中移除。
+
+## 支援平台
+
+| 作業系統 | 支援情況 | 環境需求 |
 |---|---|---|
-| Windows 10 1809 (17763) 或更高 | ✅ 完整支援 | [.NET 10 Desktop Runtime](https://get.dot.net/10) |
-| Windows 8 - Windows 10 1809 (17763) | ⚠️ 理論能跑，酌情提供社群支援 | [.NET 10 Desktop Runtime](https://get.dot.net/10) |
-| Windows 7 或更低版本 | ❌ 不支援 | / |
-| macOS / Linux / 其他作業系統 | ⚠️ 僅跨平台開發支援（交叉編譯）| [.NET 10 SDK](https://get.dot.net/10) |
+| Windows 10 1809 (17763) 或更高 | 完整支援 | [.NET 10 Desktop Runtime](https://get.dot.net/10) |
+| Windows 8 - Windows 10 1809 (17763) | 理論可執行，酌情提供支援 | [.NET 10 Desktop Runtime](https://get.dot.net/10) |
+| Windows 7 或更低版本 | 不支援 | / |
+| macOS / Linux / 其他作業系統 | 僅支援交叉編譯開發，無法直接執行 | [.NET 10 SDK](https://get.dot.net/10) |
 
-**✅ 完整支援**：盡可能提供一切相關支援，但必須確保啟動器為最新版本。
+**完整支援**：盡可能提供一切相關支援，但必須確保啟動器為最新版本。
 
-**⚠️ 理論能跑，酌情提供社群支援**：PCL CE 應該可以在這些平台上執行，但不保證功能完全可用。你可能需要升級到完整支援的系統版本以獲得進一步社群技術支援。
+**理論可執行，酌情提供支援**：PCL SE 應該可以在這些平台上執行，但不保證功能完全可用。你可能需要升級到完整支援的系統版本以獲得進一步技術支援。
 
-**❌ 不支援**：PCL CE 在這些平台的可用性較低，甚至根本打不開。請升級作業系統以使用 PCL CE。
+**不支援**：PCL SE 在這些平台的可用性較低，甚至無法啟動。請升級作業系統以使用 PCL SE。
 
-**⚠️ 僅跨平台開發支援（交叉編譯）**：PCL CE 的原始碼可以在 macOS 與 Linux 平台編譯，但無法直接執行。作為開發者，你可以在這些平台上進行開發，然後將編譯產物轉移到 Windows 系統測試。
+**僅支援交叉編譯開發**：原始碼可以在 macOS 與 Linux 上編譯，但無法直接執行。作為開發者，你可以在這些平台上開發，再將編譯產物轉移到 Windows 測試。
 
-**注**：
-社群僅對最新版本的啟動器提供支援。
-取決於部分問題的特殊性（如系統不完整），有時你仍然必須升級作業系統以繼續獲得支援。
-PCL CE 始終建議使用最新版本的作業系統以獲得最佳體驗。
-你仍然可以嘗試在不受支援的系統上使用 PCL CE，但可能會遇到很多額外問題。
+**註**：僅對最新版本的啟動器提供支援。取決於部分問題的特殊性（如系統不完整），有時你仍然必須升級作業系統以繼續獲得支援。你仍然可以嘗試在不受支援的系統上使用 PCL SE，但可能會遇到許多額外問題。
 
-## 🔒 授權條款
+## 下載與使用
 
-- `Plain Craft Launcher 2/` 使用 [自訂授權條款](https://github.com/PCL-Community/PCL-CE/blob/dev/Plain%20Craft%20Launcher%202/LICENCE)
-- `其餘所有目錄` 使用 [Apache License 2.0](https://github.com/PCL-Community/PCL-CE/blob/dev/LICENSE)
+1. 從 [Releases](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/releases) 下載最新版本的發行包
+2. 解壓縮到任意目錄（啟動器為免安裝版，不會寫入系統目錄）
+3. 執行 `Plain Craft Launcher 2.exe`，選擇 Java 版或基岩版後即可啟動遊戲
 
-## 🌟 統計資料
-![Alt](https://repobeats.axiom.co/api/embed/3e46296e6e3a134991a783480fd2f62723bb0353.svg "Repobeats analytics image")
+官方發行包為框架依賴版本，需要預先安裝 [.NET 10 Desktop Runtime](https://get.dot.net/10)；若使用自包含方式自行建置，則無需額外安裝執行環境。
 
-[![Star History Chart](https://api.star-history.com/svg?repos=PCL-Community/PCL-CE&type=Date)](https://www.star-history.com/#PCL-Community/PCL-CE&Date)
+## 從原始碼建置
 
-**此頁瀏覽量**（總計 / 今日）：[![Hits](https://hits.zkitefly.eu.org/?tag=https://github.com/PCL-Community/PCL-CE)](https://hits.zkitefly.eu.org/?tag=https://github.com/PCL-Community/PCL-CE&web=true)
-## ❤️ 貢獻者
+需要 [.NET 10 SDK](https://get.dot.net/10)，在儲存庫根目錄執行：
 
-[![](https://contrib.rocks/image?repo=PCL-Community/PCL-CE)](https://github.com/PCL-Community/PCL-CE/graphs/contributors)
+```powershell
+# 與 CI 一致的框架依賴發行
+dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
+  -c Release -p:Platform=x64 -p:PublishSingleFile=true `
+  -p:DeleteExistingFiles=true -o ./artifact --no-self-contained
+
+# 自包含單檔發行（內建執行環境，產物體積更大）
+dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
+  -c Release -p:Platform=x64 -p:PublishSingleFile=true --self-contained true -o ./publish
+```
+
+將 `-p:Platform=x64` 換成 `-p:Platform=ARM64` 即可建置 ARM64 版本。
+
+可用設定（`-c`）：`Release`、`Beta`、`Debug`、`CI`；可用平台（`-p:Platform`）：`x64`、`ARM64`、`AnyCPU`。
+
+## 專案結構
+
+| 目錄 | 說明 |
+|---|---|
+| `Plain Craft Launcher 2/` | WPF 主程式：介面、頁面與 Minecraft 啟動邏輯 |
+| `PCL.Core/` | 核心程式庫：設定、網路與下載、Java、存檔、動畫、在地化、日誌等 |
+| `PCL.Core.SourceGenerators/` | 設定與相依性注入相關的來源產生器 |
+| `PCL.Core.Test/` | PCL.Core 的單元測試 |
+| `.github/` | CI 建置與發行工作流程 |
+
+## 與上游的差異
+
+- 新增基岩版管理：版本偵測、安裝包匯入、Xbox 帳號登入與本機篩選
+- 移除多人遊戲大廳及配套模組，不再提供大廳與多人遊戲相關入口
+- 使用獨立版本號（`2.15.0`），上游基線為 PCL `2.12.1`
+
+## 授權條款
+
+- `Plain Craft Launcher 2/` 使用 [自訂授權條款](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/blob/dev/Plain%20Craft%20Launcher%202/LICENCE)
+- 其餘所有目錄使用 [Apache License 2.0](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/blob/dev/LICENSE)
+
+## 致謝
+
+- [PCL](https://github.com/Meloong-Git/PCL) — 原作者 龍騰貓躍
+- PCL CE — 社群維護分支，本專案的直接上游
+- 以及 Dapper、Downloader、Markdig.Wpf、NAudio、Microsoft.Data.Sqlite、protobuf-net、Lucide 等開源專案，完整的第三方元件與授權資訊見 [metadata.json](Plain%20Craft%20Launcher%202/metadata.json) 與啟動器「關於」頁面
+
+## 統計資料
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Hydrogen-Peroxide/PCL-Symbio-Edition&type=Date)](https://www.star-history.com/#Hydrogen-Peroxide/PCL-Symbio-Edition&Date)
+
+**本頁瀏覽量**（總計 / 今日）：[![Hits](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition)](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition&web=true)
+
+## 貢獻者
+
+[![](https://contrib.rocks/image?repo=Hydrogen-Peroxide/PCL-Symbio-Edition)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/graphs/contributors)
