@@ -3426,10 +3426,12 @@ public static class ModComp
         {
             try
             {
+                ModBase.Log($"[Comp] 快速下载开始：{project.RawName}（{project.Type}），行为配置 {Config.Download.Comp.QuickDownloadBehavior}");
                 HintService.Hint(Lang.Text("Download.Comp.QuickDownload.Hint.Loading"), HintType.Info);
                 var files = FilterFilesByType(
                     CompFilesGet(project.Id, project.FromCurseForge).Where(f => f.Available).ToList(),
                     project.Type);
+                ModBase.Log($"[Comp] 快速下载：筛选出 {files.Count} 个可下载文件");
                 if (files.Count == 0)
                 {
                     HintService.Hint(Lang.Text("Download.Comp.QuickDownload.Hint.NoFile"), HintType.Info);
@@ -3464,9 +3466,11 @@ public static class ModComp
                         break;
                     case 2: // 询问并下载到选择的实例
                     {
-                        var instance = _QuickDownloadPickInstance(project, files);
-                        if (instance is null) return;
-                        _QuickDownloadToInstance(project, files, instance);
+                        var instances = _QuickDownloadPickInstances(project, files);
+                        if (instances is null) return;
+                        var startedTargets = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                        foreach (var instance in instances)
+                            _QuickDownloadToInstance(project, files, instance, startedTargets);
                         break;
                     }
                     case 3: // 询问并下载到一个路径
@@ -3486,7 +3490,8 @@ public static class ModComp
     }
 
     /// <summary>下载到指定实例的最新兼容版本。</summary>
-    private static void _QuickDownloadToInstance(CompProject project, List<CompFile> files, McInstance? instance)
+    private static void _QuickDownloadToInstance(CompProject project, List<CompFile> files, McInstance? instance,
+        ISet<string>? startedTargets = null)
     {
         if (instance is null)
         {
@@ -3506,12 +3511,18 @@ public static class ModComp
         var folder = instance.PathIndie + _GetSubFolder(project.Type);
         Directory.CreateDirectory(folder);
         var target = Path.Combine(folder, CompFileNameGet(project, file));
+        // 只下载一次，避免并发写同一文件
+        if (startedTargets is not null && !startedTargets.Add(target))
+        {
+            ModBase.Log($"[Comp] 快速下载跳过重复目标（同一文件已开始下载）：{target}");
+            return;
+        }
         _StartQuickDownload(file, target);
         HintService.Hint(Lang.Text("Download.Comp.QuickDownload.Hint.DownloadStarted", project.RawName), HintType.Success);
     }
 
-    /// <summary>弹实例列表让用户选择，返回选中的实例（兼容者优先、当前选中实例居首）；取消或无兼容实例返回 null。</summary>
-    private static McInstance? _QuickDownloadPickInstance(CompProject project, List<CompFile> files)
+    /// <summary>弹实例列表让用户多选，返回选中的实例（兼容者优先、当前选中实例居首）；取消或无兼容实例返回 null。</summary>
+    private static List<McInstance>? _QuickDownloadPickInstances(CompProject project, List<CompFile> files)
     {
         var needLoad = ModInstanceList.mcInstanceListLoader.State != ModBase.LoadState.Finished;
         if (needLoad)
@@ -3529,6 +3540,8 @@ public static class ModComp
             HintService.Hint(Lang.Text("Download.Comp.QuickDownload.Hint.NoCompatibleInstance"), HintType.Info);
             return null;
         }
+
+        ModBase.Log($"[Comp] 快速下载：找到 {compatible.Count} 个可兼容实例，弹出多选");
         // 当前选中实例排首位（呼应 issue「第一行应为当前所选实例」）
         var current = ModInstanceList.McMcInstanceSelected;
         if (current is not null)
@@ -3536,18 +3549,18 @@ public static class ModComp
                 .OrderBy(v => v == current ? 0 : 1)
                 .ThenBy(v => v.Name)
                 .ToList();
-        int? idx = ModBase.RunInUiWait(() =>
+        var indices = ModBase.RunInUiWait(() =>
         {
             var options = compatible
-                .Select(v => (IMyRadio)new MyRadioBox { Text = v.Name })
+                .Select(v => new MyListItem { Title = v.Name })
                 .ToList();
-            return ModMain.MyMsgBoxSelect(options,
+            return ModMain.MyMsgBoxMultiSelect(options,
                 Lang.Text("Download.Comp.QuickDownload.ChooseInstance.Title"),
                 button1: Lang.Text("Common.Action.Continue"),
                 button2: Lang.Text("Common.Action.Cancel"));
         });
-        if (idx is null) return null;
-        return compatible[idx.Value];
+        if (indices is null) return null;
+        return indices.Select(i => compatible[i]).ToList();
     }
 
     /// <summary>下载最新版本到用户选择的文件夹。</summary>

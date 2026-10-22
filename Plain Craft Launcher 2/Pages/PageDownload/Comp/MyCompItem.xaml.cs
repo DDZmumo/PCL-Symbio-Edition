@@ -93,7 +93,7 @@ public partial class MyCompItem
             if (_RectBack is not null)
                 RectBack.Opacity = 0d;
             if (PanButtons is not null)
-                PanButtons.Opacity = 0d;
+                PanButtons.Opacity = IsMouseOver && _HasActionButtons ? 1d : 0d;
         }
     }
 
@@ -279,8 +279,10 @@ public partial class MyCompItem
 
     private void _BtnDownload_Click(object sender, EventArgs e)
     {
-        if (PanButtons.Opacity > 0d && Tag is ModComp.CompProject project)
-            ModComp.QuickDownload(project);
+        if (Tag is not ModComp.CompProject project)
+            return;
+        ModBase.Log("[Comp] 快速下载按钮被点击：" + project.RawName);
+        ModComp.QuickDownload(project);
     }
 
     private void MyCompItem_Click(MyCompItem sender, EventArgs e)

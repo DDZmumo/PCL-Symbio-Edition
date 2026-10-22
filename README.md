@@ -21,7 +21,7 @@
 
 PCL SE（Plain Craft Launcher Symbio Edition）是由 Hydrogen-Peroxide 维护的第三方 Minecraft 启动器，基于 PCL 开源代码开发，在保留原有交互习惯的基础上补齐了基岩版支持、实例管理与资源下载等能力。
 
-- 当前版本：`2.16.0`
+- 当前版本：`2.17.0`
 - 上游基线：PCL `2.12.1`
 - 技术栈：C# / WPF / .NET 10
 
@@ -125,7 +125,18 @@ dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
 
 - 新增基岩版管理：版本检测、安装包导入、Xbox 账号登录与本地筛选
 - 移除联机大厅及配套模块，不再提供大厅与联机相关入口
-- 使用独立版本号（`2.16.0`），上游基线为 PCL `2.12.1`
+- 使用独立版本号（`2.17.0`），上游基线为 PCL `2.12.1`
+
+## 声明
+
+- **项目性质**：PCL Symbio Edition 是从 PCL Community Edition（PCL CE）分支衍生而来的独立版本，由个人开发者面向 Minecraft 国际版维护，与 LTCatt（龙腾猫跃）维护的 PCL2 官方项目、PCL-Community 维护的 PCL CE 官方项目均无隶属关系。
+- **支持范围**：PCL Symbio Edition 不支持 Minecraft 游戏开发商 Mojang Studios 在中国大陆的代理公司运营的「我的世界中国版」，也不提供与该版本相关的任何功能或适配。
+- **API 使用**：PCL Symbio Edition 仅通过经 Mojang Studios 批准的 API 访问 Minecraft 国际版的相关服务。
+- **代码来源**：本项目不包含任何 Minecraft（含「我的世界中国版」）的代码，也不包含 Mojang Studios 及其中国代理商的任何代码。
+- **名称使用**：文档与演示中出现的「Minecraft」字样仅用于描述本项目所支持的游戏，属于《中华人民共和国著作权法》规定的合理使用；相关截图与视频的版权归其各自开发者所有。
+- **关系说明**：PCL Symbio Edition 与 PCL2、PCL CE、Mojang Studios 及其中国代理商之间不存在任何隶属、合作、维护或授权关系。
+- **正版倡导**：我们鼓励通过官方渠道购买并游玩正版 Minecraft。
+- **联机大厅**：由于特殊原因，PCL Symbio Edition 暂不支持 PCL CE 的联机大厅，后续版本将逐步补齐。
 
 ## 许可证
 

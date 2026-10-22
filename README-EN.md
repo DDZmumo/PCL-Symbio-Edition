@@ -21,7 +21,7 @@
 
 PCL SE (Plain Craft Launcher Symbio Edition) is a third-party Minecraft launcher maintained by Hydrogen-Peroxide. Built on PCL's open-source code, it keeps the familiar interaction while adding Bedrock edition support, instance management and resource downloads.
 
-- Current version: `2.16.0`
+- Current version: `2.17.0`
 - Upstream baseline: PCL `2.12.1`
 - Tech stack: C# / WPF / .NET 10
 
@@ -123,7 +123,18 @@ Available configurations (`-c`): `Release`, `Beta`, `Debug`, `CI`. Available pla
 
 - Added Bedrock edition management: version detection, package import, Xbox sign-in and local filtering
 - Removed the multiplayer lobby and its modules; no lobby or multiplayer entry points are provided
-- Uses an independent version number (`2.16.0`) based on PCL `2.12.1`
+- Uses an independent version number (`2.17.0`) based on PCL `2.12.1`
+
+## Legal notice
+
+- **Project nature**: PCL Symbio Edition is an independent fork derived from PCL Community Edition (PCL CE) and is maintained by an individual developer for the international edition of Minecraft. It is not affiliated with the official PCL2 project maintained by LTCatt (龙腾猫跃), nor with the official PCL CE project maintained by PCL-Community.
+- **Scope**: PCL Symbio Edition does not support Minecraft China Edition (「我的世界中国版」), which is operated by Mojang Studios' agent in mainland China, and provides no features or adaptations for it.
+- **APIs**: PCL Symbio Edition accesses Minecraft international services only through APIs approved by Mojang Studios.
+- **Code origin**: This project contains no Minecraft code (including Minecraft China Edition) and no code from Mojang Studios or its agents in China.
+- **Name usage**: The word "Minecraft" appears in documentation and demonstrations solely to describe the game this project supports, which constitutes fair use under the Copyright Law of the People's Republic of China. Copyright in related screenshots and videos belongs to their respective developers.
+- **Relationships**: PCL Symbio Edition has no affiliation, partnership, maintenance or licensing relationship with PCL2, PCL CE, Mojang Studios or its agents in China.
+- **Genuine copies**: We encourage buying and playing genuine copies of Minecraft through official channels.
+- **Multiplayer lobby**: For special reasons, PCL Symbio Edition does not yet support the PCL CE multiplayer lobby; support will be added in a later release.
 
 ## License
 

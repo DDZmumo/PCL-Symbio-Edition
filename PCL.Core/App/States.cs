@@ -223,6 +223,11 @@ public static partial class States
         [ConfigItem<bool>("SeVersionNoticeShown", false)] public partial bool SeVersionNoticeShown { get; set; }
 
         /// <summary>
+        /// 是否不再提示 SE 版本说明。
+        /// </summary>
+        [ConfigItem<bool>("SeVersionNoticeDisabled", false)] public partial bool SeVersionNoticeDisabled { get; set; }
+
+        /// <summary>
         /// 启动器打开次数。
         /// </summary>
         [ConfigItem<int>("SystemCount", 0, ConfigSource.SharedEncrypt)] public partial int StartupCount { get; set; }

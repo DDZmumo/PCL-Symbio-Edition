@@ -273,18 +273,19 @@ public partial class FormMain
                                 Lang.Text("Main.Telemetry.Title"), Lang.Text("Common.Action.Agree"), Lang.Text("Common.Action.Decline"));
                     Config.System.TelemetryConfig.SetValue(selection == 1, forceNewValue: true);
                 }
-                // SE 版本说明（仅首次启动时显示）
-                if (!States.System.SeVersionNoticeShown)
+                // SE 版本说明（每个版本首次启动时显示，可选择不再提示）
+                if (!States.System.SeVersionNoticeDisabled && !States.System.SeVersionNoticeShown)
                 {
                     States.System.SeVersionNoticeShown = true;
-                    ModMain.MyMsgBoxMarkdown(
-                        "**PCL Symbio Edition** 是 PCL CE 的第三方修改版，原作者为龙腾猫跃及原项目贡献者；" +
-                        "原作版权归成都瓜皮龙科技有限公司，来源与许可详见「更多 → 关于」。\n\n" +
-                        "### 本版本功能与限制说明\n\n" +
-                        "- **CurseForge 下载**：临时可用，正在等待正式 API Key 下发\n" +
-                        "- **启动器更新**：已接入 Hydrogen-Peroxide/PCL-Symbio-Edition 的 GitHub Releases，可在设置中检查更新\n" +
-                        "- **主题切换**：这是需要赞助解锁的纪念性质的功能，别让赞助者太伤心啦……",
-                        "版本说明", "我知道了");
+                    if (ModMain.MyMsgBoxMarkdown(
+                            "**PCL Symbio Edition** 是 PCL CE 的第三方修改版，原作者为龙腾猫跃及原项目贡献者；" +
+                            "原作版权归成都瓜皮龙科技有限公司，来源与许可详见「更多 → 关于」。\n\n" +
+                            "### 本版本功能与限制说明\n\n" +
+                            "- **CurseForge 下载**：临时可用，正在等待正式 API Key 下发\n" +
+                            "- **启动器更新**：已接入 Hydrogen-Peroxide/PCL-Symbio-Edition 的 GitHub Releases，可在设置中检查更新\n" +
+                            "- **主题切换**：这是需要赞助解锁的纪念性质的功能，别让赞助者太伤心啦……",
+                            "版本说明", "我知道了", Lang.Text("Common.Hint.DoNotShowAgain")) == 2)
+                        States.System.SeVersionNoticeDisabled = true;
                 }
                 // 启动加载器池
                 try
@@ -359,6 +360,8 @@ public partial class FormMain
         if (lowerVersionCode >= ModBase.versionCode)
             return;
         ShowUpdateLog();
+        // 每个版本首次启动时重新展示版本说明
+        States.System.SeVersionNoticeShown = false;
         
         // 重置自定义主页配置
         if (lastVersionCode < 521 && Config.Preference.Homepage.SelectedPreset >= 3)
@@ -1418,6 +1421,11 @@ public partial class FormMain
         CompDetail = 8,
 
         /// <summary>
+        ///     帮助详情。这是一个副页面。
+        /// </summary>
+        HelpDetail = 9,
+
+        /// <summary>
         ///     游戏实时日志。这是一个副页面。
         /// </summary>
         GameLog = 10,
@@ -1478,6 +1486,7 @@ public partial class FormMain
         VersionInstall = 10,
         VersionServer = 11,
         VersionSaves = 12,
+        VersionModJarInJar = 13,
         VersionSavesInfo = 0,
         VersionSavesDatapack = 1,
     }
@@ -1508,6 +1517,10 @@ public partial class FormMain
             case PageType.CompDetail:
             {
                 return Lang.Text("Main.Title.ResourceDownload", stack.additional.Value.CompProject.TranslatedName);
+            }
+            case PageType.HelpDetail:
+            {
+                return stack.helpPage?.Title ?? "";
             }
             case PageType.VersionSaves:
             {
@@ -1608,6 +1621,11 @@ public partial class FormMain
             string SavePath
         )? additional;
 
+        /// <summary>
+        ///     帮助详情页实例。仅在 <see cref="PageType.HelpDetail"/> 中使用。
+        /// </summary>
+        public PageHelpDetail? helpPage;
+
         public PageType page;
 
         public override bool Equals(object other)
@@ -1619,6 +1637,8 @@ public partial class FormMain
                 var pageOther = (PageStackData)other;
                 if (page != pageOther.page)
                     return false;
+                if (helpPage is not null || pageOther.helpPage is not null)
+                    return ReferenceEquals(helpPage, pageOther.helpPage);
                 if (additional is null) return pageOther.additional is null;
 
                 return pageOther.additional is not null && additional.Equals(pageOther.additional);
@@ -1918,6 +1938,13 @@ public partial class FormMain
                         if (ModMain.frmDownloadCompDetail is null)
                             ModMain.frmDownloadCompDetail = new PageDownloadCompDetail();
                         PageChangeAnim(new MyPageLeft(), ModMain.frmDownloadCompDetail);
+                        break;
+                    }
+                case PageType.HelpDetail: // 帮助详情
+                    {
+                        if (stack.helpPage is null)
+                            throw new InvalidOperationException("帮助详情页面未初始化");
+                        PageChangeAnim(new MyPageLeft(), stack.helpPage);
                         break;
                     }
                 case PageType.VersionSaves: // 存档管理
