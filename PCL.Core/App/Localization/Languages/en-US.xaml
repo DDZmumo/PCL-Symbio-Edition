@@ -55,6 +55,10 @@
     <sys:String x:Key="Bedrock.Download.ResolveFailedSummary">Failed to resolve the download URL for Bedrock {0}: {1}</sys:String>
     <sys:String x:Key="Bedrock.Download.Started">Bedrock {0} download started ({1} sources)</sys:String>
     <sys:String x:Key="Bedrock.Download.Title">Download Bedrock</sys:String>
+    <sys:String x:Key="Bedrock.Editor.Failed">Could not open the Editor. Make sure Bedrock Retail or Preview is installed, or open it from the Creator Tools tab in the Minecraft Launcher.</sys:String>
+    <sys:String x:Key="Bedrock.Editor.NotInstalled">Bedrock was not detected. Download and install it on the right before opening the Editor.</sys:String>
+    <sys:String x:Key="Bedrock.Editor.Open">Open Bedrock Editor</sys:String>
+    <sys:String x:Key="Bedrock.Editor.Title">Bedrock Editor</sys:String>
     <sys:String x:Key="Bedrock.Filter.All">All</sys:String>
     <sys:String x:Key="Bedrock.Filter.Gdk">GDK (new)</sys:String>
     <sys:String x:Key="Bedrock.Filter.Uwp">UWP (legacy)</sys:String>
@@ -1979,6 +1983,10 @@
     <sys:String x:Key="Main.UpdateLog.Empty">Welcome!</sys:String>
     <sys:String x:Key="Main.UpdateLog.FullChangelog">Full changelog</sys:String>
     <sys:String x:Key="Main.UpdateLog.Title">PCL SE has been updated to {0} {1}</sys:String>
+    <sys:String x:Key="Main.UpdateLog.Builtin">## What's new&#xA;&#xA;- **Version notice dialog**: now includes the full notices from the README, shown right after updating&#xA;- **Localization**: notice text is localized instead of hardcoded Chinese&#xA;- **Update log dialog**: shows this built-in changelog when no online changelog is available</sys:String>
+    <sys:String x:Key="Main.SeVersionNotice.Title">About this version</sys:String>
+    <sys:String x:Key="Main.SeVersionNotice.Confirm">I understand</sys:String>
+    <sys:String x:Key="Main.SeVersionNotice.Body">**PCL Symbio Edition** is a third-party modification of PCL CE. The original authors are LTCatt and the PCL CE contributors; the original copyright belongs to Chengdu Guapilong Technology Co., Ltd. See "More → About" for source and license details.&#xA;&#xA;### Features and limitations of this version&#xA;&#xA;- **CurseForge downloads**: temporarily available while waiting for an official API key&#xA;- **Launcher updates**: connected to the GitHub Releases of Hydrogen-Peroxide/PCL-Symbio-Edition; check for updates in Settings&#xA;- **Theme switching**: a commemorative feature unlocked by sponsorship — don't break the sponsors' hearts...&#xA;&#xA;### Notices&#xA;&#xA;- **Project nature**: PCL Symbio Edition is an independent fork derived from PCL Community Edition (PCL CE), maintained by an individual developer for Minecraft International. It is not affiliated with the official PCL2 project maintained by LTCatt or the official PCL CE project maintained by PCL-Community.&#xA;- **Support scope**: Minecraft China Edition, operated in mainland China by Mojang Studios' local agent, is not supported, and no features or adaptations for it are provided.&#xA;- **API usage**: Minecraft International services are accessed only through APIs approved by Mojang Studios.&#xA;- **Code origin**: This project contains no code from Minecraft (including Minecraft China Edition), nor any code from Mojang Studios or its Chinese agent.&#xA;- **Name usage**: The word "Minecraft" in documents and demos is used only to describe the game this project supports, as permitted under the Copyright Law of the People's Republic of China; copyrights of screenshots and videos belong to their respective developers.&#xA;- **Relationship**: There is no affiliation, partnership, maintenance, or authorization relationship with PCL2, PCL CE, Mojang Studios, or its Chinese agent.&#xA;- **Official copies**: We encourage purchasing and playing official copies of Minecraft through official channels.&#xA;- **Multiplayer lobby**: For special reasons, the PCL CE multiplayer lobby is not supported yet and will be added in later versions.</sys:String>
     <sys:String x:Key="Main.HomepageReset.Title">Homepage preset setting has been reset</sys:String>
     <sys:String x:Key="Main.HomepageReset.Content">The homepage preset setting has been reset due to the launcher update.&#xA;Please go to Settings - Personalization and select the preset again.</sys:String>
 

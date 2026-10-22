@@ -287,6 +287,12 @@ public partial class PageSetupLeft
                     ModMain.frmSetupJava = new PageSetupJava();
                 return ModMain.frmSetupJava;
             }
+            case FormMain.PageSubType.SetupUpdate:
+            {
+                if (ModMain.frmSetupUpdate is null)
+                    ModMain.frmSetupUpdate = new PageSetupUpdate();
+                return ModMain.frmSetupUpdate;
+            }
 
             default:
             {

@@ -130,6 +130,18 @@ public partial class PageBedrockLeft
 
     #region 快捷操作
 
+    private void OpenEditor_Click(object sender, MouseButtonEventArgs e)
+    {
+        if (ModMain.frmBedrockRight is not { IsBedrockInstalled: true })
+        {
+            ModMain.MyMsgBox(Lang.Text("Bedrock.Editor.NotInstalled"), Lang.Text("Bedrock.Editor.Title"));
+            return;
+        }
+
+        if (ModBedrockUwp.LaunchEditor()) return;
+        ModMain.MyMsgBox(Lang.Text("Bedrock.Editor.Failed"), Lang.Text("Bedrock.Editor.Title"));
+    }
+
     private void OpenSavesFolder_Click(object sender, MouseButtonEventArgs e)
     {
         var dataDir = FindBedrockDataDir();

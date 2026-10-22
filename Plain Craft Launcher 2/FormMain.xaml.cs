@@ -44,7 +44,7 @@ public partial class FormMain
             if (File.Exists(changelogFile))
                 changelog = ModBase.ReadFile(changelogFile);
             else
-                changelog = Lang.Text("Main.UpdateLog.Empty");
+                changelog = Lang.Text("Main.UpdateLog.Builtin");
             if (ModMain.MyMsgBoxMarkdown(changelog,
                     Lang.Text("Main.UpdateLog.Title", ModBase.versionBranchName, ModBase.versionBaseName), Lang.Text("Common.Action.Confirm"), Lang.Text("Main.UpdateLog.FullChangelog")) ==
                 2) ModBase.OpenWebsite("https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition");
@@ -278,13 +278,8 @@ public partial class FormMain
                 {
                     States.System.SeVersionNoticeShown = true;
                     if (ModMain.MyMsgBoxMarkdown(
-                            "**PCL Symbio Edition** 是 PCL CE 的第三方修改版，原作者为龙腾猫跃及原项目贡献者；" +
-                            "原作版权归成都瓜皮龙科技有限公司，来源与许可详见「更多 → 关于」。\n\n" +
-                            "### 本版本功能与限制说明\n\n" +
-                            "- **CurseForge 下载**：临时可用，正在等待正式 API Key 下发\n" +
-                            "- **启动器更新**：已接入 Hydrogen-Peroxide/PCL-Symbio-Edition 的 GitHub Releases，可在设置中检查更新\n" +
-                            "- **主题切换**：这是需要赞助解锁的纪念性质的功能，别让赞助者太伤心啦……",
-                            "版本说明", "我知道了", Lang.Text("Common.Hint.DoNotShowAgain")) == 2)
+                            Lang.Text("Main.SeVersionNotice.Body"),
+                            Lang.Text("Main.SeVersionNotice.Title"), Lang.Text("Main.SeVersionNotice.Confirm"), Lang.Text("Common.Hint.DoNotShowAgain")) == 2)
                         States.System.SeVersionNoticeDisabled = true;
                 }
                 // 启动加载器池
@@ -292,8 +287,9 @@ public partial class FormMain
                 {
                     ModDownload.dlClientListMojangLoader.Start(1); // PCL 会同时根据这里的加载结果决定是否使用官方源进行下载
                     RunCountSub();
-                    // SE 版：禁用 CE 更新检查
-                    // UpdateManager.serverLoader.Start(1);
+                    // SE 版：更新源已换为 PCL-Symbio-Edition 的 GitHub Release，保留自动更新检查
+                    // 启用该加载器会同时加载公告与启动器的更新检查（GitHub 源不返回公告，因此不会出现 CE 公告）
+                    UpdateManager.serverLoader.Start(1);
                     ModBase.RunInNewThread(ModMain.TryClearTaskTemp, "TryClearTaskTemp", ThreadPriority.BelowNormal);
                 }
                 catch (Exception ex)
@@ -1467,6 +1463,7 @@ public partial class FormMain
         SetupAbout = 4,
         SetupLog = 5,
         SetupFeedback = 6,
+        SetupUpdate = 7,
         SetupJava = 9,
         SetupLauncherMisc = 10,
         SetupLauncherLanguage = 11,

@@ -97,16 +97,27 @@ public static class UpdateManager
                 }
 
                 var loaders = new List<ModLoader.LoaderBase>();
-                // 下载
-                loaders.AddRange(remoteServer.GetDownloadLoader(
-                    IsCurrentVersionBeta ? UpdateChannel.beta : UpdateChannel.stable,
-                    SystemInfo.IsArm64System ? UpdateArch.arm64 : UpdateArch.x64, dlTargetPath));
-                loaders.Add(new ModLoader.LoaderTask<int, int>(Lang.Text("Update.Task.Check"), _ =>
+                // 已下载过同一版本时直接复用，避免每次启动都重新下载整个启动器
+                var isDownloaded = File.Exists(dlTargetPath) &&
+                                   !string.IsNullOrWhiteSpace(version.Sha256) &&
+                                   (ModBase.GetFileSHA256(dlTargetPath) ?? "") == (version.Sha256 ?? "");
+                if (!isDownloaded)
                 {
-                    var curHash = ModBase.GetFileSHA256(dlTargetPath);
-                    if ((curHash ?? "") != (version.Sha256 ?? ""))
-                        throw new Exception(Lang.Text("Update.Error.Sha256Mismatch", version.Sha256, curHash));
-                }));
+                    // 下载
+                    loaders.AddRange(remoteServer.GetDownloadLoader(
+                        IsCurrentVersionBeta ? UpdateChannel.beta : UpdateChannel.stable,
+                        SystemInfo.IsArm64System ? UpdateArch.arm64 : UpdateArch.x64, dlTargetPath));
+                    loaders.Add(new ModLoader.LoaderTask<int, int>(Lang.Text("Update.Task.Check"), _ =>
+                    {
+                        var curHash = ModBase.GetFileSHA256(dlTargetPath);
+                        if ((curHash ?? "") != (version.Sha256 ?? ""))
+                            throw new Exception(Lang.Text("Update.Error.Sha256Mismatch", version.Sha256, curHash));
+                    }));
+                }
+                else
+                {
+                    ModBase.Log("[Update] 更新文件已存在且校验通过，跳过下载");
+                }
                 if (type == UpdateEnums.UpdateType.UpdateNow)
                     loaders.Add(new ModLoader.LoaderTask<int, int>(Lang.Text("Update.Task.Install"), _ => UpdateRestart(true)));
                 else if (type == UpdateEnums.UpdateType.Silent)

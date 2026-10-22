@@ -60,6 +60,9 @@
                 <!-- 快捷操作 -->
                 <TextBlock Text="{DynamicResource Bedrock.Shortcuts.Title}" Margin="13,10,5,4" Opacity="0.6" FontSize="12" />
                 <local:MyListItem Height="36" VerticalAlignment="Top" IsScaleAnimationEnabled="False"
+                                  Type="Clickable" Title="{DynamicResource Bedrock.Editor.Open}"
+                                  SvgIcon="lucide/pencil" Click="OpenEditor_Click" />
+                <local:MyListItem Height="36" VerticalAlignment="Top" IsScaleAnimationEnabled="False"
                                   Type="Clickable" Title="{DynamicResource Bedrock.Shortcuts.OpenSaves}"
                                   SvgIcon="lucide/folder-open" Click="OpenSavesFolder_Click" />
                 <local:MyListItem Height="36" VerticalAlignment="Top" IsScaleAnimationEnabled="False"

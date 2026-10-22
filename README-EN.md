@@ -127,6 +127,8 @@ Available configurations (`-c`): `Release`, `Beta`, `Debug`, `CI`. Available pla
 
 ## Legal notice
 
+> These notices are also shown in the "About this version" dialog after the launcher updates.
+
 - **Project nature**: PCL Symbio Edition is an independent fork derived from PCL Community Edition (PCL CE) and is maintained by an individual developer for the international edition of Minecraft. It is not affiliated with the official PCL2 project maintained by LTCatt (龙腾猫跃), nor with the official PCL CE project maintained by PCL-Community.
 - **Scope**: PCL Symbio Edition does not support Minecraft China Edition (「我的世界中国版」), which is operated by Mojang Studios' agent in mainland China, and provides no features or adaptations for it.
 - **APIs**: PCL Symbio Edition accesses Minecraft international services only through APIs approved by Mojang Studios.

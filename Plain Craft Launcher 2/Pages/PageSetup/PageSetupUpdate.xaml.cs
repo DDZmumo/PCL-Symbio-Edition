@@ -159,7 +159,12 @@ public partial class PageSetupUpdate
 
     private void BtnUpdate_Click(object sender, MouseButtonEventArgs e)
     {
-        if (UpdateManager.isUpdateWaitingRestart) UpdateManager.UpdateRestart(true);
+        if (UpdateManager.isUpdateWaitingRestart)
+        {
+            UpdateManager.UpdateRestart(true);
+            return;
+        }
+
         // 开始更新流程
         UpdateManager.UpdateStart(UpdateEnums.UpdateType.UpdateNow);
     }

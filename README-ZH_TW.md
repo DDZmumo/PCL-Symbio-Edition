@@ -127,6 +127,8 @@ dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
 
 ## 聲明
 
+> 以下聲明同時會在啟動器更新後的「版本說明」彈窗中展示。
+
 - **專案性質**：PCL Symbio Edition 是從 PCL Community Edition（PCL CE）分支衍生而來的獨立版本，由個人開發者面向 Minecraft 國際版維護，與 LTCatt（龍騰貓躍）維護的 PCL2 官方專案、PCL-Community 維護的 PCL CE 官方專案均無隸屬關係。
 - **支援範圍**：PCL Symbio Edition 不支援 Minecraft 遊戲開發商 Mojang Studios 在中國大陸的代理公司營運的「我的世界中國版」，也不提供與該版本相關的任何功能或適配。
 - **API 使用**：PCL Symbio Edition 僅透過經 Mojang Studios 批准的 API 存取 Minecraft 國際版的相關服務。

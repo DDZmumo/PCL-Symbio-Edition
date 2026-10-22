@@ -55,6 +55,10 @@
     <sys:String x:Key="Bedrock.Download.ResolveFailedSummary">基岩版 {0} 下载地址解析失败: {1}</sys:String>
     <sys:String x:Key="Bedrock.Download.Started">基岩版 {0} 下载已开始 ({1} 源)</sys:String>
     <sys:String x:Key="Bedrock.Download.Title">下载基岩版</sys:String>
+    <sys:String x:Key="Bedrock.Editor.Failed">打开编辑器失败，请确认已安装基岩版正式版或预览版，也可以从 Minecraft 启动器的 Creator Tools 中打开。</sys:String>
+    <sys:String x:Key="Bedrock.Editor.NotInstalled">未检测到基岩版，请先在右侧下载并安装后再打开编辑器。</sys:String>
+    <sys:String x:Key="Bedrock.Editor.Open">打开基岩版编辑器</sys:String>
+    <sys:String x:Key="Bedrock.Editor.Title">基岩版编辑器</sys:String>
     <sys:String x:Key="Bedrock.Filter.All">全部</sys:String>
     <sys:String x:Key="Bedrock.Filter.Gdk">GDK 新版</sys:String>
     <sys:String x:Key="Bedrock.Filter.Uwp">UWP 旧版</sys:String>
@@ -1979,6 +1983,10 @@
     <sys:String x:Key="Main.UpdateLog.Empty">欢迎使用呀~</sys:String>
     <sys:String x:Key="Main.UpdateLog.FullChangelog">完整更新日志</sys:String>
     <sys:String x:Key="Main.UpdateLog.Title">PCL SE 已更新至 {0} {1}</sys:String>
+    <sys:String x:Key="Main.UpdateLog.Builtin">## 本次更新内容&#xA;&#xA;- **版本说明弹窗**：并入 README 的完整「声明」，更新后可直接在弹窗内查看&#xA;- **多语言**：版本说明的正文与按钮改为本地化文本，不再固定显示中文&#xA;- **更新日志弹窗**：未获取到在线更新日志时，改为显示应用内置的更新公告</sys:String>
+    <sys:String x:Key="Main.SeVersionNotice.Title">版本说明</sys:String>
+    <sys:String x:Key="Main.SeVersionNotice.Confirm">我知道了</sys:String>
+    <sys:String x:Key="Main.SeVersionNotice.Body">**PCL Symbio Edition** 是 PCL CE 的第三方修改版，原作者为龙腾猫跃及原项目贡献者；原作版权归成都瓜皮龙科技有限公司，来源与许可详见「更多 → 关于」。&#xA;&#xA;### 本版本功能与限制说明&#xA;&#xA;- **CurseForge 下载**：临时可用，正在等待正式 API Key 下发&#xA;- **启动器更新**：已接入 Hydrogen-Peroxide/PCL-Symbio-Edition 的 GitHub Releases，可在设置中检查更新&#xA;- **主题切换**：这是需要赞助解锁的纪念性质的功能，别让赞助者太伤心啦……&#xA;&#xA;### 声明&#xA;&#xA;- **项目性质**：PCL Symbio Edition 是从 PCL Community Edition（PCL CE）分支衍生而来的独立版本，由个人开发者面向 Minecraft 国际版维护，与 LTCatt（龙腾猫跃）维护的 PCL2 官方项目、PCL-Community 维护的 PCL CE 官方项目均无隶属关系。&#xA;- **支持范围**：不支持 Minecraft 游戏开发商 Mojang Studios 在中国大陆的代理公司运营的「我的世界中国版」，也不提供与该版本相关的任何功能或适配。&#xA;- **API 使用**：仅通过经 Mojang Studios 批准的 API 访问 Minecraft 国际版的相关服务。&#xA;- **代码来源**：本项目不包含任何 Minecraft（含「我的世界中国版」）的代码，也不包含 Mojang Studios 及其中国代理商的任何代码。&#xA;- **名称使用**：文档与演示中出现的「Minecraft」字样仅用于描述本项目所支持的游戏，属于《中华人民共和国著作权法》规定的合理使用；相关截图与视频的版权归其各自开发者所有。&#xA;- **关系说明**：与 PCL2、PCL CE、Mojang Studios 及其中国代理商之间不存在任何隶属、合作、维护或授权关系。&#xA;- **正版倡导**：鼓励通过官方渠道购买并游玩正版 Minecraft。&#xA;- **联机大厅**：由于特殊原因，暂不支持 PCL CE 的联机大厅，后续版本将逐步补齐。</sys:String>
     <sys:String x:Key="Main.HomepageReset.Title">主页预设已重置</sys:String>
     <sys:String x:Key="Main.HomepageReset.Content">由于启动器更新，已重置主页预设。请重新前往 设置 - 个性化 选择预设</sys:String>
 

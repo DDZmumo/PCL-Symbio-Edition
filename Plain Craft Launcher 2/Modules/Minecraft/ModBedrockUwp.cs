@@ -506,6 +506,34 @@ public static class ModBedrockUwp
     }
 
     /// <summary>
+    ///     以编辑器模式启动基岩版。
+    ///     Editor 模式无法通过 shell:AppsFolder 进入，只能由 creator 协议唤起；
+    ///     正式版与预览版各自注册了协议，先试正式版再回退预览版。
+    /// </summary>
+    public static bool LaunchEditor()
+    {
+        foreach (var uri in new[] { "minecraft://creator/?Editor=true", "minecraft-preview://creator/?Editor=true" })
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = uri,
+                    UseShellExecute = true
+                });
+                ModBase.Log($"[Bedrock] 正在通过 {uri} 以编辑器模式启动 Minecraft Bedrock Edition...");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ModBase.Log($"[Bedrock] 通过 {uri} 启动编辑器失败: {ex.Message}", ModBase.LogLevel.Normal);
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
     ///     从已安装包的 AppxManifest 中读取 Application Id。
     /// </summary>
     private static string? GetApplicationId(string packageName = ReleasePackageName)

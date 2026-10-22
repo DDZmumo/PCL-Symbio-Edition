@@ -781,7 +781,8 @@ public partial class PageSetupUI
                 {
                     (ModMain.frmSetupLeft.TextGameCategory,
                         !(conf.SetupLaunch && conf.SetupJava && conf.SetupGameManage)),
-                    (ModMain.frmSetupLeft.TextLauncherCategory, !(conf.SetupUi && conf.SetupLauncherLanguage && conf.SetupLauncherMisc)),
+                    // 更新页不属于可隐藏项，始终显示，因此启动器分类也始终显示
+                    (ModMain.frmSetupLeft.TextLauncherCategory, true),
                     (ModMain.frmSetupLeft.TextAboutCategory,
                         !(conf.SetupAbout && conf.SetupFeedback && conf.SetupLog))
                 };
@@ -794,8 +795,8 @@ public partial class PageSetupUI
                         category.Item1.Opacity = 0.6d;
                 }
 
-                // 统计设置页可用项数量
-                var setupCount = 0;
+                // 统计设置页可用项数量（更新页始终可用，计为 1 项）
+                var setupCount = 1;
                 if (!conf.SetupLaunch)
                     setupCount += 1;
                 if (!conf.SetupUi)
