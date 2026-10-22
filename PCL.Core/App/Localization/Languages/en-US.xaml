@@ -148,9 +148,8 @@
     <sys:String x:Key="Bedrock.Version.DownloadedGdk">Downloaded (GDK versions require a content key and cannot be sideloaded)</sys:String>
     <sys:String x:Key="Bedrock.Version.Downloading">Downloading...</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadSaved">Bedrock {0} saved locally. Install it under "Downloaded versions".</sys:String>
+    <sys:String x:Key="Bedrock.Version.DownloadSavedGdk">Bedrock {0} saved locally (GDK versions require a content key and cannot be sideloaded).</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadTooltip">Download this version</sys:String>
-    <sys:String x:Key="Bedrock.Version.GdkOpened">GDK version {0} requires a content key and cannot be sideloaded. Opened the download page.</sys:String>
-    <sys:String x:Key="Bedrock.Version.GdkTooltip">GDK versions require a content key and cannot be sideloaded. Click to open the download page.</sys:String>
     <sys:String x:Key="Bedrock.Version.GdkUnsupported">GDK .msixvc packages require a content key and cannot be sideloaded</sys:String>
     <sys:String x:Key="Bedrock.Version.NoSourceTooltip">No download source is available for this version. Click to open the web page.</sys:String>
     <sys:String x:Key="Bedrock.Version.PageOpened">Opened the download page for Bedrock {0}. After downloading the package, click "Import package" to install it.</sys:String>

@@ -934,13 +934,6 @@ public partial class PageBedrockRight
                 ? Lang.Text("Bedrock.Version.DownloadedGdk")
                 : Lang.Text("Bedrock.Version.Downloaded");
         }
-        else if (isGdk)
-        {
-            // GDK 的 .msixvc 需要内容密钥，避免无意义地下载 1GB 文件
-            btn.SvgIcon = "lucide/external-link";
-            btn.IsEnabled = true;
-            btn.ToolTip = Lang.Text("Bedrock.Version.GdkTooltip");
-        }
         else if (!available)
         {
             btn.SvgIcon = "lucide/external-link";
@@ -970,17 +963,6 @@ public partial class PageBedrockRight
             return;
 
         var buildType = ModDownload.GetBedrockBuildType(versionId);
-
-        // GDK 的 .msixvc 需要内容密钥才能解密安装，直接引导到网页，避免白下载
-        if (buildType.Equals("GDK", StringComparison.OrdinalIgnoreCase))
-        {
-            var gdkUrl = $"https://www.mcappx.com/bedrock/{versionId}/";
-            ModBase.OpenWebsite(gdkUrl);
-            LabDetail.Text = Lang.Text("Bedrock.Version.GdkOpened", versionId);
-            ModBase.Log($"[Bedrock] {versionId} 为 GDK 版本，暂不支持侧载安装，打开网页: {gdkUrl}",
-                ModBase.LogLevel.Normal);
-            return;
-        }
 
         _downloadingVersions.Add(versionId);
         UpdateVersionButtonState(versionId);
@@ -1071,7 +1053,9 @@ public partial class PageBedrockRight
                     {
                         RefreshLocalVersions();
                         LabStatus.Text = Lang.Text("Bedrock.Version.DownloadComplete");
-                        LabDetail.Text = Lang.Text("Bedrock.Version.DownloadSaved", versionId);
+                        LabDetail.Text = buildType.Equals("GDK", StringComparison.OrdinalIgnoreCase)
+                            ? Lang.Text("Bedrock.Version.DownloadSavedGdk", versionId)
+                            : Lang.Text("Bedrock.Version.DownloadSaved", versionId);
                     });
                 }
                 else if (newState is ModBase.LoadState.Failed or ModBase.LoadState.Aborted)
