@@ -346,3 +346,10 @@ MaskFiles/
 # macOS
 
 **/.DS_Store
+
+# PCL SE 本地运行目录与产物（合并构建目录后产生）
+
+/.minecraft/
+/PCL/
+/*.exe
+/PCL SE 宣传*.pptx
