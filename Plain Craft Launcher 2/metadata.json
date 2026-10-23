@@ -1,10 +1,10 @@
 {
   "name": "Plain Craft Launcher Symbio Edition",
   "version": {
-    "base": "2.17.4",
+    "base": "2.17.5",
     "upstream": "2.12.1",
     "suffix": "",
-    "code": 528
+    "code": 529
   },
   "licenses": [
     {

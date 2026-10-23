@@ -148,13 +148,25 @@ public partial class PageSetupUpdate
         }
     }
 
-    public void BtnUpdate_Timer()
+    private async void BtnUpdate_Timer()
     {
+        // 不能用 Thread.Sleep 在 UI 线程里等，否则整个窗口会卡死
         while (UpdateManager.updateLoader is not null && UpdateManager.updateLoader.State == ModBase.LoadState.Loading)
         {
-            ModBase.RunInUi(() => BtnUpdate.Text = Lang.Number(UpdateManager.updateLoader.Progress, "P2"));
-            Thread.Sleep(200);
+            BtnUpdate.Text = Lang.Number(UpdateManager.updateLoader.Progress, "P2");
+            await Task.Delay(200);
         }
+
+        if (UpdateManager.isUpdateWaitingRestart)
+        {
+            BtnUpdate.Text = Lang.Text("Setup.Update.RestartInstall");
+        }
+        else
+        {
+            BtnUpdate.Text = Lang.Text("Setup.Update.Install");
+        }
+
+        BtnUpdate.IsEnabled = true;
     }
 
     private void BtnUpdate_Click(object sender, MouseButtonEventArgs e)
