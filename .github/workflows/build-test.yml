@@ -21,6 +21,16 @@ on:
   workflow_dispatch:
 
 jobs:
+  bedrock-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+      - name: Test Bedrock installation safeguards
+        run: dotnet run --project tests/BedrockInstallRegression -c Release
+
   build:
     strategy:
       matrix:

@@ -499,7 +499,7 @@ public partial class PageBedrockRight
         if (_installingVersions.Contains(versionId))
             return;
 
-        var dir = Path.Combine(BedrockVersionsDir, versionId);
+        var dir = ModBedrockUwp.GetVersionDirectory(BedrockVersionsDir, versionId);
         var allFiles = GetPackageFiles(dir);
         if (allFiles.Count == 0) return;
 
@@ -534,7 +534,7 @@ public partial class PageBedrockRight
         if (sender is not MyIconButton btn || btn.Tag is not string versionId)
             return;
 
-        var dir = Path.Combine(BedrockVersionsDir, versionId);
+        var dir = ModBedrockUwp.GetVersionDirectory(BedrockVersionsDir, versionId);
         try
         {
             if (Directory.Exists(dir))
@@ -588,7 +588,7 @@ public partial class PageBedrockRight
                 var identityVersion = TryReadPackageIdentityVersion(sourcePath);
                 var versionId = ResolveImportedVersionId(identityVersion, sourcePath);
 
-                var destDir = Path.Combine(BedrockVersionsDir, versionId);
+                var destDir = ModBedrockUwp.GetVersionDirectory(BedrockVersionsDir, versionId);
                 Directory.CreateDirectory(destDir);
                 var destPath = Path.Combine(destDir, Path.GetFileName(sourcePath));
                 if (!string.Equals(Path.GetFullPath(sourcePath), Path.GetFullPath(destPath),
@@ -1004,7 +1004,7 @@ public partial class PageBedrockRight
     {
         try
         {
-            var saveDir = Path.Combine(BedrockVersionsDir, versionId);
+            var saveDir = ModBedrockUwp.GetVersionDirectory(BedrockVersionsDir, versionId);
             Directory.CreateDirectory(saveDir);
 
             // GDK 版是 .msixvc，UWP 版是 .appx
@@ -1181,7 +1181,7 @@ public partial class PageBedrockRight
     /// <param name="versionId">版本标识</param>
     private void InstallWithRegister(string filePath, string versionId)
     {
-        var extractDir = Path.Combine(BedrockVersionsDir, "extracted", versionId);
+        var extractDir = ModBedrockUwp.GetVersionDirectory(Path.Combine(BedrockVersionsDir, "extracted"), versionId);
 
         ModBase.Log($"[Bedrock] 解压安装包到: {extractDir}", ModBase.LogLevel.Normal);
 
@@ -1200,7 +1200,7 @@ public partial class PageBedrockRight
             // 解压失败说明是加密格式（如加密的 .msixvc），尝试直接安装
             ModBase.Log($"[Bedrock] 解压失败，尝试直接安装: {ex.Message}", ModBase.LogLevel.Normal);
             var fallbackResult = ModBase.ShellAndGetOutput("powershell.exe",
-                $"-NoProfile -Command \"Add-AppxPackage -Path '{filePath}' -ErrorAction Stop 2>&1\"",
+                ModBedrockUwp.GetAppxInstallArguments(filePath),
                 timeout: 300000);
             if (fallbackResult.Contains("Exception") || fallbackResult.Contains("错误"))
                 throw new Exception(fallbackResult.Length > 300 ? fallbackResult[..300] : fallbackResult);
@@ -1275,7 +1275,7 @@ public partial class PageBedrockRight
         if (IsDeveloperModeEnabled())
         {
             var registerResult = ModBase.ShellAndGetOutput("powershell.exe",
-                $"-NoProfile -Command \"Add-AppxPackage -Register '{manifestPath}' -ErrorAction Stop 2>&1\"",
+                ModBedrockUwp.GetAppxInstallArguments(manifestPath, register: true),
                 timeout: 300000);
 
             if (!registerResult.Contains("Exception") && !registerResult.Contains("错误"))
@@ -1293,7 +1293,7 @@ public partial class PageBedrockRight
         ZipFile.CreateFromDirectory(extractDir, appxPath);
 
         var appxResult = ModBase.ShellAndGetOutput("powershell.exe",
-            $"-NoProfile -Command \"Add-AppxPackage -Path '{appxPath}' -ErrorAction Stop 2>&1\"",
+            ModBedrockUwp.GetAppxInstallArguments(appxPath),
             timeout: 300000);
 
         if (appxResult.Contains("Exception") || appxResult.Contains("错误"))

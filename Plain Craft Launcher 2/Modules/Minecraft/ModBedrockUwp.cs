@@ -22,6 +22,33 @@ namespace PCL;
 /// </summary>
 public static class ModBedrockUwp
 {
+    /// <summary>
+    ///     获取版本对应的独立目录，供导入、下载、安装和删除流程共用。
+    /// </summary>
+    public static string GetVersionDirectory(string versionsDirectory, string versionId)
+    {
+        // 版本号可能来自安装包清单或远端列表，必须是单个目录名。
+        // extracted 是解压缓存根目录，不能被当作普通版本覆盖或删除。
+        if (string.IsNullOrWhiteSpace(versionId) || versionId is "." or ".." ||
+            versionId.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 ||
+            versionId.IndexOfAny(['/', '\\', ':']) >= 0 ||
+            versionId.EndsWith('.') || versionId.EndsWith(' ') ||
+            versionId.Equals("extracted", StringComparison.OrdinalIgnoreCase))
+            throw new ArgumentException("基岩版版本标识必须是有效的独立目录名。", nameof(versionId));
+
+        return Path.Combine(versionsDirectory, versionId);
+    }
+
+    /// <summary>
+    ///     将安装路径作为 PowerShell 字符串字面量传入，避免路径中的引号或变量被解释为脚本。
+    /// </summary>
+    public static string GetAppxInstallArguments(string path, bool register = false)
+    {
+        var literalPath = "'" + path.Replace("'", "''") + "'";
+        var command = $"Add-AppxPackage -{(register ? "Register" : "Path")} {literalPath} -ErrorAction Stop 2>&1";
+        return "-NoProfile -EncodedCommand " + Convert.ToBase64String(Encoding.Unicode.GetBytes(command));
+    }
+
     #region 版本号
 
     /// <summary>
@@ -458,17 +485,13 @@ public static class ModBedrockUwp
         ModBase.Log($"[Bedrock] 卸载结果: {result.Trim()}", ModBase.LogLevel.Normal);
 
         var verify = ModBase.ShellAndGetOutput("powershell.exe",
-            $"-NoProfile -Command \"if (Get-AppxPackage -Name '{ReleasePackageName}' -ErrorAction SilentlyContinue) {{ 'StillInstalled' }} else {{ 'Cleared' }}\"",
+            $"-NoProfile -Command \"if (Get-AppxPackage -Name '{ReleasePackageName}' -ErrorAction Stop) {{ 'StillInstalled' }} else {{ 'Cleared' }}\"",
             timeout: 20000);
 
-        if (verify.Trim() == "StillInstalled")
-        {
-            ModBase.Log("[Bedrock] 保留数据的卸载失败，改为强制卸载", ModBase.LogLevel.Normal);
-            StopMinecraftProcesses();
-            ModBase.ShellAndGetOutput("powershell.exe",
-                $"-NoProfile -Command \"$p = Get-AppxPackage -Name '{ReleasePackageName}' -ErrorAction SilentlyContinue; if ($p) {{ Remove-AppxPackage -Package $p.PackageFullName -ErrorAction SilentlyContinue }}\"",
-                timeout: 120000);
-        }
+        // 普通卸载会删除应用数据。无法确认保留数据的卸载成功时必须中止，不能降级为普通卸载。
+        if (verify.Trim() != "Cleared")
+            throw new InvalidOperationException(
+                $"无法确认基岩版已保留数据卸载，已中止安装以保护存档。{Environment.NewLine}{result.Trim()}{Environment.NewLine}{verify.Trim()}");
     }
 
     /// <summary>
@@ -671,7 +694,7 @@ public static class ModBedrockUwp
                 }
 
                 var result = ModBase.ShellAndGetOutput("powershell.exe",
-                    $"-NoProfile -Command \"Add-AppxPackage -Path '{tempPath}' -ErrorAction Stop 2>&1\"",
+                    GetAppxInstallArguments(tempPath),
                     timeout: 300000);
 
                 if (result.Contains("Exception") || result.Contains("错误"))
