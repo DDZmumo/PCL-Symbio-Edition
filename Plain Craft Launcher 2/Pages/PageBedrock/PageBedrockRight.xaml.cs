@@ -28,7 +28,11 @@ public partial class PageBedrockRight
     private readonly Dictionary<string, string> _versionBuildTypes = [];
     private JsonArray? _versionCache;
     private string _versionFilter = "all";
-    private string? _installedVersionId;
+
+    // 当前已注册（正在使用）的本地版本。UWP 包的 PFN 固定，同一时刻只能注册一个版本，
+    // 因此“共存”体现为每个版本各占一个解压目录，启动时按目录切换注册。
+    private string? _registeredVersionId;
+    private bool _switchingVersion;
 
     private static string BedrockVersionsDir =>
         Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".minecraft", "bedrock", "versions");
@@ -80,6 +84,8 @@ public partial class PageBedrockRight
 
     private bool _detecting;
     private bool _isStorePackage;
+    // GDK 便携版：解包后直接运行 Minecraft.Windows.exe，不注册系统包
+    private bool _isGdkPortable;
 
     public void DetectBedrockInstallation()
     {
@@ -89,8 +95,12 @@ public partial class PageBedrockRight
         // 检测需要调用 PowerShell 并遍历目录，放到后台线程执行，避免界面卡住导致按钮看起来点不动
         _ = Task.Run(() =>
         {
-            var bedrockPath = FindBedrockInstallation();
+            // 已注册的 UWP 包优先；没有注册包时回退到启动器解包的 GDK 便携版
+            var portable = FindPortableGdkInstallation();
+            var bedrockPath = FindBedrockInstallation() ?? portable?.Path;
             var (bedrockVersion, signatureKind) = GetBedrockPackageInfo();
+            if (portable is not null && string.Equals(bedrockPath, portable.Value.Path, StringComparison.OrdinalIgnoreCase))
+                bedrockVersion = portable.Value.Version;
             Dispatcher.Invoke(() =>
             {
                 _detecting = false;
@@ -105,6 +115,7 @@ public partial class PageBedrockRight
         BedrockVersion = bedrockVersion;
         BedrockInstallPath = bedrockPath;
         _isStorePackage = string.Equals(signatureKind, "Store", StringComparison.OrdinalIgnoreCase);
+        _isGdkPortable = !string.IsNullOrEmpty(bedrockPath) && IsPortableGdkPath(bedrockPath);
         if (!string.IsNullOrEmpty(bedrockPath))
         {
             ShapeStatusDot.Fill = (Brush)FindResource("ColorBrush3");
@@ -143,7 +154,7 @@ public partial class PageBedrockRight
     {
         if (BtnUpdate is null) return;
 
-        if (!IsBedrockInstalled || !_isStorePackage || _versionCache is null)
+        if (!IsBedrockInstalled || !_isStorePackage || _isGdkPortable || _versionCache is null)
         {
             BtnUpdate.Visibility = Visibility.Collapsed;
             return;
@@ -281,6 +292,67 @@ public partial class PageBedrockRight
         return null;
     }
 
+    /// <summary>
+    ///     该版本是否为 GDK 版（版本目录内保存的是 .msixvc 而不是 .appx）。
+    /// </summary>
+    private static bool IsGdkVersion(string versionId)
+    {
+        var dir = ModBedrockUwp.GetVersionDirectory(BedrockVersionsDir, versionId);
+        return GetPackageFiles(dir).Any(ModBedrockGdk.IsGdkPackage);
+    }
+
+    /// <summary>
+    ///     路径是否为启动器解包出来的 GDK 便携版目录（extracted\&lt;版本号&gt;）。
+    /// </summary>
+    private static bool IsPortableGdkPath(string path)
+    {
+        try
+        {
+            var root = Path.GetFullPath(Path.Combine(BedrockVersionsDir, "extracted"))
+                .TrimEnd(Path.DirectorySeparatorChar);
+            var full = Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar);
+            if (!full.StartsWith(root + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            var relative = full[(root.Length + 1)..];
+            var versionId = relative.Split(Path.DirectorySeparatorChar)[0];
+            return !string.IsNullOrEmpty(versionId) &&
+                   IsGdkVersion(versionId) &&
+                   ModBedrockGdk.IsInstalled(full);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    ///     在已解包目录中寻找可用的 GDK 便携版，取版本号最高的一个。
+    /// </summary>
+    private static (string Path, string Version)? FindPortableGdkInstallation()
+    {
+        try
+        {
+            var extractedRoot = Path.Combine(BedrockVersionsDir, "extracted");
+            if (!Directory.Exists(extractedRoot)) return null;
+
+            (string Path, string Version)? best = null;
+            foreach (var dir in Directory.GetDirectories(extractedRoot))
+            {
+                var versionId = Path.GetFileName(dir);
+                if (!IsGdkVersion(versionId) || !ModBedrockGdk.IsInstalled(dir)) continue;
+                if (best is null || ModDownload.CompareBedrockVersions(versionId, best.Value.Version) > 0)
+                    best = (dir, versionId);
+            }
+
+            return best;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     public void BtnLaunch_Click(object sender, MouseButtonEventArgs e)
     {
         if (!IsBedrockInstalled)
@@ -304,6 +376,17 @@ public partial class PageBedrockRight
         {
             try
             {
+                // GDK 便携版不经过系统包注册，直接运行解包目录里的主程序，可与其他版本同时运行
+                if (_isGdkPortable && !string.IsNullOrEmpty(BedrockInstallPath))
+                {
+                    if (!ModBedrockGdk.Launch(BedrockInstallPath))
+                        throw new FileNotFoundException(Lang.Text("Bedrock.Gdk.ExecutableMissing"));
+
+                    ModBase.Log($"[Bedrock] 正在启动 GDK 便携版: {BedrockInstallPath}",
+                        ModBase.LogLevel.Normal);
+                    return;
+                }
+
                 // 优先用 shell:AppsFolder 启动已注册的包：旧版 Manifest 被设为 AppListEntry=none，
                 // minecraft:// 协议可能被商店版或其他版本抢占
                 if (ModBedrockUwp.LaunchPackage())
@@ -388,7 +471,7 @@ public partial class PageBedrockRight
     /// </summary>
     private void UpdateInstalledVersionId()
     {
-        _installedVersionId = null;
+        _registeredVersionId = null;
         if (string.IsNullOrEmpty(BedrockInstallPath)) return;
 
         try
@@ -402,7 +485,7 @@ public partial class PageBedrockRight
             var relative = installPath[(root.Length + 1)..];
             var segment = relative.Split(Path.DirectorySeparatorChar)[0];
             if (!string.IsNullOrEmpty(segment))
-                _installedVersionId = segment;
+                _registeredVersionId = segment;
         }
         catch
         {
@@ -421,8 +504,13 @@ public partial class PageBedrockRight
         catch { }
 
         var isInstalling = _installingVersions.Contains(versionId);
+        // GDK 便携版只要解包完成就可以直接运行，不需要注册系统包
+        var isGdk = IsGdkVersion(versionId);
+        var gdkReady = isGdk && ModBedrockGdk.IsInstalled(
+            ModBedrockUwp.GetVersionDirectory(Path.Combine(BedrockVersionsDir, "extracted"), versionId));
         var isInstalled = !isInstalling &&
-                          string.Equals(_installedVersionId, versionId, StringComparison.OrdinalIgnoreCase);
+                          (gdkReady ||
+                           string.Equals(_registeredVersionId, versionId, StringComparison.OrdinalIgnoreCase));
 
         var installBtn = new MyIconButton
         {
@@ -437,20 +525,21 @@ public partial class PageBedrockRight
                 : Lang.Text("Bedrock.Local.Install");
         installBtn.Click += LocalInstall_Click;
 
-        var buttons = new List<MyIconButton>();
-        if (isInstalled)
+        // 每个已下载的版本都可以直接启动：未注册的版本会先切换注册再启动
+        var launchBtn = new MyIconButton
         {
-            var launchBtn = new MyIconButton
-            {
-                SvgIcon = "lucide/play",
-                Tag = versionId
-            };
-            launchBtn.ToolTip = Lang.Text("Bedrock.Local.Launch");
-            launchBtn.Click += LocalLaunch_Click;
-            buttons.Add(launchBtn);
-        }
+            SvgIcon = "lucide/play",
+            Tag = versionId,
+            IsEnabled = !isInstalling
+        };
+        launchBtn.ToolTip = isGdk
+            ? Lang.Text("Bedrock.Local.LaunchGdk")
+            : isInstalled
+                ? Lang.Text("Bedrock.Local.Launch")
+                : Lang.Text("Bedrock.Local.SwitchLaunch");
+        launchBtn.Click += LocalLaunch_Click;
 
-        buttons.Add(installBtn);
+        var buttons = new List<MyIconButton> { launchBtn, installBtn };
 
         var deleteBtn = new MyIconButton
         {
@@ -459,19 +548,24 @@ public partial class PageBedrockRight
             Tag = versionId,
             IsEnabled = !isInstalling
         };
-        deleteBtn.ToolTip = Lang.Text("Bedrock.Local.Delete");
+        deleteBtn.ToolTip = isInstalled
+            ? Lang.Text("Bedrock.Local.DeleteRegistered")
+            : Lang.Text("Bedrock.Local.Delete");
         deleteBtn.Click += LocalDelete_Click;
         buttons.Add(deleteBtn);
+
+        var stateTag = isInstalling
+            ? Lang.Text("Bedrock.Local.Tag.Installing")
+            : isInstalled
+                ? Lang.Text("Bedrock.Local.Tag.Installed")
+                : Lang.Text("Bedrock.Local.Tag.Downloaded");
+        if (isGdk) stateTag = Lang.Text("Bedrock.Local.Tag.Gdk") + " · " + stateTag;
 
         var row = new MyListItem
         {
             Title = versionId,
             Info = $"{fileSize}  ·  {fileName}",
-            Tags = isInstalling
-                ? Lang.Text("Bedrock.Local.Tag.Installing")
-                : isInstalled
-                    ? Lang.Text("Bedrock.Local.Tag.Installed")
-                    : Lang.Text("Bedrock.Local.Tag.Downloaded"),
+            Tags = stateTag,
             Type = MyListItem.CheckType.Clickable,
             Height = 42,
             SvgIcon = "lucide/box",
@@ -482,12 +576,160 @@ public partial class PageBedrockRight
         return row;
     }
 
+    /// <summary>
+    ///     查找版本解压后的可注册目录。包束会多解一层 inner。
+    /// </summary>
+    private static (string? Directory, string? Manifest) FindExtractedVersion(string versionId)
+    {
+        var extractDir = ModBedrockUwp.GetVersionDirectory(Path.Combine(BedrockVersionsDir, "extracted"), versionId);
+        var innerDir = Path.Combine(extractDir, "inner");
+
+        var innerManifest = Path.Combine(innerDir, "AppxManifest.xml");
+        if (File.Exists(innerManifest)) return (innerDir, innerManifest);
+
+        var manifest = Path.Combine(extractDir, "AppxManifest.xml");
+        return File.Exists(manifest) ? (extractDir, manifest) : (null, null);
+    }
+
+    /// <summary>
+    ///     启动指定本地版本。
+    ///     参考 BedrockBoot：UWP 包的 PFN 固定，同一时刻只能注册一个版本，
+    ///     所以启动其他版本时先把该版本目录重新注册，再启动。
+    /// </summary>
     private void LocalLaunch_Click(object sender, EventArgs e)
     {
         if (sender is not MyIconButton btn || btn.Tag is not string versionId)
             return;
+        if (_switchingVersion)
+            return;
 
-        ModBase.Log($"[Bedrock] 正在启动本地版本 {versionId}", ModBase.LogLevel.Normal);
+        // GDK 便携版：解包目录里有主程序就能直接启动，不需要改动系统包注册
+        if (IsGdkVersion(versionId))
+        {
+            var gdkDir = ModBedrockUwp.GetVersionDirectory(
+                Path.Combine(BedrockVersionsDir, "extracted"), versionId);
+            if (ModBedrockGdk.IsInstalled(gdkDir))
+            {
+                ActivateGdkVersion(versionId, gdkDir);
+                return;
+            }
+
+            var files = GetPackageFiles(ModBedrockUwp.GetVersionDirectory(BedrockVersionsDir, versionId));
+            if (files.Count == 0)
+            {
+                ModBase.Log($"[Bedrock] 版本 {versionId} 的安装包已被删除，无法解包启动",
+                    ModBase.LogLevel.Hint,
+                    userSummary: Lang.Text("Bedrock.Local.PackageMissing"));
+                return;
+            }
+
+            // 尚未解包：先解包，安装完成后不会注册系统包
+            StartInstall(files[0], versionId);
+            return;
+        }
+
+        // 已经是当前注册的版本，直接启动
+        if (string.Equals(_registeredVersionId, versionId, StringComparison.OrdinalIgnoreCase))
+        {
+            LaunchBedrock();
+            return;
+        }
+
+        _switchingVersion = true;
+        LabStatus.Text = Lang.Text("Bedrock.Status.Switching");
+        LabDetail.Text = Lang.Text("Bedrock.Status.SwitchingDetail", versionId);
+        BtnLaunch.IsEnabled = false;
+
+        Task.Run(() =>
+        {
+            string? installedPath = null;
+            Exception? error = null;
+
+            try
+            {
+                ModBase.Log($"[Bedrock] 正在切换到版本 {versionId}", ModBase.LogLevel.Normal);
+
+                // 切换注册前先结束正在运行的基岩版
+                ModBedrockUwp.StopMinecraftProcesses();
+
+                var (targetDir, manifestPath) = FindExtractedVersion(versionId);
+                if (manifestPath is not null)
+                {
+                    var result = ModBase.ShellAndGetOutput("powershell.exe",
+                        ModBedrockUwp.GetAppxInstallArguments(manifestPath, register: true),
+                        timeout: 300000);
+
+                    if (result.Contains("Exception") || result.Contains("错误"))
+                    {
+                        ModBase.Log($"[Bedrock] 重新注册 {versionId} 失败，改为重新安装: {result.Trim()}",
+                            ModBase.LogLevel.Normal);
+                        targetDir = null;
+                    }
+                }
+
+                if (targetDir is null)
+                {
+                    // 解压目录缺失或被清理：用已下载的安装包重新解压并注册
+                    var files = GetPackageFiles(ModBedrockUwp.GetVersionDirectory(BedrockVersionsDir, versionId));
+                    if (files.Count == 0)
+                        throw new FileNotFoundException(Lang.Text("Bedrock.Local.PackageMissing"));
+                    InstallWithRegister(files[0], versionId);
+                    (targetDir, _) = FindExtractedVersion(versionId);
+                }
+
+                installedPath = targetDir;
+                ModBase.Log($"[Bedrock] 已切换到版本 {versionId}", ModBase.LogLevel.Normal);
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+
+            ModBase.RunInUi(() =>
+            {
+                _switchingVersion = false;
+                BtnLaunch.IsEnabled = true;
+
+                if (error is not null)
+                {
+                    ModBase.Log(error, $"切换到基岩版 {versionId} 失败",
+                        ModBase.LogLevel.Feedback,
+                        userSummary: Lang.Text("Bedrock.Launch.Error"));
+                    LabStatus.Text = Lang.Text("Bedrock.Status.LaunchFailed");
+                    LabDetail.Text = error.Message;
+                    RefreshLocalVersions();
+                    return;
+                }
+
+                IsBedrockInstalled = true;
+                BedrockInstallPath = installedPath;
+                BedrockVersion = versionId;
+                _isStorePackage = false;
+                BtnUpdate.Visibility = Visibility.Collapsed;
+                RefreshLocalVersions();
+                // 左侧状态栏也同步显示切换后的版本
+                ModMain.frmBedrockLeft?.RefreshStatus();
+                LaunchBedrock();
+            });
+        });
+    }
+
+    /// <summary>
+    ///     将启动目标切换为 GDK 便携版并直接启动。不触碰系统包注册，因此其他版本仍可继续运行。
+    /// </summary>
+    private void ActivateGdkVersion(string versionId, string extractDir)
+    {
+        IsBedrockInstalled = true;
+        BedrockInstallPath = extractDir;
+        BedrockVersion = versionId;
+        _isStorePackage = false;
+        _isGdkPortable = true;
+        BtnUpdate.Visibility = Visibility.Collapsed;
+        ShapeStatusDot.Fill = (Brush)FindResource("ColorBrush3");
+        LabVersion.Text = Lang.Text("Bedrock.Status.Version", versionId);
+        LabSelectedVersion.Text = Lang.Text("Bedrock.Status.Ready");
+        RefreshLocalVersions();
+        ModMain.frmBedrockLeft?.RefreshStatus();
         LaunchBedrock();
     }
 
@@ -511,11 +753,10 @@ public partial class PageBedrockRight
         if (_installingVersions.Contains(versionId))
             return;
 
-        if (Path.GetExtension(filePath).Equals(".msixvc", StringComparison.OrdinalIgnoreCase))
+        // GDK 版是加密的 .msixvc，不能侧载注册，改为解密解包成便携版
+        if (ModBedrockGdk.IsGdkPackage(filePath))
         {
-            ModBase.Log("[Bedrock] .msixvc 需要内容密钥，无法侧载安装",
-                ModBase.LogLevel.Hint,
-                userSummary: Lang.Text("Bedrock.Version.GdkUnsupported"));
+            StartInstallGdk(filePath, versionId);
             return;
         }
 
@@ -529,29 +770,155 @@ public partial class PageBedrockRight
         InstallBedrockPackage(filePath, versionId);
     }
 
+    /// <summary>
+    ///     GDK 版安装：解包 .msixvc 到独立目录后直接可运行，不做系统包注册。
+    /// </summary>
+    private void StartInstallGdk(string filePath, string versionId)
+    {
+        if (_installingVersions.Contains(versionId))
+            return;
+
+        _installingVersions.Add(versionId);
+        RefreshLocalVersions();
+
+        LabStatus.Text = Lang.Text("Bedrock.Gdk.Extracting");
+        LabDetail.Text = Lang.Text("Bedrock.Gdk.ExtractingDetail", versionId);
+        BtnLaunch.IsEnabled = false;
+
+        InstallGdkPackage(filePath, versionId);
+    }
+
+    private void InstallGdkPackage(string filePath, string versionId)
+    {
+        Task.Run(() =>
+        {
+            try
+            {
+                ModBase.Log($"[Bedrock] 开始解包 GDK 版本: {filePath}", ModBase.LogLevel.Normal);
+
+                // 解包前结束运行中的实例，避免目标文件被占用
+                ModBedrockGdk.StopProcesses();
+
+                var extractDir = ModBedrockUwp.GetVersionDirectory(
+                    Path.Combine(BedrockVersionsDir, "extracted"), versionId);
+                if (Directory.Exists(extractDir))
+                    Directory.Delete(extractDir, true);
+                Directory.CreateDirectory(extractDir);
+
+                ModBase.Log($"[Bedrock] 解密解包到: {extractDir}", ModBase.LogLevel.Normal);
+
+                var lastPercent = -1;
+                ModBedrockGdk.Extract(filePath, extractDir, (_, index, total) =>
+                {
+                    if (total <= 0) return;
+                    var percent = index * 100 / total;
+                    if (percent == lastPercent) return;
+                    lastPercent = percent;
+                    ModBase.RunInUi(() => LabDetail.Text =
+                        Lang.Text("Bedrock.Gdk.ExtractingFile", versionId, percent));
+                });
+
+                if (!ModBedrockGdk.IsInstalled(extractDir))
+                    throw new FileNotFoundException(Lang.Text("Bedrock.Gdk.ExecutableMissing"));
+
+                ModBase.Log($"[Bedrock] GDK 版本已解包: {versionId}",
+                    ModBase.LogLevel.Normal,
+                    userSummary: Lang.Text("Bedrock.Gdk.ExtractSuccessSummary", versionId));
+
+                ModBase.RunInUi(() =>
+                {
+                    IsBedrockInstalled = true;
+                    BedrockInstallPath = extractDir;
+                    BedrockVersion = versionId;
+                    _isStorePackage = false;
+                    _isGdkPortable = true;
+                    BtnUpdate.Visibility = Visibility.Collapsed;
+                    ShapeStatusDot.Fill = (Brush)FindResource("ColorBrush3");
+                    LabStatus.Text = Lang.Text("Bedrock.Gdk.Extracted");
+                    LabDetail.Text = extractDir;
+                    LabVersion.Text = Lang.Text("Bedrock.Status.Version", versionId);
+                    LabSelectedVersion.Text = Lang.Text("Bedrock.Status.Ready");
+                    BtnLaunch.IsEnabled = true;
+                    BtnLaunch.Text = Lang.Text("Bedrock.Action.Launch");
+                    RefreshLocalVersions();
+                    ModMain.frmBedrockLeft?.RefreshStatus();
+                });
+            }
+            catch (Exception ex)
+            {
+                ModBase.Log(ex, "GDK 版本解包失败",
+                    ModBase.LogLevel.Feedback,
+                    userSummary: Lang.Text("Bedrock.Gdk.ExtractFailed", versionId, ex.Message));
+
+                ModBase.RunInUi(() =>
+                {
+                    LabStatus.Text = Lang.Text("Bedrock.Install.Failed");
+                    LabDetail.Text = Lang.Text("Bedrock.Install.FailedHint", filePath);
+                    BtnLaunch.IsEnabled = true;
+                });
+            }
+            finally
+            {
+                _installingVersions.Remove(versionId);
+                ModBase.RunInUi(RefreshLocalVersions);
+            }
+        });
+    }
+
     private void LocalDelete_Click(object sender, EventArgs e)
     {
         if (sender is not MyIconButton btn || btn.Tag is not string versionId)
             return;
 
-        var dir = ModBedrockUwp.GetVersionDirectory(BedrockVersionsDir, versionId);
-        try
-        {
-            if (Directory.Exists(dir))
-                Directory.Delete(dir, true);
+        var packageDir = ModBedrockUwp.GetVersionDirectory(BedrockVersionsDir, versionId);
+        var extractDir = ModBedrockUwp.GetVersionDirectory(
+            Path.Combine(BedrockVersionsDir, "extracted"), versionId);
+        var isRegistered = string.Equals(_registeredVersionId, versionId, StringComparison.OrdinalIgnoreCase);
+        var isGdk = IsGdkVersion(versionId);
 
-            ModBase.Log($"[Bedrock] 已删除本地版本: {versionId}",
-                ModBase.LogLevel.Normal,
-                userSummary: Lang.Text("Bedrock.Local.Deleted", versionId));
-        }
-        catch (Exception ex)
+        Task.Run(() =>
         {
-            ModBase.Log(ex, "删除本地版本失败",
-                ModBase.LogLevel.Feedback,
-                userSummary: Lang.Text("Bedrock.Local.DeleteFailed", ex.Message));
-        }
+            try
+            {
+                // GDK 便携版没有系统包注册，结束进程后直接删除目录即可
+                if (isGdk)
+                    ModBedrockGdk.StopProcesses();
+                // 正在使用的 UWP 版本要先卸载，否则删除目录后会留下失效的包注册
+                else if (isRegistered)
+                    ModBedrockUwp.UninstallPreservingData();
 
-        RefreshLocalVersions();
+                if (Directory.Exists(packageDir))
+                    Directory.Delete(packageDir, true);
+                if (Directory.Exists(extractDir))
+                    Directory.Delete(extractDir, true);
+
+                ModBase.Log($"[Bedrock] 已删除本地版本: {versionId}",
+                    ModBase.LogLevel.Normal,
+                    userSummary: Lang.Text("Bedrock.Local.Deleted", versionId));
+            }
+            catch (Exception ex)
+            {
+                ModBase.Log(ex, "删除本地版本失败",
+                    ModBase.LogLevel.Feedback,
+                    userSummary: Lang.Text("Bedrock.Local.DeleteFailed", ex.Message));
+            }
+
+            ModBase.RunInUi(() =>
+            {
+                if (isRegistered)
+                {
+                    IsBedrockInstalled = false;
+                    BedrockInstallPath = null;
+                    BedrockVersion = null;
+                    _isGdkPortable = false;
+                    DetectBedrockInstallation();
+                }
+                else
+                {
+                    RefreshLocalVersions();
+                }
+            });
+        });
     }
 
     /// <summary>
@@ -569,13 +936,6 @@ public partial class PageBedrockRight
         if (dialog.ShowDialog() != true) return;
 
         var sourcePath = dialog.FileName;
-        if (Path.GetExtension(sourcePath).Equals(".msixvc", StringComparison.OrdinalIgnoreCase))
-        {
-            ModBase.Log("[Bedrock] .msixvc 需要内容密钥，无法侧载安装",
-                ModBase.LogLevel.Hint,
-                userSummary: Lang.Text("Bedrock.Version.GdkUnsupported"));
-            return;
-        }
 
         LabStatus.Text = Lang.Text("Bedrock.Import.Importing");
         LabDetail.Text = Path.GetFileName(sourcePath);
@@ -883,8 +1243,8 @@ public partial class PageBedrockRight
 
         var tags = new List<string> { buildType };
         if (!available) tags.Add(Lang.Text("Bedrock.List.NoSource"));
-        // GDK 版本的 .msixvc 需要内容密钥，启动器无法侧载安装
-        if (buildType.Equals("GDK", StringComparison.OrdinalIgnoreCase)) tags.Add(Lang.Text("Bedrock.List.SideloadUnsupported"));
+        // GDK 版为 .msixvc 便携包，解包后直接运行，可与已注册的 UWP 版本共存
+        if (buildType.Equals("GDK", StringComparison.OrdinalIgnoreCase)) tags.Add(Lang.Text("Bedrock.List.GdkPortable"));
 
         var row = new MyListItem
         {
@@ -1175,7 +1535,8 @@ public partial class PageBedrockRight
     /// <summary>
     ///     参考 BedrockBoot：使用开发模式注册安装基岩版包。
     ///     开发模式（Add-AppxPackage -Register）安装的包不会被 Microsoft Store 自动更新。
-    ///     对所有格式（.appx / .msix / .msixvc / .appxbundle）统一处理：解压 → 删除签名 → 注册。
+    ///     对所有 UWP 格式（.appx / .msix / .appxbundle / .msixbundle）统一处理：解压 → 删除签名 → 注册。
+    ///     GDK 的 .msixvc 走 <see cref="InstallGdkPackage" />，不会进入这里。
     /// </summary>
     /// <param name="filePath">安装包文件路径</param>
     /// <param name="versionId">版本标识</param>

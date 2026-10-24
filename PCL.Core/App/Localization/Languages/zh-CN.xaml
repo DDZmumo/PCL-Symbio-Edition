@@ -71,11 +71,18 @@
     <sys:String x:Key="Bedrock.Folder.Saves">存档目录</sys:String>
     <sys:String x:Key="Bedrock.Folder.Screenshots">截图目录</sys:String>
     <sys:String x:Key="Bedrock.Folder.XboxNotInstalled">未能打开 Xbox 应用，请确认系统中已安装 Xbox 应用。</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExecutableMissing">解包完成，但未找到 Minecraft.Windows.exe，安装包可能不完整</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExtractFailed">解包 GDK 版本 {0} 失败：{1}</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExtractSuccessSummary">GDK 版本 {0} 解包完成，可直接启动</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.Extracted">GDK 便携版已就绪</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.Extracting">正在解包 GDK 版本...</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExtractingDetail">正在解密并解包 {0}，请勿关闭启动器...</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExtractingFile">正在解包 {0}（{1}%）</sys:String>
     <sys:String x:Key="Bedrock.Import.DialogTitle">选择基岩版安装包</sys:String>
     <sys:String x:Key="Bedrock.Import.Error">导入基岩版安装包失败</sys:String>
     <sys:String x:Key="Bedrock.Import.Failed">导入失败</sys:String>
     <sys:String x:Key="Bedrock.Import.FailedWithMessage">导入失败: {0}</sys:String>
-    <sys:String x:Key="Bedrock.Import.Filter">基岩版安装包|*.appx;*.msix;*.appxbundle;*.msixbundle|所有文件|*.*</sys:String>
+    <sys:String x:Key="Bedrock.Import.Filter">基岩版安装包|*.appx;*.msix;*.appxbundle;*.msixbundle;*.msixvc|所有文件|*.*</sys:String>
     <sys:String x:Key="Bedrock.Import.Importing">正在导入安装包...</sys:String>
     <sys:String x:Key="Bedrock.Import.Success">已导入基岩版 {0}</sys:String>
     <sys:String x:Key="Bedrock.Install.CheckingDependencies">正在检查 UWP 依赖与已安装版本...</sys:String>
@@ -98,15 +105,16 @@
     <sys:String x:Key="Bedrock.List.Empty">暂无可用版本</sys:String>
     <sys:String x:Key="Bedrock.List.EmptyHint">暂无可用版本，请检查网络后刷新页面</sys:String>
     <sys:String x:Key="Bedrock.List.Found">找到 {0} 个版本</sys:String>
+    <sys:String x:Key="Bedrock.List.GdkPortable">便携安装（可与其它版本共存）</sys:String>
     <sys:String x:Key="Bedrock.List.LoadFailed">基岩版版本列表加载失败</sys:String>
     <sys:String x:Key="Bedrock.List.NoMatch">没有找到匹配的版本</sys:String>
     <sys:String x:Key="Bedrock.List.NoMatchHint">没有找到匹配的版本，试试更换关键词或筛选条件</sys:String>
     <sys:String x:Key="Bedrock.List.NoSource">无下载源</sys:String>
     <sys:String x:Key="Bedrock.List.OtherSeries">其他</sys:String>
-    <sys:String x:Key="Bedrock.List.SideloadUnsupported">暂不支持侧载</sys:String>
     <sys:String x:Key="Bedrock.List.Total">共 {0} 个版本</sys:String>
     <sys:String x:Key="Bedrock.List.UnknownVersion">未知版本</sys:String>
     <sys:String x:Key="Bedrock.Local.Delete">删除安装包</sys:String>
+    <sys:String x:Key="Bedrock.Local.DeleteRegistered">卸载并删除此版本（保留存档）</sys:String>
     <sys:String x:Key="Bedrock.Local.Deleted">已删除基岩版 {0}</sys:String>
     <sys:String x:Key="Bedrock.Local.DeleteFailed">删除失败: {0}</sys:String>
     <sys:String x:Key="Bedrock.Local.Description">安装包会保存在这里，鼠标移到版本行上即可安装、启动或删除。旧版本可先在 mcappx 网页手动下载，再点击右侧按钮导入。</sys:String>
@@ -114,8 +122,12 @@
     <sys:String x:Key="Bedrock.Local.Install">安装此版本</sys:String>
     <sys:String x:Key="Bedrock.Local.Installing">正在安装...</sys:String>
     <sys:String x:Key="Bedrock.Local.Launch">启动此版本</sys:String>
+    <sys:String x:Key="Bedrock.Local.LaunchGdk">直接启动（便携版，可与其它版本同时运行）</sys:String>
+    <sys:String x:Key="Bedrock.Local.PackageMissing">安装包已被删除，无法切换到该版本</sys:String>
     <sys:String x:Key="Bedrock.Local.Reinstall">重新安装此版本</sys:String>
+    <sys:String x:Key="Bedrock.Local.SwitchLaunch">切换到此版本并启动</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Downloaded">已下载</sys:String>
+    <sys:String x:Key="Bedrock.Local.Tag.Gdk">GDK 便携版</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Installed">已安装</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Installing">安装中</sys:String>
     <sys:String x:Key="Bedrock.Local.Title">已下载版本</sys:String>
@@ -137,6 +149,8 @@
     <sys:String x:Key="Bedrock.Status.NotSelected">未选择版本</sys:String>
     <sys:String x:Key="Bedrock.Status.PleaseWait">请稍候...</sys:String>
     <sys:String x:Key="Bedrock.Status.Ready">已就绪</sys:String>
+    <sys:String x:Key="Bedrock.Status.Switching">正在切换基岩版版本...</sys:String>
+    <sys:String x:Key="Bedrock.Status.SwitchingDetail">正在注册基岩版 {0}</sys:String>
     <sys:String x:Key="Bedrock.Status.Title">基岩版状态</sys:String>
     <sys:String x:Key="Bedrock.Status.Version">版本 {0}</sys:String>
     <sys:String x:Key="Bedrock.Status.VersionWithLatest">版本 {0}（最新 {1}）</sys:String>
@@ -145,12 +159,11 @@
     <sys:String x:Key="Bedrock.Store.Opened">已在 Microsoft Store 打开「下载和更新」，点击「获取更新」即可升级基岩版</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadComplete">下载完成</sys:String>
     <sys:String x:Key="Bedrock.Version.Downloaded">已下载</sys:String>
-    <sys:String x:Key="Bedrock.Version.DownloadedGdk">已下载（GDK 版本需内容密钥，暂不支持侧载安装）</sys:String>
+    <sys:String x:Key="Bedrock.Version.DownloadedGdk">已下载（GDK 便携版，可在「已下载版本」中解包安装）</sys:String>
     <sys:String x:Key="Bedrock.Version.Downloading">正在下载...</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadSaved">基岩版 {0} 已保存到本地，可在「已下载版本」中安装</sys:String>
-    <sys:String x:Key="Bedrock.Version.DownloadSavedGdk">基岩版 {0} 已保存到本地（GDK 版本需内容密钥，暂不支持侧载安装）</sys:String>
+    <sys:String x:Key="Bedrock.Version.DownloadSavedGdk">基岩版 {0} 已保存到本地，可在「已下载版本」中解包安装（GDK 便携版，解包后直接启动）</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadTooltip">下载此版本</sys:String>
-    <sys:String x:Key="Bedrock.Version.GdkUnsupported">GDK 版本的 .msixvc 需要内容密钥，暂不支持侧载安装</sys:String>
     <sys:String x:Key="Bedrock.Version.NoSourceTooltip">该版本没有可用的下载源，点击打开网页</sys:String>
     <sys:String x:Key="Bedrock.Version.PageOpened">已打开基岩版 {0} 下载页。下载安装包后，点击「导入安装包」即可安装</sys:String>
 
@@ -704,6 +717,11 @@
 
     <!-- Download.Comp.List.Loading -->
 
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockAddon">正在获取 基岩版附加包 列表</sys:String>
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockMap">正在获取 基岩版地图 列表</sys:String>
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockMaterial">正在获取 基岩版材质包 列表</sys:String>
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockScript">正在获取 基岩版脚本包 列表</sys:String>
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockSkin">正在获取 基岩版皮肤包 列表</sys:String>
     <sys:String x:Key="Download.Comp.List.Loading.DataPack">正在获取 数据包 列表</sys:String>
     <sys:String x:Key="Download.Comp.List.Loading.Mod">正在获取模组列表</sys:String>
     <sys:String x:Key="Download.Comp.List.Loading.Modpack">正在获取 整合包 列表</sys:String>
@@ -716,6 +734,11 @@
 
     <!-- Download.Comp.List.Search -->
 
+    <sys:String x:Key="Download.Comp.List.Search.BedrockAddon">搜索 基岩版附加包</sys:String>
+    <sys:String x:Key="Download.Comp.List.Search.BedrockMap">搜索 基岩版地图</sys:String>
+    <sys:String x:Key="Download.Comp.List.Search.BedrockMaterial">搜索 基岩版材质包</sys:String>
+    <sys:String x:Key="Download.Comp.List.Search.BedrockScript">搜索 基岩版脚本包</sys:String>
+    <sys:String x:Key="Download.Comp.List.Search.BedrockSkin">搜索 基岩版皮肤包</sys:String>
     <sys:String x:Key="Download.Comp.List.Search.DataPack">搜索 数据包</sys:String>
     <sys:String x:Key="Download.Comp.List.Search.Mod">搜索模组</sys:String>
     <sys:String x:Key="Download.Comp.List.Search.Modpack">搜索 整合包</sys:String>
@@ -745,6 +768,11 @@
     <!-- Download.Comp.Type -->
 
     <sys:String x:Key="Download.Comp.Type.Any">任意</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockAddon">基岩版附加包</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockMap">基岩版地图</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockMaterial">基岩版材质包</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockScript">基岩版脚本包</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockSkin">基岩版皮肤包</sys:String>
     <sys:String x:Key="Download.Comp.Type.DataPack">数据包</sys:String>
     <sys:String x:Key="Download.Comp.Type.Mod">模组</sys:String>
     <sys:String x:Key="Download.Comp.Type.Modpack">整合包</sys:String>
@@ -800,6 +828,12 @@
 
     <!-- Download.Left -->
 
+    <sys:String x:Key="Download.Left.Bedrock">基岩版资源</sys:String>
+    <sys:String x:Key="Download.Left.BedrockAddon">附加包</sys:String>
+    <sys:String x:Key="Download.Left.BedrockMap">地图</sys:String>
+    <sys:String x:Key="Download.Left.BedrockMaterial">材质包</sys:String>
+    <sys:String x:Key="Download.Left.BedrockScript">脚本包</sys:String>
+    <sys:String x:Key="Download.Left.BedrockSkin">皮肤包</sys:String>
     <sys:String x:Key="Download.Left.Cleanroom">Cleanroom</sys:String>
     <sys:String x:Key="Download.Left.CommunityResources">社区资源</sys:String>
     <sys:String x:Key="Download.Left.DataPack">数据包</sys:String>

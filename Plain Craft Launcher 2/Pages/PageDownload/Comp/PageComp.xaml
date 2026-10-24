@@ -58,7 +58,7 @@
                         <local:MyComboBoxItem Content="{DynamicResource Download.Comp.Sort.Updated}" Tag="6" />
                     </local:MyComboBox>
                     <!--版本-->
-                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                    <TextBlock x:Name="LabVersion" VerticalAlignment="Center" HorizontalAlignment="Left"
                                Text="{DynamicResource Download.Comp.Filter.Version}" Margin="5,0,5,0"
                                Grid.Row="2" />
                     <local:MyComboBox x:Name="TextSearchVersion" Grid.Row="2" Grid.Column="1" IsEditable="True"

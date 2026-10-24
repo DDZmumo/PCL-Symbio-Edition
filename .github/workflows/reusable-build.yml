@@ -40,6 +40,8 @@ jobs:
           PCL_MS_CLIENT_ID: ${{ secrets.CLIENT_ID }}
           PCL_CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
           PCL_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          PCL_BEDROCK_RELEASE_CIK: ${{ secrets.BEDROCK_RELEASE_CIK }}
+          PCL_BEDROCK_PREVIEW_CIK: ${{ secrets.BEDROCK_PREVIEW_CIK }}
           PCL_GITHUB_SHA: ${{ github.sha }}
         run: |
           dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" \

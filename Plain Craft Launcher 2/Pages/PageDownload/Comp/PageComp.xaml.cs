@@ -276,7 +276,8 @@ public partial class PageComp
         ((MyPageRight)Parent).PageLoaderInit(Load, PanLoad, PanContent, PanAlways, loader, _ => Load_OnFinish(),
             LoaderInput);
         // 将最高 Drop 加入筛选
-        if (ModDownload.AllDrops is not null && ModDownload.AllDrops.Count != 0 && ModDownload.AllDrops.First() > 250)
+        if (!ModComp.IsBedrockType(PageType) && ModDownload.AllDrops is not null && ModDownload.AllDrops.Count != 0 &&
+            ModDownload.AllDrops.First() > 250)
         {
             var highestVersion = McInstanceInfo.DropToVersion(ModDownload.AllDrops.First());
             if ((((MyComboBoxItem)TextSearchVersion.Items[1]).Content.ToString() ?? "") !=
@@ -303,6 +304,13 @@ public partial class PageComp
             ComboSearchLoader.Visibility = Visibility.Collapsed;
             ComboSearchShaderLoader.Visibility = Visibility.Collapsed;
         }
+
+        // 基岩版资源与 Java 版版本号无关，隐藏版本筛选
+        if (ModComp.IsBedrockType(PageType))
+        {
+            LabVersion.Visibility = Visibility.Collapsed;
+            TextSearchVersion.Visibility = Visibility.Collapsed;
+        }
     }
 
     private void PageComp_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -317,6 +325,8 @@ public partial class PageComp
         var gameVersion = TextSearchVersion.Text == Lang.Text("Download.Comp.Filter.Version.AllInputAvailable") ? null :
             TextSearchVersion.Text.Contains(".") || TextSearchVersion.Text.Contains("w") ? TextSearchVersion.Text :
             null;
+        if (ModComp.IsBedrockType(PageType))
+            gameVersion = null; // 基岩版资源不按 Java 版本筛选
         var modLoader = ModComp.CompLoaderType.Any;
         if (PageType == ModComp.CompType.Mod || PageType == ModComp.CompType.ModPack) // 只有 Mod 考虑加载器
         {

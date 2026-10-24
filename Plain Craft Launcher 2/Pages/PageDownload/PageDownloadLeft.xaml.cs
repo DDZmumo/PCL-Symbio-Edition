@@ -183,6 +183,76 @@ public partial class PageDownloadLeft : IRefreshable
                 ItemFavorites.Checked = true;
                 break;
             }
+            case FormMain.PageSubType.DownloadBedrockAddon:
+            {
+                ModComp.compProjectCache.Clear();
+                ModComp.compFilesCache.Clear();
+                if (ModMain.frmDownloadBedrockAddon is not null)
+                {
+                    ModMain.frmDownloadBedrockAddon.Content.storage = new ModComp.CompProjectStorage();
+                    ModMain.frmDownloadBedrockAddon.Content.page = 0;
+                    ModMain.frmDownloadBedrockAddon.PageLoaderRestart();
+                }
+
+                ItemBedrockAddon.Checked = true;
+                break;
+            }
+            case FormMain.PageSubType.DownloadBedrockMap:
+            {
+                ModComp.compProjectCache.Clear();
+                ModComp.compFilesCache.Clear();
+                if (ModMain.frmDownloadBedrockMap is not null)
+                {
+                    ModMain.frmDownloadBedrockMap.Content.storage = new ModComp.CompProjectStorage();
+                    ModMain.frmDownloadBedrockMap.Content.page = 0;
+                    ModMain.frmDownloadBedrockMap.PageLoaderRestart();
+                }
+
+                ItemBedrockMap.Checked = true;
+                break;
+            }
+            case FormMain.PageSubType.DownloadBedrockMaterial:
+            {
+                ModComp.compProjectCache.Clear();
+                ModComp.compFilesCache.Clear();
+                if (ModMain.frmDownloadBedrockMaterial is not null)
+                {
+                    ModMain.frmDownloadBedrockMaterial.Content.storage = new ModComp.CompProjectStorage();
+                    ModMain.frmDownloadBedrockMaterial.Content.page = 0;
+                    ModMain.frmDownloadBedrockMaterial.PageLoaderRestart();
+                }
+
+                ItemBedrockMaterial.Checked = true;
+                break;
+            }
+            case FormMain.PageSubType.DownloadBedrockScript:
+            {
+                ModComp.compProjectCache.Clear();
+                ModComp.compFilesCache.Clear();
+                if (ModMain.frmDownloadBedrockScript is not null)
+                {
+                    ModMain.frmDownloadBedrockScript.Content.storage = new ModComp.CompProjectStorage();
+                    ModMain.frmDownloadBedrockScript.Content.page = 0;
+                    ModMain.frmDownloadBedrockScript.PageLoaderRestart();
+                }
+
+                ItemBedrockScript.Checked = true;
+                break;
+            }
+            case FormMain.PageSubType.DownloadBedrockSkin:
+            {
+                ModComp.compProjectCache.Clear();
+                ModComp.compFilesCache.Clear();
+                if (ModMain.frmDownloadBedrockSkin is not null)
+                {
+                    ModMain.frmDownloadBedrockSkin.Content.storage = new ModComp.CompProjectStorage();
+                    ModMain.frmDownloadBedrockSkin.Content.page = 0;
+                    ModMain.frmDownloadBedrockSkin.PageLoaderRestart();
+                }
+
+                ItemBedrockSkin.Checked = true;
+                break;
+            }
         }
 
         HintService.Hint(Lang.Text("Download.Left.Hint.Refreshing"), log: false);
@@ -223,6 +293,11 @@ public partial class PageDownloadLeft : IRefreshable
         ItemFabric.Check += PageCheck;
         ItemLegacyFabric.Check += PageCheck;
         ItemLabyMod.Check += PageCheck;
+        ItemBedrockAddon.Check += PageCheck;
+        ItemBedrockMap.Check += PageCheck;
+        ItemBedrockMaterial.Check += PageCheck;
+        ItemBedrockScript.Check += PageCheck;
+        ItemBedrockSkin.Check += PageCheck;
     }
 
     /// <summary>
@@ -341,6 +416,36 @@ public partial class PageDownloadLeft : IRefreshable
                 if (ModMain.frmDownloadLegacyFabric is null)
                     ModMain.frmDownloadLegacyFabric = new PageDownloadLegacyFabric();
                 return ModMain.frmDownloadLegacyFabric;
+            }
+            case FormMain.PageSubType.DownloadBedrockAddon:
+            {
+                if (ModMain.frmDownloadBedrockAddon is null)
+                    ModMain.frmDownloadBedrockAddon = new PageDownloadBedrockAddon();
+                return ModMain.frmDownloadBedrockAddon;
+            }
+            case FormMain.PageSubType.DownloadBedrockMap:
+            {
+                if (ModMain.frmDownloadBedrockMap is null)
+                    ModMain.frmDownloadBedrockMap = new PageDownloadBedrockMap();
+                return ModMain.frmDownloadBedrockMap;
+            }
+            case FormMain.PageSubType.DownloadBedrockMaterial:
+            {
+                if (ModMain.frmDownloadBedrockMaterial is null)
+                    ModMain.frmDownloadBedrockMaterial = new PageDownloadBedrockMaterial();
+                return ModMain.frmDownloadBedrockMaterial;
+            }
+            case FormMain.PageSubType.DownloadBedrockScript:
+            {
+                if (ModMain.frmDownloadBedrockScript is null)
+                    ModMain.frmDownloadBedrockScript = new PageDownloadBedrockScript();
+                return ModMain.frmDownloadBedrockScript;
+            }
+            case FormMain.PageSubType.DownloadBedrockSkin:
+            {
+                if (ModMain.frmDownloadBedrockSkin is null)
+                    ModMain.frmDownloadBedrockSkin = new PageDownloadBedrockSkin();
+                return ModMain.frmDownloadBedrockSkin;
             }
 
             default:

@@ -352,6 +352,31 @@ public partial class MyCompItem
                         targetVersion = ModMain.frmDownloadWorld.Content.loader.input.gameVersion;
                         break;
                     }
+                    case FormMain.PageSubType.DownloadBedrockAddon:
+                    {
+                        targetType = ModComp.CompType.BedrockAddon;
+                        break;
+                    }
+                    case FormMain.PageSubType.DownloadBedrockMap:
+                    {
+                        targetType = ModComp.CompType.BedrockMap;
+                        break;
+                    }
+                    case FormMain.PageSubType.DownloadBedrockMaterial:
+                    {
+                        targetType = ModComp.CompType.BedrockMaterial;
+                        break;
+                    }
+                    case FormMain.PageSubType.DownloadBedrockScript:
+                    {
+                        targetType = ModComp.CompType.BedrockScript;
+                        break;
+                    }
+                    case FormMain.PageSubType.DownloadBedrockSkin:
+                    {
+                        targetType = ModComp.CompType.BedrockSkin;
+                        break;
+                    }
                 }
             }
         }

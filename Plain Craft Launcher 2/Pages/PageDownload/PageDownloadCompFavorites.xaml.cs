@@ -191,6 +191,11 @@ public partial class PageDownloadCompFavorites
         (int)ModComp.CompType.DataPack => $"{Lang.Text("Download.Comp.Type.DataPack")} ({{0}})",
         (int)ModComp.CompType.Plugin => $"{Lang.Text("Download.Comp.Type.Plugin")} ({{0}})",
         (int)ModComp.CompType.World => $"{Lang.Text("Download.Comp.Type.World")} ({{0}})",
+        (int)ModComp.CompType.BedrockAddon => $"{Lang.Text("Download.Comp.Type.BedrockAddon")} ({{0}})",
+        (int)ModComp.CompType.BedrockMap => $"{Lang.Text("Download.Comp.Type.BedrockMap")} ({{0}})",
+        (int)ModComp.CompType.BedrockMaterial => $"{Lang.Text("Download.Comp.Type.BedrockMaterial")} ({{0}})",
+        (int)ModComp.CompType.BedrockScript => $"{Lang.Text("Download.Comp.Type.BedrockScript")} ({{0}})",
+        (int)ModComp.CompType.BedrockSkin => $"{Lang.Text("Download.Comp.Type.BedrockSkin")} ({{0}})",
         _ => $"{Lang.Text("Download.Comp.Favorites.UnknownType")} ({{0}})"
     };
 

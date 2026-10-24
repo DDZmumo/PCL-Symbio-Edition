@@ -274,13 +274,31 @@ public partial class PageDownloadCompDetail
                     ModComp.CompType.Shader => Lang.Text("Download.Comp.Type.Shader"),
                     ModComp.CompType.DataPack => Lang.Text("Download.Comp.Type.DataPack"),
                     ModComp.CompType.World => Lang.Text("Download.Comp.Type.World"),
+                    ModComp.CompType.BedrockAddon => Lang.Text("Download.Comp.Type.BedrockAddon"),
+                    ModComp.CompType.BedrockMap => Lang.Text("Download.Comp.Type.BedrockMap"),
+                    ModComp.CompType.BedrockMaterial => Lang.Text("Download.Comp.Type.BedrockMaterial"),
+                    ModComp.CompType.BedrockScript => Lang.Text("Download.Comp.Type.BedrockScript"),
+                    ModComp.CompType.BedrockSkin => Lang.Text("Download.Comp.Type.BedrockSkin"),
                     _ => ""
                 };
 
                 // 确认默认保存位置
                 string defaultFolder = null;
                 var allowedLoaders = new List<ModComp.CompLoaderType>();
-                if (file.Type != ModComp.CompType.ModPack)
+                if (ModComp.IsBedrockType(file.Type))
+                {
+                    // 基岩版资源不能安装进 Java 实例，默认使用上次保存的文件夹或当前 MC 文件夹
+                    if (cachedFolder.ContainsKey(file.Type) && !string.IsNullOrEmpty(cachedFolder[file.Type]))
+                    {
+                        defaultFolder = cachedFolder[file.Type];
+                    }
+                    else
+                    {
+                        defaultFolder = ModFolder.mcFolderSelected;
+                    }
+                    ModBase.Log($"[Comp] 基岩版资源默认下载位置：{defaultFolder}");
+                }
+                else if (file.Type != ModComp.CompType.ModPack)
                 {
                     var subFolder = "";
                     switch (file.Type)
@@ -383,9 +401,11 @@ public partial class PageDownloadCompDetail
                         fileName, Lang.Text("Download.Comp.Detail.ResourceFile.Filter", desc) + "|" +
                                   (file.Type == ModComp.CompType.Mod
                                       ? file.FileName.EndsWith(".litemod") ? "*.litemod" : "*.jar"
-                                      : file.FileName.EndsWith(".mrpack")
-                                          ? "*.mrpack"
-                                          : "*.zip"),
+                                      : ModComp.IsBedrockType(file.Type)
+                                          ? "*.mcaddon;*.mcpack;*.mcworld"
+                                          : file.FileName.EndsWith(".mrpack")
+                                              ? "*.mrpack"
+                                              : "*.zip"),
                         defaultFolder);
 
                     if (!target.Contains("\\")) return;

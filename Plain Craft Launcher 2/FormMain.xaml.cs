@@ -1455,6 +1455,11 @@ public partial class FormMain
         DownloadLiteLoader = 16,
         DownloadLabyMod = 17,
         DownloadLegacyFabric = 18,
+        DownloadBedrockAddon = 19,
+        DownloadBedrockMap = 20,
+        DownloadBedrockMaterial = 21,
+        DownloadBedrockScript = 22,
+        DownloadBedrockSkin = 23,
 
         SetupLaunch = 0,
         SetupUI = 1,

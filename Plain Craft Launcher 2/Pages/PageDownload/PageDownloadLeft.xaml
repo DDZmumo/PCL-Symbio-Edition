@@ -137,6 +137,83 @@
                 </local:MyListItem.Buttons>
             </local:MyListItem>
 
+            <TextBlock Text="{DynamicResource Download.Left.Bedrock}" Margin="13,10,5,4" Opacity="0.6" FontSize="12" />
+            <local:MyListItem x:Name="ItemBedrockAddon" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="19"
+                              Check="PageCheck"
+                              MinPaddingRight="35" Height="36" VerticalAlignment="Top"
+                              Title="{DynamicResource Download.Left.BedrockAddon}"
+                              LogoScale="0.97"
+                              SvgIcon="lucide/boxes">
+                <local:MyListItem.Buttons>
+                    <x:Array Type="{x:Type local:MyIconButton}">
+                        <local:MyIconButton Tag="19" ToolTip="{DynamicResource Common.Action.Refresh}"
+                                            ToolTipService.Placement="Right" Click="RefreshButton_Click"
+                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                                            LogoScale="0.85" SvgIcon="lucide/refresh-cw" />
+                    </x:Array>
+                </local:MyListItem.Buttons>
+            </local:MyListItem>
+            <local:MyListItem x:Name="ItemBedrockMap" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="20"
+                              Check="PageCheck"
+                              MinPaddingRight="35" Height="36" VerticalAlignment="Top"
+                              Title="{DynamicResource Download.Left.BedrockMap}"
+                              LogoScale="0.85"
+                              SvgIcon="lucide/globe">
+                <local:MyListItem.Buttons>
+                    <x:Array Type="{x:Type local:MyIconButton}">
+                        <local:MyIconButton Tag="20" ToolTip="{DynamicResource Common.Action.Refresh}"
+                                            ToolTipService.Placement="Right" Click="RefreshButton_Click"
+                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                                            LogoScale="0.85" SvgIcon="lucide/refresh-cw" />
+                    </x:Array>
+                </local:MyListItem.Buttons>
+            </local:MyListItem>
+            <local:MyListItem x:Name="ItemBedrockMaterial" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="21"
+                              Check="PageCheck"
+                              MinPaddingRight="35" Height="36" VerticalAlignment="Top"
+                              Title="{DynamicResource Download.Left.BedrockMaterial}"
+                              LogoScale="0.85"
+                              SvgIcon="lucide/palette">
+                <local:MyListItem.Buttons>
+                    <x:Array Type="{x:Type local:MyIconButton}">
+                        <local:MyIconButton Tag="21" ToolTip="{DynamicResource Common.Action.Refresh}"
+                                            ToolTipService.Placement="Right" Click="RefreshButton_Click"
+                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                                            LogoScale="0.85" SvgIcon="lucide/refresh-cw" />
+                    </x:Array>
+                </local:MyListItem.Buttons>
+            </local:MyListItem>
+            <local:MyListItem x:Name="ItemBedrockScript" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="22"
+                              Check="PageCheck"
+                              MinPaddingRight="35" Height="36" VerticalAlignment="Top"
+                              Title="{DynamicResource Download.Left.BedrockScript}"
+                              LogoScale="0.85"
+                              SvgIcon="lucide/scroll-text">
+                <local:MyListItem.Buttons>
+                    <x:Array Type="{x:Type local:MyIconButton}">
+                        <local:MyIconButton Tag="22" ToolTip="{DynamicResource Common.Action.Refresh}"
+                                            ToolTipService.Placement="Right" Click="RefreshButton_Click"
+                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                                            LogoScale="0.85" SvgIcon="lucide/refresh-cw" />
+                    </x:Array>
+                </local:MyListItem.Buttons>
+            </local:MyListItem>
+            <local:MyListItem x:Name="ItemBedrockSkin" Type="RadioBox" IsScaleAnimationEnabled="False" Tag="23"
+                              Check="PageCheck"
+                              MinPaddingRight="35" Height="36" VerticalAlignment="Top"
+                              Title="{DynamicResource Download.Left.BedrockSkin}"
+                              LogoScale="0.85"
+                              SvgIcon="lucide/shirt">
+                <local:MyListItem.Buttons>
+                    <x:Array Type="{x:Type local:MyIconButton}">
+                        <local:MyIconButton Tag="23" ToolTip="{DynamicResource Common.Action.Refresh}"
+                                            ToolTipService.Placement="Right" Click="RefreshButton_Click"
+                                            ToolTipService.InitialShowDelay="200" ToolTipService.VerticalOffset="-1"
+                                            LogoScale="0.85" SvgIcon="lucide/refresh-cw" />
+                    </x:Array>
+                </local:MyListItem.Buttons>
+            </local:MyListItem>
+
             <TextBlock Text="{DynamicResource Download.Left.Installation}" Margin="13,10,5,4" Opacity="0.6" FontSize="12" />
             <local:MyListItem x:Name="ItemClient" IsScaleAnimationEnabled="False" Type="RadioBox" Tag="9"
                               Check="PageCheck"

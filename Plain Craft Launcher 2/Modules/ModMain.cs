@@ -53,6 +53,11 @@ public static class ModMain
     public static PageDownloadResourcePack? frmDownloadResourcePack;
     public static PageDownloadWorld? frmDownloadWorld;
     public static PageDownloadCompFavorites? frmDownloadCompFavorites;
+    public static PageDownloadBedrockAddon? frmDownloadBedrockAddon;
+    public static PageDownloadBedrockMap? frmDownloadBedrockMap;
+    public static PageDownloadBedrockMaterial? frmDownloadBedrockMaterial;
+    public static PageDownloadBedrockScript? frmDownloadBedrockScript;
+    public static PageDownloadBedrockSkin? frmDownloadBedrockSkin;
     public static PageSetupLeft? frmSetupLeft;
     public static PageSetupLaunch? frmSetupLaunch;
     public static PageSetupUI? frmSetupUI;

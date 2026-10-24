@@ -71,11 +71,18 @@
     <sys:String x:Key="Bedrock.Folder.Saves">saves folder</sys:String>
     <sys:String x:Key="Bedrock.Folder.Screenshots">screenshots folder</sys:String>
     <sys:String x:Key="Bedrock.Folder.XboxNotInstalled">Could not open the Xbox app. Make sure it is installed on this system.</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExecutableMissing">Extraction finished, but Minecraft.Windows.exe was not found. The package may be incomplete</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExtractFailed">Failed to extract GDK version {0}: {1}</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExtractSuccessSummary">GDK version {0} extracted and ready to launch</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.Extracted">GDK portable build ready</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.Extracting">Extracting GDK version...</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExtractingDetail">Decrypting and extracting {0}. Please do not close the launcher...</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.ExtractingFile">Extracting {0} ({1}%)</sys:String>
     <sys:String x:Key="Bedrock.Import.DialogTitle">Select a Bedrock package</sys:String>
     <sys:String x:Key="Bedrock.Import.Error">Failed to import Bedrock package</sys:String>
     <sys:String x:Key="Bedrock.Import.Failed">Import failed</sys:String>
     <sys:String x:Key="Bedrock.Import.FailedWithMessage">Import failed: {0}</sys:String>
-    <sys:String x:Key="Bedrock.Import.Filter">Bedrock package|*.appx;*.msix;*.appxbundle;*.msixbundle|All files|*.*</sys:String>
+    <sys:String x:Key="Bedrock.Import.Filter">Bedrock package|*.appx;*.msix;*.appxbundle;*.msixbundle;*.msixvc|All files|*.*</sys:String>
     <sys:String x:Key="Bedrock.Import.Importing">Importing package...</sys:String>
     <sys:String x:Key="Bedrock.Import.Success">Imported Bedrock {0}</sys:String>
     <sys:String x:Key="Bedrock.Install.CheckingDependencies">Checking UWP dependencies and installed versions...</sys:String>
@@ -103,10 +110,11 @@
     <sys:String x:Key="Bedrock.List.NoMatchHint">No matching versions. Try a different keyword or filter.</sys:String>
     <sys:String x:Key="Bedrock.List.NoSource">No source</sys:String>
     <sys:String x:Key="Bedrock.List.OtherSeries">Other</sys:String>
-    <sys:String x:Key="Bedrock.List.SideloadUnsupported">Sideload unsupported</sys:String>
+    <sys:String x:Key="Bedrock.List.GdkPortable">Portable install (can coexist with other versions)</sys:String>
     <sys:String x:Key="Bedrock.List.Total">{0} versions in total</sys:String>
     <sys:String x:Key="Bedrock.List.UnknownVersion">Unknown version</sys:String>
     <sys:String x:Key="Bedrock.Local.Delete">Delete package</sys:String>
+    <sys:String x:Key="Bedrock.Local.DeleteRegistered">Uninstall and delete this version (keep saves)</sys:String>
     <sys:String x:Key="Bedrock.Local.Deleted">Deleted Bedrock {0}</sys:String>
     <sys:String x:Key="Bedrock.Local.DeleteFailed">Delete failed: {0}</sys:String>
     <sys:String x:Key="Bedrock.Local.Description">Packages are saved here. Hover over a version row to install, launch or delete it. For older versions, download the package manually from the mcappx website and click the button on the right to import it.</sys:String>
@@ -114,8 +122,12 @@
     <sys:String x:Key="Bedrock.Local.Install">Install this version</sys:String>
     <sys:String x:Key="Bedrock.Local.Installing">Installing...</sys:String>
     <sys:String x:Key="Bedrock.Local.Launch">Launch this version</sys:String>
+    <sys:String x:Key="Bedrock.Local.LaunchGdk">Launch directly (portable build, can run alongside other versions)</sys:String>
+    <sys:String x:Key="Bedrock.Local.PackageMissing">The package file has been deleted, so this version cannot be switched to</sys:String>
     <sys:String x:Key="Bedrock.Local.Reinstall">Reinstall this version</sys:String>
+    <sys:String x:Key="Bedrock.Local.SwitchLaunch">Switch to this version and launch</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Downloaded">Downloaded</sys:String>
+    <sys:String x:Key="Bedrock.Local.Tag.Gdk">GDK portable</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Installed">Installed</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Installing">Installing</sys:String>
     <sys:String x:Key="Bedrock.Local.Title">Downloaded versions</sys:String>
@@ -137,6 +149,8 @@
     <sys:String x:Key="Bedrock.Status.NotSelected">No version selected</sys:String>
     <sys:String x:Key="Bedrock.Status.PleaseWait">Please wait...</sys:String>
     <sys:String x:Key="Bedrock.Status.Ready">Ready</sys:String>
+    <sys:String x:Key="Bedrock.Status.Switching">Switching Bedrock version...</sys:String>
+    <sys:String x:Key="Bedrock.Status.SwitchingDetail">Registering Bedrock {0}</sys:String>
     <sys:String x:Key="Bedrock.Status.Title">Bedrock status</sys:String>
     <sys:String x:Key="Bedrock.Status.Version">Version {0}</sys:String>
     <sys:String x:Key="Bedrock.Status.VersionWithLatest">Version {0} (latest {1})</sys:String>
@@ -145,12 +159,11 @@
     <sys:String x:Key="Bedrock.Store.Opened">Opened "Downloads and updates" in Microsoft Store. Click "Get updates" to upgrade Bedrock.</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadComplete">Download complete</sys:String>
     <sys:String x:Key="Bedrock.Version.Downloaded">Downloaded</sys:String>
-    <sys:String x:Key="Bedrock.Version.DownloadedGdk">Downloaded (GDK versions require a content key and cannot be sideloaded)</sys:String>
+    <sys:String x:Key="Bedrock.Version.DownloadedGdk">Downloaded (GDK portable; extract it under "Downloaded versions")</sys:String>
     <sys:String x:Key="Bedrock.Version.Downloading">Downloading...</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadSaved">Bedrock {0} saved locally. Install it under "Downloaded versions".</sys:String>
-    <sys:String x:Key="Bedrock.Version.DownloadSavedGdk">Bedrock {0} saved locally (GDK versions require a content key and cannot be sideloaded).</sys:String>
+    <sys:String x:Key="Bedrock.Version.DownloadSavedGdk">Bedrock {0} saved locally. Extract it under "Downloaded versions" (GDK portable, launches directly after extraction).</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadTooltip">Download this version</sys:String>
-    <sys:String x:Key="Bedrock.Version.GdkUnsupported">GDK .msixvc packages require a content key and cannot be sideloaded</sys:String>
     <sys:String x:Key="Bedrock.Version.NoSourceTooltip">No download source is available for this version. Click to open the web page.</sys:String>
     <sys:String x:Key="Bedrock.Version.PageOpened">Opened the download page for Bedrock {0}. After downloading the package, click "Import package" to install it.</sys:String>
 
@@ -704,6 +717,11 @@
 
     <!-- Download.Comp.List.Loading -->
 
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockAddon">Getting Bedrock add-on list...</sys:String>
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockMap">Getting Bedrock map list...</sys:String>
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockMaterial">Getting Bedrock texture pack list...</sys:String>
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockScript">Getting Bedrock script pack list...</sys:String>
+    <sys:String x:Key="Download.Comp.List.Loading.BedrockSkin">Getting Bedrock skin pack list...</sys:String>
     <sys:String x:Key="Download.Comp.List.Loading.DataPack">Getting data pack list...</sys:String>
     <sys:String x:Key="Download.Comp.List.Loading.Mod">Getting mod list...</sys:String>
     <sys:String x:Key="Download.Comp.List.Loading.Modpack">Getting modpack list...</sys:String>
@@ -716,6 +734,11 @@
 
     <!-- Download.Comp.List.Search -->
 
+    <sys:String x:Key="Download.Comp.List.Search.BedrockAddon">Search Bedrock add-ons</sys:String>
+    <sys:String x:Key="Download.Comp.List.Search.BedrockMap">Search Bedrock maps</sys:String>
+    <sys:String x:Key="Download.Comp.List.Search.BedrockMaterial">Search Bedrock texture packs</sys:String>
+    <sys:String x:Key="Download.Comp.List.Search.BedrockScript">Search Bedrock script packs</sys:String>
+    <sys:String x:Key="Download.Comp.List.Search.BedrockSkin">Search Bedrock skin packs</sys:String>
     <sys:String x:Key="Download.Comp.List.Search.DataPack">Search data packs</sys:String>
     <sys:String x:Key="Download.Comp.List.Search.Mod">Search mods</sys:String>
     <sys:String x:Key="Download.Comp.List.Search.Modpack">Search modpacks</sys:String>
@@ -745,6 +768,11 @@
     <!-- Download.Comp.Type -->
 
     <sys:String x:Key="Download.Comp.Type.Any">Any</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockAddon">Bedrock add-on</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockMap">Bedrock map</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockMaterial">Bedrock texture pack</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockScript">Bedrock script pack</sys:String>
+    <sys:String x:Key="Download.Comp.Type.BedrockSkin">Bedrock skin pack</sys:String>
     <sys:String x:Key="Download.Comp.Type.DataPack">Data pack</sys:String>
     <sys:String x:Key="Download.Comp.Type.Mod">Mod</sys:String>
     <sys:String x:Key="Download.Comp.Type.Modpack">Modpack</sys:String>
@@ -800,6 +828,12 @@
 
     <!-- Download.Left -->
 
+    <sys:String x:Key="Download.Left.Bedrock">Bedrock resources</sys:String>
+    <sys:String x:Key="Download.Left.BedrockAddon">Add-ons</sys:String>
+    <sys:String x:Key="Download.Left.BedrockMap">Maps</sys:String>
+    <sys:String x:Key="Download.Left.BedrockMaterial">Texture packs</sys:String>
+    <sys:String x:Key="Download.Left.BedrockScript">Script packs</sys:String>
+    <sys:String x:Key="Download.Left.BedrockSkin">Skins</sys:String>
     <sys:String x:Key="Download.Left.Cleanroom">Cleanroom</sys:String>
     <sys:String x:Key="Download.Left.CommunityResources">Community resources</sys:String>
     <sys:String x:Key="Download.Left.DataPack">Data packs</sys:String>

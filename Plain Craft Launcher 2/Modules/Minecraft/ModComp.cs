@@ -182,8 +182,40 @@ public static class ModComp
         /// <summary>
         ///     世界。
         /// </summary>
-        World = 7
+        World = 7,
+
+        /// <summary>
+        ///     基岩版附加包。
+        /// </summary>
+        BedrockAddon = 8,
+
+        /// <summary>
+        ///     基岩版地图。
+        /// </summary>
+        BedrockMap = 9,
+
+        /// <summary>
+        ///     基岩版材质包。
+        /// </summary>
+        BedrockMaterial = 10,
+
+        /// <summary>
+        ///     基岩版脚本包。
+        /// </summary>
+        BedrockScript = 11,
+
+        /// <summary>
+        ///     基岩版皮肤包。
+        /// </summary>
+        BedrockSkin = 12
     }
+
+    /// <summary>
+    ///     是否为基岩版资源种类。
+    /// </summary>
+    public static bool IsBedrockType(CompType type) =>
+        type is CompType.BedrockAddon or CompType.BedrockMap or CompType.BedrockMaterial
+            or CompType.BedrockScript or CompType.BedrockSkin;
 
     public enum CompDepsInstallTypes
     {
@@ -218,6 +250,11 @@ public static class ModComp
         CompType.Plugin => "Download.Comp.Type.Plugin",
         CompType.World => "Download.Comp.Type.World",
         CompType.Schematic => "Download.Comp.Type.Schematic",
+        CompType.BedrockAddon => "Download.Comp.Type.BedrockAddon",
+        CompType.BedrockMap => "Download.Comp.Type.BedrockMap",
+        CompType.BedrockMaterial => "Download.Comp.Type.BedrockMaterial",
+        CompType.BedrockScript => "Download.Comp.Type.BedrockScript",
+        CompType.BedrockSkin => "Download.Comp.Type.BedrockSkin",
         _ => "Download.Comp.Type.Unknown"
     });
 
@@ -231,6 +268,11 @@ public static class ModComp
         CompType.Plugin => "Download.Comp.List.Loading.Plugin",
         CompType.World => "Download.Comp.List.Loading.World",
         CompType.Schematic => "Download.Comp.List.Loading.Schematic",
+        CompType.BedrockAddon => "Download.Comp.List.Loading.BedrockAddon",
+        CompType.BedrockMap => "Download.Comp.List.Loading.BedrockMap",
+        CompType.BedrockMaterial => "Download.Comp.List.Loading.BedrockMaterial",
+        CompType.BedrockScript => "Download.Comp.List.Loading.BedrockScript",
+        CompType.BedrockSkin => "Download.Comp.List.Loading.BedrockSkin",
         _ => "Download.Comp.List.Loading.Unknown"
     });
 
@@ -244,6 +286,11 @@ public static class ModComp
         CompType.Plugin => "Download.Comp.List.Search.Plugin",
         CompType.World => "Download.Comp.List.Search.World",
         CompType.Schematic => "Download.Comp.List.Search.Schematic",
+        CompType.BedrockAddon => "Download.Comp.List.Search.BedrockAddon",
+        CompType.BedrockMap => "Download.Comp.List.Search.BedrockMap",
+        CompType.BedrockMaterial => "Download.Comp.List.Search.BedrockMaterial",
+        CompType.BedrockScript => "Download.Comp.List.Search.BedrockScript",
+        CompType.BedrockSkin => "Download.Comp.List.Search.BedrockSkin",
         _ => "Download.Comp.List.Search.Unknown"
     });
 
@@ -1065,7 +1112,7 @@ public static class ModComp
                 result.LogoUrl = null;
 
             // Type
-            result.Type = _GetCurseForgeTypeByWebsite(result.Website);
+            result.Type = _GetCurseForgeType(data, result.Website);
 
             // FileIndexes / VanillaMajorVersions / ModLoaders
             var files = new List<KeyValuePair<int, List<string>>>(); // FileId, GameVersions
@@ -1206,9 +1253,52 @@ public static class ModComp
             return result;
         }
 
+        /// <summary>
+        /// CurseForge classId → 资源种类。用于区分 Java 版与基岩版的同名分类。
+        /// </summary>
+        private static readonly Dictionary<int, CompType> curseForgeClassIdTypes = new()
+        {
+            [6] = CompType.Mod,
+            [4471] = CompType.ModPack,
+            [12] = CompType.ResourcePack,
+            [6552] = CompType.Shader,
+            [6945] = CompType.DataPack,
+            [17] = CompType.World,
+            // 基岩版
+            [4984] = CompType.BedrockAddon,
+            [6913] = CompType.BedrockMap,
+            [6929] = CompType.BedrockMaterial,
+            [6940] = CompType.BedrockScript,
+            [6925] = CompType.BedrockSkin
+        };
+
+        private static CompType _GetCurseForgeType(JsonObject data, string website)
+        {
+            // 优先使用 API 返回的 classId，避免仅凭 URL 判断出错
+            if (data?["classId"]?.ToObject<int?>() is { } classId &&
+                curseForgeClassIdTypes.TryGetValue(classId, out var type))
+                return type;
+
+            return _GetCurseForgeTypeByWebsite(website);
+        }
+
         private static CompType _GetCurseForgeTypeByWebsite(string website)
         {
             var websiteLower = (website ?? "").ToLowerInvariant();
+
+            // 基岩版
+            if (websiteLower.Contains("/minecraft-bedrock/"))
+            {
+                if (websiteLower.Contains("/maps/"))
+                    return CompType.BedrockMap;
+                if (websiteLower.Contains("/texture-packs/"))
+                    return CompType.BedrockMaterial;
+                if (websiteLower.Contains("/scripts/"))
+                    return CompType.BedrockScript;
+                if (websiteLower.Contains("/skins/"))
+                    return CompType.BedrockSkin;
+                return CompType.BedrockAddon;
+            }
 
             if (websiteLower.Contains("/mc-mods/") || websiteLower.Contains("/mod/"))
                 return CompType.Mod;
@@ -1985,9 +2075,10 @@ public static class ModComp
             if (storage.curseForgeTotal > -1 && storage.curseForgeTotal <= storage.curseForgeOffset)
                 return null;
             // 应用筛选参数
+            var gameId = IsBedrockType(type) ? 78022 : 432;
             var address =
                 new StringBuilder(
-                    $"https://api.curseforge.com/v1/mods/search?gameId=432&sortOrder=desc&pageSize={compPageSize}");
+                    $"https://api.curseforge.com/v1/mods/search?gameId={gameId}&sortOrder=desc&pageSize={compPageSize}");
             switch (type)
             {
                 case CompType.Mod:
@@ -2020,12 +2111,37 @@ public static class ModComp
                     address.Append("&classId=17");
                     break;
                 }
+                case CompType.BedrockAddon:
+                {
+                    address.Append("&classId=4984");
+                    break;
+                }
+                case CompType.BedrockMap:
+                {
+                    address.Append("&classId=6913");
+                    break;
+                }
+                case CompType.BedrockMaterial:
+                {
+                    address.Append("&classId=6929");
+                    break;
+                }
+                case CompType.BedrockScript:
+                {
+                    address.Append("&classId=6940");
+                    break;
+                }
+                case CompType.BedrockSkin:
+                {
+                    address.Append("&classId=6925");
+                    break;
+                }
             }
 
             if (!string.IsNullOrEmpty(tag)) address.Append($"&categoryId={tag.BeforeFirst("/")}");
             if (modLoader != CompLoaderType.Any)
                 address.Append("&modLoaderType=").Append(((int)modLoader).ToString());
-            if (!string.IsNullOrEmpty(gameVersion))
+            if (!string.IsNullOrEmpty(gameVersion) && !IsBedrockType(type))
                 address.Append("&gameVersion=").Append(gameVersion);
             if (!string.IsNullOrEmpty(curseForgeAltSearchText ?? searchText))
                 address.Append("&searchFilter=").Append(WebUtility.UrlEncode(curseForgeAltSearchText ?? searchText));
@@ -2075,6 +2191,9 @@ public static class ModComp
         public string GetModrinthAddress()
         {
             if (!source.HasFlag(CompSourceType.Modrinth))
+                return null;
+            // Modrinth 不提供基岩版资源
+            if (IsBedrockType(type))
                 return null;
             if (tag.EndsWithF("/"))
                 storage.modrinthTotal = 0;
@@ -2195,8 +2314,16 @@ public static class ModComp
         { "mc-mods", "6" },
         { "modpacks", "4471" },
         { "texture-packs", "12" },
-        { "shaders", "6552" }
+        { "shaders", "6552" },
+        // 基岩版
+        { "minecraft-bedrock/addons", "4984" },
+        { "minecraft-bedrock/maps", "6913" },
+        { "minecraft-bedrock/texture-packs", "6929" },
+        { "minecraft-bedrock/scripts", "6940" },
+        { "minecraft-bedrock/skins", "6925" }
     };
+
+    private const string bedrockCategoryPrefix = "minecraft-bedrock/";
 
     private enum ResourceSite { None, CurseForge, Modrinth }
 
@@ -2218,14 +2345,25 @@ public static class ModComp
         // 仅取 path 段，天然忽略 ?query 与 #fragment
         var segments = uri.AbsolutePath.Split(['/'], StringSplitOptions.RemoveEmptyEntries);
 
-        // CurseForge: /minecraft/{category}/{slug}
+        // CurseForge: /minecraft/{category}/{slug}，基岩版为 /minecraft-bedrock/{category}/{slug}
         if (IsHostOf(uri.Host, "curseforge.com"))
         {
-            if (segments.Length < 3 || !segments[0].Equals("minecraft", StringComparison.OrdinalIgnoreCase)) return false;
-            site = ResourceSite.CurseForge;
-            category = segments[1];
-            slug = segments[2];
-            return true;
+            if (segments.Length < 3) return false;
+            if (segments[0].Equals("minecraft", StringComparison.OrdinalIgnoreCase))
+            {
+                site = ResourceSite.CurseForge;
+                category = segments[1];
+                slug = segments[2];
+                return true;
+            }
+            if (segments[0].Equals("minecraft-bedrock", StringComparison.OrdinalIgnoreCase))
+            {
+                site = ResourceSite.CurseForge;
+                category = bedrockCategoryPrefix + segments[1];
+                slug = segments[2];
+                return true;
+            }
+            return false;
         }
 
         // Modrinth: /{type}/{slug}
@@ -2269,9 +2407,10 @@ public static class ModComp
 
         if (site == ResourceSite.CurseForge)
         {
+            var gameId = category.StartsWith(bedrockCategoryPrefix, StringComparison.OrdinalIgnoreCase) ? 78022 : 432;
             var encodedSlug = WebUtility.UrlEncode(slug);
             var json = ModDownload.DlModRequest<JsonObject>(
-                $"https://api.curseforge.com/v1/mods/search?gameId=432&slug={encodedSlug}");
+                $"https://api.curseforge.com/v1/mods/search?gameId={gameId}&slug={encodedSlug}");
             var dataArray = (JsonArray)json["data"];
             if (!dataArray.Any()) return null;
 
@@ -2282,7 +2421,7 @@ public static class ModComp
 
             // 分类不符：带 classId 重搜。结果与首次查询语义不同，使用独立变量
             var filteredJson = ModDownload.DlModRequest<JsonObject>(
-                $"https://api.curseforge.com/v1/mods/search?gameId=432&slug={encodedSlug}&classId={targetClassId}");
+                $"https://api.curseforge.com/v1/mods/search?gameId={gameId}&slug={encodedSlug}&classId={targetClassId}");
             var filteredDatas = (JsonArray)filteredJson["data"];
             return filteredDatas.Any() ? filteredDatas[0]["id"]?.ToString() : null;
         }
@@ -3439,7 +3578,9 @@ public static class ModComp
                 }
 
                 var behavior = Config.Download.Comp.QuickDownloadBehavior;
-                if (behavior == 0)
+                if (IsBedrockType(project.Type))
+                    behavior = 3; // 基岩版资源不属于 Java 实例，只能下载到指定文件夹
+                else if (behavior == 0)
                 {
                     // 总是询问：弹「方式选择」
                     int? choice = ModBase.RunInUiWait(() =>
@@ -3590,6 +3731,11 @@ public static class ModComp
             CompType.Shader => Lang.Text("Download.Comp.Type.Shader"),
             CompType.DataPack => Lang.Text("Download.Comp.Type.DataPack"),
             CompType.World => Lang.Text("Download.Comp.Type.World"),
+            CompType.BedrockAddon => Lang.Text("Download.Comp.Type.BedrockAddon"),
+            CompType.BedrockMap => Lang.Text("Download.Comp.Type.BedrockMap"),
+            CompType.BedrockMaterial => Lang.Text("Download.Comp.Type.BedrockMaterial"),
+            CompType.BedrockScript => Lang.Text("Download.Comp.Type.BedrockScript"),
+            CompType.BedrockSkin => Lang.Text("Download.Comp.Type.BedrockSkin"),
             _ => Lang.Text("Download.Comp.Type.Mod")
         };
         var loaderName = Lang.Text("Download.Comp.Detail.DownloadResource", desc,
