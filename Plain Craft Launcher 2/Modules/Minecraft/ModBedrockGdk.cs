@@ -61,14 +61,14 @@ public static class ModBedrockGdk
     public static void Extract(string packagePath, string targetDirectory,
         Action<string, int, int>? onProgress = null, CancellationToken token = default)
     {
-        var keyHex = packagePath.Contains("preview", StringComparison.OrdinalIgnoreCase) ||
-                     packagePath.Contains("beta", StringComparison.OrdinalIgnoreCase)
+        var keyBytes = packagePath.Contains("preview", StringComparison.OrdinalIgnoreCase) ||
+                       packagePath.Contains("beta", StringComparison.OrdinalIgnoreCase)
             ? Secrets.BedrockPreviewCik
             : Secrets.BedrockReleaseCik;
-        if (string.IsNullOrEmpty(keyHex))
+        if (keyBytes is not { Length: >= 48 })
             throw new InvalidOperationException("当前构建未包含基岩版 GDK 内容密钥（CIK），无法解包安装包。");
 
-        var key = new XvcContentKey(keyHex);
+        var key = new XvcContentKey(keyBytes);
 
         using var container = new XvcContainer(packagePath);
         container.Parse();
@@ -129,9 +129,8 @@ internal sealed class XvcContentKey
     public readonly byte[] TweakKey;
     public readonly byte[] DataKey;
 
-    public XvcContentKey(string hex)
+    public XvcContentKey(byte[] bytes)
     {
-        var bytes = Convert.FromHexString(hex);
         TweakKey = bytes[16..32];
         DataKey = bytes[32..48];
     }

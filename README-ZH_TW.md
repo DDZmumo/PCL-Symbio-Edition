@@ -21,7 +21,7 @@
 
 PCL SE（Plain Craft Launcher Symbio Edition）是由 Hydrogen-Peroxide 維護的第三方 Minecraft 啟動器，基於 PCL 開源程式碼開發，在保留原有互動習慣的基礎上補齊了基岩版支援、實例管理與資源下載等能力。
 
-- 目前版本：`2.17.7`
+- 目前版本：`2.17.8`
 - 上游基線：PCL `2.12.1`
 - 技術棧：C# / WPF / .NET 10
 
@@ -123,7 +123,7 @@ dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
 
 - 新增基岩版管理：版本偵測、安裝包匯入、Xbox 帳號登入與本機篩選
 - 移除多人遊戲大廳及配套模組，不再提供大廳與多人遊戲相關入口
-- 使用獨立版本號（`2.17.7`），上游基線為 PCL `2.12.1`
+- 使用獨立版本號（`2.17.8`），上游基線為 PCL `2.12.1`
 
 ## 聲明
 
@@ -147,7 +147,7 @@ dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
 
 - [PCL](https://github.com/Meloong-Git/PCL) — 原作者 龍騰貓躍
 - PCL CE — 社群維護分支，本專案的直接上游
-- [BedrockBoot](https://github.com/Round-Studio/BedrockBoot) — Round Studio 開發的基岩版啟動器，本專案基岩版安裝與啟動方案的實作參考
+- [BedrockBoot](https://github.com/Round-Studio/BedrockBoot) 與 [BedrockLauncher.Core](https://github.com/Round-Studio/BedrockLauncher.Core) — Round Studio 開發的基岩版專案（GPL-3.0），本專案基岩版安裝、解密與啟動方案的移植參考，來源與適用範圍見 [NOTICE](NOTICE)
 - 以及 Dapper、Downloader、Markdig.Wpf、NAudio、Microsoft.Data.Sqlite、protobuf-net、Lucide 等開源專案，完整的第三方元件與授權資訊見 [metadata.json](Plain%20Craft%20Launcher%202/metadata.json) 與啟動器「關於」頁面
 
 ## 統計資料

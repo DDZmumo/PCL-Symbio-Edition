@@ -1,0 +1,60 @@
+PCL Symbio Edition
+Copyright (c) PCL Symbio Edition contributors
+
+本文件用于说明本项目中的第三方来源。除下列内容外，本项目的许可条款见 LICENSE
+（Apache License 2.0）与 Plain Craft Launcher 2/LICENCE（自定义许可证）。
+
+===============================================================================
+一、基岩版功能的参考实现来源
+===============================================================================
+
+本项目的基岩版（UWP / GDK）安装、解密与启动功能，在实现过程中对照移植了
+Round Studio 以下项目的部分代码逻辑：
+
+  * BedrockBoot
+    https://github.com/Round-Studio/BedrockBoot
+    License: GNU General Public License v3.0
+
+  * BedrockLauncher.Core
+    https://github.com/Round-Studio/BedrockLauncher.Core
+    License: GNU General Public License v3.0
+
+涉及的文件与位置（截至本文件新增时）：
+
+  * Plain Craft Launcher 2/Modules/Minecraft/ModBedrockUwp.cs
+      基岩版 UWP 包解析、依赖处理与安装流程
+  * Plain Craft Launcher 2/Modules/Minecraft/ModBedrockGdk.cs
+      XVC（.msixvc）容器解析与解密（对照 BedrockLauncher.Core.GdkDecode）
+  * Plain Craft Launcher 2/Pages/PageBedrock/PageBedrockRight.xaml.cs
+      基岩版页面交互与安装选项处理
+  * Plain Craft Launcher 2/Modules/Minecraft/ModDownload.cs
+      基岩版版本元数据选取逻辑
+
+上述文件中的具体出处已在源码注释中以「移植自」「对应」「参考」等字样逐处标注。
+这些部分的著作权归 Round Studio 及其贡献者所有，按 GPL-3.0 提供，不适用本项目的
+Apache-2.0 / 自定义许可条款。
+
+===============================================================================
+二、内容密钥（CIK）说明
+===============================================================================
+
+本项目不附带、不分发任何 Xbox GDK 内容密钥（CIK）。相关密钥需由使用者在构建时
+通过环境变量自行提供（PCL_BEDROCK_RELEASE_CIK / PCL_BEDROCK_PREVIEW_CIK），
+未提供时构建产物不包含基岩版 GDK 解包能力。
+
+===============================================================================
+Third-Party Notices (English Summary)
+===============================================================================
+
+The Bedrock Edition (UWP / GDK) support in this project contains code ported
+from the following GPL-3.0 licensed projects by Round Studio:
+
+  * BedrockBoot             - https://github.com/Round-Studio/BedrockBoot
+  * BedrockLauncher.Core    - https://github.com/Round-Studio/BedrockLauncher.Core
+
+Affected files are listed above and marked inline in the source comments.
+Copyright in those portions belongs to Round Studio and its contributors and
+is licensed under GPL-3.0, not under this project's Apache-2.0 / custom terms.
+
+No Xbox GDK Content Integrity Keys (CIK) are bundled or distributed with this
+project. They must be supplied at build time via environment variables.

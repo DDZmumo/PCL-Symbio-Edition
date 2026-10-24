@@ -21,7 +21,7 @@
 
 PCL SE (Plain Craft Launcher Symbio Edition) is a third-party Minecraft launcher maintained by Hydrogen-Peroxide. Built on PCL's open-source code, it keeps the familiar interaction while adding Bedrock edition support, instance management and resource downloads.
 
-- Current version: `2.17.7`
+- Current version: `2.17.8`
 - Upstream baseline: PCL `2.12.1`
 - Tech stack: C# / WPF / .NET 10
 
@@ -123,7 +123,7 @@ Available configurations (`-c`): `Release`, `Beta`, `Debug`, `CI`. Available pla
 
 - Added Bedrock edition management: version detection, package import, Xbox sign-in and local filtering
 - Removed the multiplayer lobby and its modules; no lobby or multiplayer entry points are provided
-- Uses an independent version number (`2.17.7`) based on PCL `2.12.1`
+- Uses an independent version number (`2.17.8`) based on PCL `2.12.1`
 
 ## Legal notice
 
@@ -147,7 +147,7 @@ Available configurations (`-c`): `Release`, `Beta`, `Debug`, `CI`. Available pla
 
 - [PCL](https://github.com/Meloong-Git/PCL) — original author 龙腾猫跃 (LTCat)
 - PCL CE — community-maintained branch and the direct upstream of this project
-- [BedrockBoot](https://github.com/Round-Studio/BedrockBoot) — Bedrock launcher by Round Studio, implementation reference for this project's Bedrock installation and launching
+- [BedrockBoot](https://github.com/Round-Studio/BedrockBoot) and [BedrockLauncher.Core](https://github.com/Round-Studio/BedrockLauncher.Core) — Bedrock projects by Round Studio (GPL-3.0), porting reference for this project's Bedrock installation, decryption and launching; see [NOTICE](NOTICE) for scope
 - Plus open-source projects such as Dapper, Downloader, Markdig.Wpf, NAudio, Microsoft.Data.Sqlite, protobuf-net and Lucide. See [metadata.json](Plain%20Craft%20Launcher%202/metadata.json) and the launcher's "About" page for the complete list of third-party components and licenses
 
 ## Statistics
