@@ -40,11 +40,56 @@ public class HostConnectionHandler
         }
 
         var addresses = await _dnsQuery.QueryForIpAsync(host, cancellationToken).ConfigureAwait(false);
-        if (addresses is null || addresses.Length == 0)
+        if (addresses is { Length: > 0 })
+        {
+            try
+            {
+                return await _ConnectWithRaceAsync(host, port, addresses, now, cancellationToken).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // DoH 返回的公网地址可能不可达（例如域名被 hosts 或本地代理工具接管），回退到系统 DNS 再试一次
+                LogWrapper.Warn(ex, ModuleName, $"Failed to connect {host} via DoH result, fallback to system DNS");
+            }
+        }
+
+        IPAddress[] systemAddresses;
+        try
+        {
+            systemAddresses = await System.Net.Dns.GetHostAddressesAsync(host, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            throw new HttpRequestException($"DNS resolution failed for {host}", ex);
+        }
+
+        if (systemAddresses.Length == 0)
         {
             throw new HttpRequestException($"DNS resolution failed for {host}");
         }
 
+        try
+        {
+            return await _ConnectWithRaceAsync(host, port, systemAddresses, now, cancellationToken).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            LogWrapper.Error(ex, ModuleName, $"All connection attempts failed for {host}");
+            throw new HttpRequestException($"Connection failed for {host}", ex);
+        }
+    }
+
+    private async Task<Stream> _ConnectWithRaceAsync(string host, int port, IPAddress[] addresses, DateTime now,
+        CancellationToken cancellationToken)
+    {
         // 对待连接地址进行排序 (缓存成功+IPv6优先)
         var sortedAddresses = _SortAddresses(host, port, addresses, now);
 
@@ -86,15 +131,13 @@ public class HostConnectionHandler
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // 清理所有连接
             // ReSharper disable once MethodHasAsyncOverload
             cancellationSource.Cancel();
             _ = _CleanupUnusedConnectionsAsync(connectionTasks, null).ConfigureAwait(false);
-
-            LogWrapper.Error(ex, ModuleName, $"All connection attempts failed for {host}");
-            throw new HttpRequestException($"Connection failed for {host}", ex);
+            throw;
         }
         finally
         {
