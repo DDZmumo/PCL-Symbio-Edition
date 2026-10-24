@@ -1314,6 +1314,23 @@ public partial class PageBedrockRight
             UpdateVersionButtonState(versionId);
     }
 
+    /// <summary>
+    ///     生成 mcappx 上对应版本的页面地址。
+    ///     mcappx 的路径是「系列」，而不是完整版本号：直接拼完整版本号会打开 404 页面。
+    ///     26.x 起版本号第二段是补丁号，系列按十位归并（26.45 属于 26.40）；
+    ///     更早的版本第二段本身就是系列（0.12.0 属于 0.12，1.21.120.21 属于 1.21）。
+    /// </summary>
+    private static string GetMcAppxPageUrl(string versionId)
+    {
+        var parts = versionId.Split('.');
+        if (parts.Length >= 2 && int.TryParse(parts[0], out var major) && int.TryParse(parts[1], out var minor))
+        {
+            var seriesMinor = major >= 20 ? minor / 10 * 10 : minor;
+            return $"https://www.mcappx.com/bedrock/{major}.{seriesMinor}/";
+        }
+        return "https://www.mcappx.com/bedrock/";
+    }
+
     private async void BedrockVersionDownload_Click(object sender, EventArgs e)
     {
         if (sender is not MyIconButton btn || btn.Tag is not string versionId)
@@ -1343,7 +1360,7 @@ public partial class PageBedrockRight
             _downloadingVersions.Remove(versionId);
             UpdateVersionButtonState(versionId);
 
-            var webUrl = $"https://www.mcappx.com/bedrock/{versionId}/";
+            var webUrl = GetMcAppxPageUrl(versionId);
             ModBase.OpenWebsite(webUrl);
             LabDetail.Text = Lang.Text("Bedrock.Version.PageOpened", versionId);
             ModBase.Log(
