@@ -108,7 +108,7 @@
     <sys:String x:Key="Bedrock.List.LoadFailed">Failed to load the Bedrock version list</sys:String>
     <sys:String x:Key="Bedrock.List.NoMatch">No matching versions</sys:String>
     <sys:String x:Key="Bedrock.List.NoMatchHint">No matching versions. Try a different keyword or filter.</sys:String>
-    <sys:String x:Key="Bedrock.List.NoSource">No source</sys:String>
+    <sys:String x:Key="Bedrock.List.NoSource">Web download</sys:String>
     <sys:String x:Key="Bedrock.List.OtherSeries">Other</sys:String>
     <sys:String x:Key="Bedrock.List.GdkPortable">Portable install (can coexist with other versions)</sys:String>
     <sys:String x:Key="Bedrock.List.Total">{0} versions in total</sys:String>
@@ -164,7 +164,7 @@
     <sys:String x:Key="Bedrock.Version.DownloadSaved">Bedrock {0} saved locally. Install it under "Downloaded versions".</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadSavedGdk">Bedrock {0} saved locally. Extract it under "Downloaded versions" (GDK portable, launches directly after extraction).</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadTooltip">Download this version</sys:String>
-    <sys:String x:Key="Bedrock.Version.NoSourceTooltip">No download source is available for this version. Click to open the web page.</sys:String>
+    <sys:String x:Key="Bedrock.Version.NoSourceTooltip">This version can't be downloaded in the launcher. Click to download it from the mcappx web page.</sys:String>
     <sys:String x:Key="Bedrock.Version.PageOpened">Opened the download page for Bedrock {0}. After downloading the package, click "Import package" to install it.</sys:String>
 
     <!-- Common -->

@@ -109,7 +109,7 @@
     <sys:String x:Key="Bedrock.List.LoadFailed">基岩版版本列表加载失败</sys:String>
     <sys:String x:Key="Bedrock.List.NoMatch">没有找到匹配的版本</sys:String>
     <sys:String x:Key="Bedrock.List.NoMatchHint">没有找到匹配的版本，试试更换关键词或筛选条件</sys:String>
-    <sys:String x:Key="Bedrock.List.NoSource">无下载源</sys:String>
+    <sys:String x:Key="Bedrock.List.NoSource">网页下载</sys:String>
     <sys:String x:Key="Bedrock.List.OtherSeries">其他</sys:String>
     <sys:String x:Key="Bedrock.List.Total">共 {0} 个版本</sys:String>
     <sys:String x:Key="Bedrock.List.UnknownVersion">未知版本</sys:String>
@@ -164,7 +164,7 @@
     <sys:String x:Key="Bedrock.Version.DownloadSaved">基岩版 {0} 已保存到本地，可在「已下载版本」中安装</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadSavedGdk">基岩版 {0} 已保存到本地，可在「已下载版本」中解包安装（GDK 便携版，解包后直接启动）</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadTooltip">下载此版本</sys:String>
-    <sys:String x:Key="Bedrock.Version.NoSourceTooltip">该版本没有可用的下载源，点击打开网页</sys:String>
+    <sys:String x:Key="Bedrock.Version.NoSourceTooltip">该版本无法在启动器内直接下载，点击打开 mcappx 网页下载</sys:String>
     <sys:String x:Key="Bedrock.Version.PageOpened">已打开基岩版 {0} 下载页。下载安装包后，点击「导入安装包」即可安装</sys:String>
 
     <!-- Common -->
