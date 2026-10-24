@@ -147,6 +147,7 @@ Available configurations (`-c`): `Release`, `Beta`, `Debug`, `CI`. Available pla
 
 - [PCL](https://github.com/Meloong-Git/PCL) — original author 龙腾猫跃 (LTCat)
 - PCL CE — community-maintained branch and the direct upstream of this project
+- [BedrockBoot](https://github.com/Round-Studio/BedrockBoot) — Bedrock launcher by Round Studio, implementation reference for this project's Bedrock installation and launching
 - Plus open-source projects such as Dapper, Downloader, Markdig.Wpf, NAudio, Microsoft.Data.Sqlite, protobuf-net and Lucide. See [metadata.json](Plain%20Craft%20Launcher%202/metadata.json) and the launcher's "About" page for the complete list of third-party components and licenses
 
 ## Statistics

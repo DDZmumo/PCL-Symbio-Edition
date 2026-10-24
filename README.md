@@ -149,6 +149,7 @@ dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
 
 - [PCL](https://github.com/Meloong-Git/PCL) — 原作者 龙腾猫跃
 - PCL CE — 社区维护分支，本项目的直接上游
+- [BedrockBoot](https://github.com/Round-Studio/BedrockBoot) — Round Studio 开发的基岩版启动器，本项目基岩版安装与启动方案的实现参考
 - 以及 Dapper、Downloader、Markdig.Wpf、NAudio、Microsoft.Data.Sqlite、protobuf-net、Lucide 等开源项目，完整的第三方组件与许可信息见 [metadata.json](Plain%20Craft%20Launcher%202/metadata.json) 与启动器「关于」页面
 
 ## 统计数据
