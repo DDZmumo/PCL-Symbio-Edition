@@ -152,9 +152,6 @@ dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
 - [BedrockBoot](https://github.com/Round-Studio/BedrockBoot) 与 [BedrockLauncher.Core](https://github.com/Round-Studio/BedrockLauncher.Core) — Round Studio 开发的基岩版项目（GPL-3.0），本项目基岩版安装、解密与启动方案的移植参考，来源与适用范围见 [NOTICE](NOTICE)
 - 以及 Dapper、Downloader、Markdig.Wpf、NAudio、Microsoft.Data.Sqlite、protobuf-net、Lucide 等开源项目，完整的第三方组件与许可信息见 [metadata.json](Plain%20Craft%20Launcher%202/metadata.json) 与启动器「关于」页面
 
-## 统计数据
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Hydrogen-Peroxide/PCL-Symbio-Edition&type=Date)](https://www.star-history.com/#Hydrogen-Peroxide/PCL-Symbio-Edition&Date)
 
 **此页浏览量**（总计 / 今日）：[![Hits](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition)](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition&web=true)
 
