@@ -498,10 +498,13 @@ public static class ModBedrockUwp
     ///     通过 shell:AppsFolder 启动已安装的 UWP 应用（等价于 BedrockBoot 的 AppDiagnosticInfo.LaunchAsync）。
     ///     Manifest 被设为 AppListEntry=none 后无法从开始菜单启动，但 AppsFolder 仍可用。
     /// </summary>
-    public static bool LaunchPackage()
+    public static bool LaunchPackage(string? targetPackageName = null)
     {
-        // 先尝试旧版 UWP 包（Microsoft.MinecraftUWP），再尝试新版 GDK 包（Microsoft.Minecraft）
-        foreach (var packageName in new[] { ReleasePackageName, "Microsoft.Minecraft" })
+        // 未指定包名时，先尝试旧版 UWP 包（Microsoft.MinecraftUWP），再尝试新版 GDK 包（Microsoft.Minecraft）
+        var packageNames = string.IsNullOrEmpty(targetPackageName)
+            ? new[] { ReleasePackageName, "Microsoft.Minecraft" }
+            : new[] { targetPackageName };
+        foreach (var packageName in packageNames)
         {
             var info = GetInstalledPackage(packageName);
             if (info is null) continue;

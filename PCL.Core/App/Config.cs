@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PCL.Core.App.Configuration;
 
 namespace PCL.Core.App;
@@ -546,6 +547,22 @@ public static partial class Config
         /// 正版登录方式。
         /// </summary>
         [ConfigItem<int>("LoginMsAuthType", 1)] public partial int LoginMsAuthType { get; set; }
+
+        /// <summary>
+        /// 当前选中的基岩版本，启动基岩版时跟随该版本。
+        /// </summary>
+        [ConfigItem<string>("BedrockSelectedVersion", "", ConfigSource.Local)] public partial string BedrockSelectedVersion { get; set; }
+
+        /// <summary>
+        /// 是否对基岩版 GDK 便携版启用版本隔离。
+        /// </summary>
+        [ConfigItem<bool>("BedrockVersionIsolation", false, ConfigSource.Local)] public partial bool BedrockVersionIsolation { get; set; }
+
+        /// <summary>
+        /// 各基岩版 GDK 便携版选择的模组加载器（键为版本号，值为加载器标识）。
+        /// </summary>
+        [AnyConfigItem<Dictionary<string, string>>("BedrockLoaders", ConfigSource.Local)]
+        public partial Dictionary<string, string> BedrockLoaders { get; set; }
     }
 
     /// <summary>

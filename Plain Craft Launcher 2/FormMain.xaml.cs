@@ -1693,9 +1693,13 @@ public partial class FormMain
             // 切换到主页面
             PageChangeExit();
             isChangingPage = true; // 防止下面的勾选直接触发了 PageChangeActual
-            if ((int)stack.page < PanTitleSelect.Children.Count)
-                ((MyRadioButton)PanTitleSelect.Children[(int)stack.page]).SetChecked(true, true,
-                    string.IsNullOrEmpty(PageNameGet(pageCurrent)));
+            // 顶部栏按钮顺序与 PageType 数值不再一致，按 Tag 匹配
+            foreach (var child in PanTitleSelect.Children)
+                if (child is MyRadioButton button && ModBase.Val(button.Tag) == (double)stack.page)
+                {
+                    button.SetChecked(true, true, string.IsNullOrEmpty(PageNameGet(pageCurrent)));
+                    break;
+                }
             isChangingPage = false;
             switch (stack.page)
             {

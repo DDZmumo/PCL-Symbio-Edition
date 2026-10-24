@@ -53,6 +53,7 @@
     <sys:String x:Key="Bedrock.Download.OpeningPage">Opening the download page for Bedrock {0}...</sys:String>
     <sys:String x:Key="Bedrock.Download.ResolveFailed">Failed to resolve the Bedrock download URL</sys:String>
     <sys:String x:Key="Bedrock.Download.ResolveFailedSummary">Failed to resolve the download URL for Bedrock {0}: {1}</sys:String>
+    <sys:String x:Key="Bedrock.Download.SourceLabel">Version data from</sys:String>
     <sys:String x:Key="Bedrock.Download.Started">Bedrock {0} download started ({1} sources)</sys:String>
     <sys:String x:Key="Bedrock.Download.Title">Download Bedrock</sys:String>
     <sys:String x:Key="Bedrock.Editor.Failed">Could not open the Editor. Make sure Bedrock Retail or Preview is installed, or open it from the Creator Tools tab in the Minecraft Launcher.</sys:String>
@@ -100,17 +101,34 @@
     <sys:String x:Key="Bedrock.Install.Replacing">Replacing the installed version...</sys:String>
     <sys:String x:Key="Bedrock.Install.Success">Bedrock installed successfully!</sys:String>
     <sys:String x:Key="Bedrock.Install.SuccessSummary">Bedrock {0} installed successfully!</sys:String>
+    <sys:String x:Key="Bedrock.Isolation.Failed">Failed to enable version isolation: {0}</sys:String>
+    <sys:String x:Key="Bedrock.Isolation.GdkOnly">Version isolation is only available for GDK portable builds; the UWP version cannot be isolated due to system limits</sys:String>
+    <sys:String x:Key="Bedrock.Isolation.Hint">Give each GDK portable build its own saves and resources. When enabled, the data folder is switched to this version's own folder; existing data is kept in "Minecraft Bedrock.pcl-shared" and restored when isolation is disabled. Not supported for UWP.</sys:String>
+    <sys:String x:Key="Bedrock.Isolation.RunningHint">Close the running Minecraft Bedrock before switching version isolation</sys:String>
+    <sys:String x:Key="Bedrock.Isolation.Title">Version isolation</sys:String>
+    <sys:String x:Key="Bedrock.Loader.LeviLamina">LeviLamina</sys:String>
+    <sys:String x:Key="Bedrock.Loader.Missing">LeviLamina is selected but no DLL mods were found; launching vanilla this time</sys:String>
+    <sys:String x:Key="Bedrock.Loader.Title">Select mod loader (current: {0})</sys:String>
+    <sys:String x:Key="Bedrock.Loader.Tooltip">Loader: {0} (click to change)</sys:String>
+    <sys:String x:Key="Bedrock.Loader.Vanilla">Vanilla</sys:String>
     <sys:String x:Key="Bedrock.Launch.Error">Bedrock launch error</sys:String>
+    <sys:String x:Key="Bedrock.Launch.Exited">The game exited right after launch (code {0})</sys:String>
+    <sys:String x:Key="Bedrock.Launch.Stage.Isolation">Preparing version isolation</sys:String>
+    <sys:String x:Key="Bedrock.Launch.Stage.Register">Registering game package</sys:String>
+    <sys:String x:Key="Bedrock.Launch.Stage.Starting">Starting game</sys:String>
+    <sys:String x:Key="Bedrock.Launch.Stage.WaitingWindow">Waiting for game window</sys:String>
     <sys:String x:Key="Bedrock.List.BuildFailed">Failed to build the Bedrock version list</sys:String>
+    <sys:String x:Key="Bedrock.List.CacheUsed">Failed to fetch the version list online. Showing the last fetched data.</sys:String>
     <sys:String x:Key="Bedrock.List.Empty">No versions available</sys:String>
     <sys:String x:Key="Bedrock.List.EmptyHint">No versions available. Check your network and refresh the page.</sys:String>
     <sys:String x:Key="Bedrock.List.Found">Found {0} versions</sys:String>
     <sys:String x:Key="Bedrock.List.LoadFailed">Failed to load the Bedrock version list</sys:String>
     <sys:String x:Key="Bedrock.List.NoMatch">No matching versions</sys:String>
     <sys:String x:Key="Bedrock.List.NoMatchHint">No matching versions. Try a different keyword or filter.</sys:String>
-    <sys:String x:Key="Bedrock.List.NoSource">Web download</sys:String>
+    <sys:String x:Key="Bedrock.List.NoSource">No download source</sys:String>
     <sys:String x:Key="Bedrock.List.OtherSeries">Other</sys:String>
     <sys:String x:Key="Bedrock.List.GdkPortable">Portable install (can coexist with other versions)</sys:String>
+    <sys:String x:Key="Bedrock.List.SourceFailed">Failed to reach the version data source. Showing the built-in version list.</sys:String>
     <sys:String x:Key="Bedrock.List.Total">{0} versions in total</sys:String>
     <sys:String x:Key="Bedrock.List.UnknownVersion">Unknown version</sys:String>
     <sys:String x:Key="Bedrock.Local.Delete">Delete package</sys:String>
@@ -130,7 +148,10 @@
     <sys:String x:Key="Bedrock.Local.Tag.Gdk">GDK portable</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Installed">Installed</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Installing">Installing</sys:String>
+    <sys:String x:Key="Bedrock.Local.Tag.Selected">Selected</sys:String>
     <sys:String x:Key="Bedrock.Local.Title">Downloaded versions</sys:String>
+    <sys:String x:Key="Bedrock.Register.Failed">Failed to register the game package; fell back to direct launch (may ask to unlock the full game)</sys:String>
+    <sys:String x:Key="Bedrock.Register.NoDeveloperMode">Developer mode is off; fell back to direct launch (may ask to unlock the full game)</sys:String>
     <sys:String x:Key="Bedrock.Search.Hint">Search Bedrock versions...</sys:String>
     <sys:String x:Key="Bedrock.Shortcuts.OpenPackages">Open packages folder</sys:String>
     <sys:String x:Key="Bedrock.Shortcuts.OpenSaves">Open saves folder</sys:String>
@@ -143,12 +164,14 @@
     <sys:String x:Key="Bedrock.Status.Detecting">Detecting Bedrock…</sys:String>
     <sys:String x:Key="Bedrock.Status.DownloadOrImportHint">Download or import a package, then install it under "Downloaded versions"</sys:String>
     <sys:String x:Key="Bedrock.Status.LaunchFailed">Launch failed</sys:String>
+    <sys:String x:Key="Bedrock.Status.Launched">Launched</sys:String>
     <sys:String x:Key="Bedrock.Status.Launching">Launching Bedrock...</sys:String>
     <sys:String x:Key="Bedrock.Status.NotInstalled">Not installed</sys:String>
     <sys:String x:Key="Bedrock.Status.NotFound">Bedrock not detected</sys:String>
     <sys:String x:Key="Bedrock.Status.NotSelected">No version selected</sys:String>
     <sys:String x:Key="Bedrock.Status.PleaseWait">Please wait...</sys:String>
     <sys:String x:Key="Bedrock.Status.Ready">Ready</sys:String>
+    <sys:String x:Key="Bedrock.Status.SelectedVersion">Following version {0}</sys:String>
     <sys:String x:Key="Bedrock.Status.Switching">Switching Bedrock version...</sys:String>
     <sys:String x:Key="Bedrock.Status.SwitchingDetail">Registering Bedrock {0}</sys:String>
     <sys:String x:Key="Bedrock.Status.Title">Bedrock status</sys:String>
@@ -164,8 +187,9 @@
     <sys:String x:Key="Bedrock.Version.DownloadSaved">Bedrock {0} saved locally. Install it under "Downloaded versions".</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadSavedGdk">Bedrock {0} saved locally. Extract it under "Downloaded versions" (GDK portable, launches directly after extraction).</sys:String>
     <sys:String x:Key="Bedrock.Version.DownloadTooltip">Download this version</sys:String>
-    <sys:String x:Key="Bedrock.Version.NoSourceTooltip">This version can't be downloaded in the launcher. Click to download it from the mcappx web page.</sys:String>
     <sys:String x:Key="Bedrock.Version.PageOpened">Opened the download page for Bedrock {0}. After downloading the package, click "Import package" to install it.</sys:String>
+    <sys:String x:Key="Bedrock.Version.WebDownload">Web download</sys:String>
+    <sys:String x:Key="Bedrock.Version.WebDownloadTip">No Appx download source for this version. Click to open its mcappx page in the browser.</sys:String>
 
     <!-- Common -->
 
@@ -3484,6 +3508,10 @@
     <sys:String x:Key="Tools.Test.Skin.Saved">Player {0}'s skin saved!</sys:String>
     <sys:String x:Key="Tools.Test.Skin.Title">Download a player's official skin</sys:String>
     <sys:String x:Key="Tools.Test.Skin.TooFrequent">Skin fetch has been rate-limited. Please try again in 5 minutes!</sys:String>
+    <sys:String x:Key="Tools.Test.Unlock.Description">MCBEUnlock++ is a community-made Bedrock unlocking tool. Put the unlocked DLL into the preload folder of the version directory and PCL SE will inject it on launch.&#xA;This launcher only provides a link to its official website; the tool is neither bundled nor hosted here.</sys:String>
+    <sys:String x:Key="Tools.Test.Unlock.Download">Open official website</sys:String>
+    <sys:String x:Key="Tools.Test.Unlock.Notice">PCL Symbio Edition encourages all players to purchase and support the game through official channels.</sys:String>
+    <sys:String x:Key="Tools.Test.Unlock.Title">MCBEUnlock++</sys:String>
 
     <!-- Update -->
 

@@ -25,6 +25,19 @@
                                     Margin="0,0,15,15" Click="BtnLaunchCount_Click" />
                 </WrapPanel>
             </local:MyCard>
+            <local:MyCard Margin="0,0,0,15" Title="{DynamicResource Tools.Test.Unlock.Title}">
+                <StackPanel Orientation="Vertical" Margin="25,40,25,20">
+                    <TextBlock Text="{DynamicResource Tools.Test.Unlock.Description}" TextWrapping="Wrap" />
+                    <Grid Margin="0,15,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                        </Grid.RowDefinitions>
+                        <local:MyButton x:Name="BtnUnlockDownload" MinWidth="160" HorizontalAlignment="Left"
+                                        Text="{DynamicResource Tools.Test.Unlock.Download}"
+                                        Click="BtnUnlockDownload_Click" />
+                    </Grid>
+                </StackPanel>
+            </local:MyCard>
             <local:MyCard Margin="0,0,0,15" Title="{DynamicResource Tools.Test.CustomDownload.Title}">
                 <StackPanel Orientation="Vertical" Margin="25,40,25,20">
                     <TextBlock Text="{DynamicResource Tools.Test.CustomDownload.Description}"

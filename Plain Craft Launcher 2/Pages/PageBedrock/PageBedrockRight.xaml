@@ -26,6 +26,23 @@
                         <TextBlock x:Name="LabVersion" Text=""
                                    FontSize="12" Margin="16,0,0,0"
                                    Foreground="{DynamicResource ColorBrushGray4}" />
+                        <!-- 启动进度条：与 Java 版启动页一致，用两列宽度动画表示进度 -->
+                        <Grid Name="PanLaunchProgress" Height="4" Margin="16,10,0,0"
+                              SnapsToDevicePixels="True" Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Name="ProgressBedrockFinished" Width="0*" />
+                                <ColumnDefinition Name="ProgressBedrockUnfinished" Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Grid.Column="0">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                        <GradientStop Color="{DynamicResource ColorObject4}" Offset="0" />
+                                        <GradientStop Color="{DynamicResource ColorObject3}" Offset="0.6" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Rectangle Grid.Column="1" Fill="{DynamicResource ColorBrush6}" Opacity="0.6" />
+                        </Grid>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -50,12 +67,18 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" VerticalAlignment="Center"
                                    Text="{DynamicResource Bedrock.Local.Description}"
                                    TextWrapping="Wrap" FontSize="12"
                                    Foreground="{DynamicResource ColorBrushGray3}" />
-                        <local:MyButton Grid.Column="1" x:Name="BtnImport" Text="{DynamicResource Bedrock.Action.Import}"
+                        <local:MyCheckBox Grid.Column="1" x:Name="CheckIsolation" Height="22"
+                                          VerticalAlignment="Center" Margin="10,0,0,0"
+                                          Text="{DynamicResource Bedrock.Isolation.Title}"
+                                          ToolTip="{DynamicResource Bedrock.Isolation.Hint}"
+                                          Change="CheckIsolation_OnChange" />
+                        <local:MyButton Grid.Column="2" x:Name="BtnImport" Text="{DynamicResource Bedrock.Action.Import}"
                                         Height="30" Padding="14,0,14,0" Margin="10,0,0,0"
                                         Click="ImportPackage_Click" />
                     </Grid>
@@ -74,8 +97,20 @@
                         <local:MyRadioButton x:Name="FilterUwp" Text="{DynamicResource Bedrock.Filter.Uwp}" ColorType="Highlight" Margin="8,0,0,0" />
                         <local:MyRadioButton x:Name="FilterGdk" Text="{DynamicResource Bedrock.Filter.Gdk}" ColorType="Highlight" Margin="8,0,0,0" />
                     </StackPanel>
-                    <TextBlock x:Name="LabVersionSummary" Text="{DynamicResource Bedrock.Download.Loading}" FontSize="12" Margin="5,0,0,6"
-                               Foreground="{DynamicResource ColorBrushGray3}" />
+                    <Grid Margin="5,0,0,6">
+                        <TextBlock x:Name="LabVersionSummary" Text="{DynamicResource Bedrock.Download.Loading}" FontSize="12"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource ColorBrushGray3}" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="{DynamicResource Bedrock.Download.SourceLabel}" FontSize="12"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource ColorBrushGray3}" />
+                            <local:MyTextButton Text="mcappx.com" FontSize="12" Padding="2,0,2,0" Height="18"
+                                                VerticalAlignment="Center"
+                                                local:CustomEventService.EventType="OpenUrl"
+                                                local:CustomEventService.EventData="https://www.mcappx.com/" />
+                        </StackPanel>
+                    </Grid>
                     <StackPanel Name="PanVersionList" Margin="0,4,0,0" />
                 </StackPanel>
             </local:MyCard>

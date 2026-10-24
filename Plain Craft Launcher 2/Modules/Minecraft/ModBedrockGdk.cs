@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading;
 using PCL.Core.App;
+using PCL.Core.App.Localization;
 
 namespace PCL;
 
@@ -77,23 +79,31 @@ public static class ModBedrockGdk
 
     /// <summary>
     ///     直接启动 GDK 版：不经过系统包注册，多版本可同时运行。
+    ///     版本目录下的 preload 文件夹中的 DLL 一律注入；另外当该版本在版本列表里选择了 LeviLamina 时，
+    ///     还会加载 mods 文件夹内的 DLL 模组（均需要 x64 启动器）。
+    ///     返回游戏进程，供调用方在游戏退出后做清理（例如还原版本隔离）；找不到主程序时返回 null。
     /// </summary>
-    public static bool Launch(string gameDirectory, string? arguments = null)
+    public static Process? Launch(string gameDirectory, string? arguments = null, string? versionId = null)
     {
         var exePath = FindExecutable(gameDirectory);
-        if (exePath is null) return false;
+        if (exePath is null) return null;
 
-        var startInfo = new ProcessStartInfo
-        {
-            FileName = exePath,
-            WorkingDirectory = Path.GetDirectoryName(exePath) ?? gameDirectory,
-            UseShellExecute = false
-        };
-        if (!string.IsNullOrEmpty(arguments))
-            startInfo.Arguments = arguments;
+        var workingDirectory = Path.GetDirectoryName(exePath) ?? gameDirectory;
+        var useLeviLamina = ModBedrockLoader.GetLoader(versionId) == ModBedrockLoader.LeviLamina;
+        var mods = new List<string>();
+        if (useLeviLamina) mods.AddRange(ModBedrockMods.GetModFiles(gameDirectory));
+        var preloads = ModBedrockMods.GetPreloadFiles(gameDirectory);
+        mods.AddRange(preloads);
 
-        Process.Start(startInfo);
-        return true;
+        if (mods.Count > 0)
+            ModBase.Log(
+                $"[Bedrock] 检测到 {mods.Count} 个待注入 DLL（preload {preloads.Length} 个）: {ModBedrockMods.GetPreloadDirectory(gameDirectory)}",
+                ModBase.LogLevel.Normal);
+        else if (useLeviLamina)
+            ModBase.Log($"[Bedrock] 版本 {versionId} 已选择 LeviLamina，但 mods 目录内没有 DLL，本次按原版启动",
+                ModBase.LogLevel.Hint, userSummary: Lang.Text("Bedrock.Loader.Missing"));
+
+        return ModBedrockMods.Launch(exePath, workingDirectory, arguments, mods);
     }
 
     /// <summary>结束正在运行的 GDK 版进程（解包前释放文件占用）。</summary>

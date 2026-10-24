@@ -33,7 +33,10 @@ public class UpdatesGitHubModel : IUpdateSource
 
     public bool RefreshCache()
     {
-        _latestRelease = FetchLatestRelease();
+        var release = FetchLatestRelease();
+        // 请求失败时保留上一次成功获取的结果，避免网络抖动把缓存的版本信息清空
+        if (release is not null)
+            _latestRelease = release;
         _fetched = true;
         return _latestRelease is not null;
     }

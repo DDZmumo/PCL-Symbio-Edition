@@ -25,6 +25,9 @@ namespace PCL;
 
 public partial class PageToolsTest
 {
+    /// <summary>MCBEUnlock++ 官网。</summary>
+    private const string McbeUnlockUrl = "https://coneric.dpdns.org/";
+
     private Bitmap currentSkinBitmap;
     private Bitmap generatedHeadBitmap;
 
@@ -418,6 +421,15 @@ public partial class PageToolsTest
                 }
             }
         });
+    }
+
+    // 下载 MCBEUnlock++
+    private void BtnUnlockDownload_Click(object sender, MouseButtonEventArgs e)
+    {
+        // 先展示正版购买提示，玩家确认后才打开 MCBEUnlock++ 的官网
+        ModMain.MyMsgBox(Lang.Text("Tools.Test.Unlock.Notice"), Lang.Text("Tools.Test.Unlock.Title"),
+            Lang.Text("Common.Action.Continue"), Lang.Text("Common.Action.Cancel"),
+            button1Action: () => ModBase.OpenWebsite(McbeUnlockUrl));
     }
 
     // 今日人品

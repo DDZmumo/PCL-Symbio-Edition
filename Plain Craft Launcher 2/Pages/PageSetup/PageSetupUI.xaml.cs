@@ -723,7 +723,13 @@ public partial class PageSetupUI
             // 获取配置组引用以缩短代码
             var conf = Config.Preference.Hide;
 
-            // 顶部栏：下载、设置、工具
+            // 顶部栏：启动、基岩版、下载、设置、工具（启动与基岩版不可隐藏）
+            var titleItems = new[]
+            {
+                (ModMain.frmMain.BtnTitleSelect2, conf.PageDownload),
+                (ModMain.frmMain.BtnTitleSelect3, conf.PageSetup),
+                (ModMain.frmMain.BtnTitleSelect4, conf.PageTools)
+            };
             var isAllTitleHidden = !HiddenForceShow && conf.PageDownload && conf.PageSetup && conf.PageTools;
 
             if (isAllTitleHidden)
@@ -733,13 +739,11 @@ public partial class PageSetupUI
             else
             {
                 ModMain.frmMain.PanTitleSelect.Visibility = Visibility.Visible;
-                ModMain.frmMain.BtnTitleSelect1.Visibility = !HiddenForceShow && conf.PageDownload
-                    ? Visibility.Collapsed
-                    : Visibility.Visible;
-                ModMain.frmMain.BtnTitleSelect2.Visibility =
-                    !HiddenForceShow && conf.PageSetup ? Visibility.Collapsed : Visibility.Visible;
-                ModMain.frmMain.BtnTitleSelect3.Visibility =
-                    !HiddenForceShow && conf.PageTools ? Visibility.Collapsed : Visibility.Visible;
+                foreach (var (button, hidden) in titleItems)
+                {
+                    button.Visibility =
+                        !HiddenForceShow && hidden ? Visibility.Collapsed : Visibility.Visible;
+                }
             }
 
             // 功能隐藏设置卡片

@@ -2485,42 +2485,102 @@ public static class ModDownload
 
     public static void DlBedrockListMain(ModLoader.LoaderTask<string, JsonObject> loader)
     {
-        // 从 MCAPPX API 获取版本列表
-        try
+        // 数据源对部分地区的请求做了屏蔽，也可能临时超时，按顺序多试几次
+        foreach (var (url, browserUserAgent, retries, timeout) in BedrockDataSourceAttempts)
         {
-            var json = (JsonObject)Requester.FetchJson(
-                "https://data.mcappx.com/v2/bedrock.json");
-            if (json is not null && json["From_mcappx.com"] is not null)
-            {
-                cachedBedrockRawData = (JsonObject)json["From_mcappx.com"];
-                loader.output = ConvertMcAppxToVersionList(cachedBedrockRawData);
-                return;
-            }
-        }
-        catch (Exception ex)
-        {
-            ModBase.Log("[Bedrock] MCAPPX API 获取失败: " + ex.Message);
+            var data = TryFetchBedrockData(url, browserUserAgent, retries, timeout);
+            if (data is null) continue;
+            cachedBedrockRawData = data;
+            SaveBedrockDataCache(data);
+            loader.output = ConvertMcAppxToVersionList(data);
+            return;
         }
 
-        // 尝试备用源 BMCBL
-        try
+        // 全部在线请求都失败：优先用上次成功获取的数据，避免列表退回到内置的旧版本
+        var cached = LoadBedrockDataCache();
+        if (cached is not null)
         {
-            var json = (JsonObject)Requester.FetchJson(
-                "https://mcappx.chlna6666.com");
-            if (json is not null && json["From_mcappx.com"] is not null)
-            {
-                cachedBedrockRawData = (JsonObject)json["From_mcappx.com"];
-                loader.output = ConvertMcAppxToVersionList(cachedBedrockRawData);
-                return;
-            }
-        }
-        catch (Exception ex)
-        {
-            ModBase.Log("[Bedrock] BMCBL 备用源获取失败: " + ex.Message);
+            cachedBedrockRawData = cached;
+            loader.output = ConvertMcAppxToVersionList(cached);
+            HintService.Hint(Lang.Text("Bedrock.List.CacheUsed"), HintType.Error);
+            return;
         }
 
         // 回退：使用内置版本列表
+        cachedBedrockRawData = null;
         loader.output = GetBuiltInBedrockVersionList();
+        HintService.Hint(Lang.Text("Bedrock.List.SourceFailed"), HintType.Error);
+    }
+
+    /// <summary>
+    ///     基岩版数据源。
+    ///     官方文档见 https://www.mcappx.com/dev-docs/data-source/ ，其中明确说明数据源对某些地区屏蔽。
+    /// </summary>
+    private const string BedrockDataSourceUrl = "https://data.mcappx.com/v2/bedrock.json";
+
+    /// <summary>
+    ///     数据源请求尝试序列：普通 UA → 浏览器 UA（应对按 UA 过滤的情况），后者超时更长。
+    /// </summary>
+    private static readonly (string Url, bool BrowserUserAgent, int Retries, int Timeout)[]
+        BedrockDataSourceAttempts =
+        [
+            (BedrockDataSourceUrl, false, 3, 30000),
+            (BedrockDataSourceUrl, true, 2, 30000)
+        ];
+
+    /// <summary>上次成功获取的版本数据，数据源不可用时继续提供列表。</summary>
+    private static string BedrockDataCacheFile =>
+        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".minecraft", "bedrock", "versions.json");
+
+    private static JsonObject? TryFetchBedrockData(string url, bool browserUserAgent, int retries, int timeout)
+    {
+        try
+        {
+            var json = (JsonObject)Requester.FetchJson(url, new RequestParam
+            {
+                UseBrowserUserAgent = browserUserAgent,
+                Retries = retries,
+                Timeout = timeout
+            });
+            if (json["From_mcappx.com"] is JsonObject data && data.Count > 0) return data;
+            ModBase.Log($"[Bedrock] 数据源 {url} 未返回版本数据");
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log($"[Bedrock] 数据源 {url} 获取失败: {ex.Message}");
+        }
+
+        return null;
+    }
+
+    private static void SaveBedrockDataCache(JsonObject data)
+    {
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(BedrockDataCacheFile)!);
+            ModBase.WriteFile(BedrockDataCacheFile, data.ToJsonString());
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log($"[Bedrock] 写入版本数据缓存失败: {ex.Message}");
+        }
+    }
+
+    private static JsonObject? LoadBedrockDataCache()
+    {
+        try
+        {
+            if (!File.Exists(BedrockDataCacheFile)) return null;
+            if (JsonNode.Parse(ModBase.ReadFile(BedrockDataCacheFile)) is not JsonObject data || data.Count == 0)
+                return null;
+            ModBase.Log($"[Bedrock] 使用本地缓存的版本数据（{File.GetLastWriteTime(BedrockDataCacheFile):yyyy-MM-dd HH:mm}）");
+            return data;
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log($"[Bedrock] 读取版本数据缓存失败: {ex.Message}");
+            return null;
+        }
     }
 
     /// <summary>
@@ -2644,7 +2704,8 @@ public static class ModDownload
                 ["buildType"] = buildType,
                 ["packageVersion"] = (string)ver.Data["ID"] ?? "",
                 ["series"] = GetBedrockVersionSeries(ver.Key),
-                ["available"] = HasBedrockDownloadSource(ver.Data)
+                ["available"] = HasBedrockDownloadSource(ver.Data),
+                ["webAvailable"] = HasBedrockWebPage(ver.Data)
             });
         }
 
@@ -2728,6 +2789,20 @@ public static class ModDownload
 
         selectedVar ??= variations[0] as JsonObject;
         return selectedVar?["MetaData"] is JsonArray metadata && metadata.Count > 0;
+    }
+
+    /// <summary>
+    ///     判断 mcappx 网站上是否列出了该版本。
+    ///     站点的版本列表与 MD5 是否有效一致：只要任一架构留下了 MD5，站点就会给出该版本；
+    ///     完全没有构建（MetaData 与 MD5 均为空）的版本不会出现在站点上。
+    /// </summary>
+    private static bool HasBedrockWebPage(JsonObject verData)
+    {
+        if (verData["Variations"] is not JsonArray variations) return false;
+        foreach (var variation in variations)
+            if (variation is JsonObject obj && !string.IsNullOrEmpty((string)obj["MD5"]))
+                return true;
+        return false;
     }
 
     /// <summary>
