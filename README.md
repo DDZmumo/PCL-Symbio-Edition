@@ -155,6 +155,3 @@ dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
 
 **此页浏览量**（总计 / 今日）：[![Hits](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition)](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition&web=true)
 
-## 贡献者
-
-[![](https://contrib.rocks/image?repo=Hydrogen-Peroxide/PCL-Symbio-Edition)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/graphs/contributors)
