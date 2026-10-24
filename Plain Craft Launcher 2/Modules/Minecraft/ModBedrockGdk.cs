@@ -288,7 +288,12 @@ internal sealed class XvcContainer : IDisposable
         foreach (var region in _xvcRegions)
         {
             if (token.IsCancellationRequested) break;
-            if (region.FirstSegmentIndex != 0 || firstSegmentOffset != region.Offset) continue;
+
+            // 文件段可能被拆分到多个区域（例如主程序、DLL、资源各占一个区域），必须逐个解包；
+            // 元数据区域（XVC-HD / EXVD / MDU / MD / FS-MD）的 FirstSegmentIndex 同样是 0，
+            // 但起始偏移与 0 号段的偏移不同，据此排除。
+            if (region.FirstSegmentIndex >= _segments.Length || region.Length == 0) continue;
+            if (region.FirstSegmentIndex == 0 && firstSegmentOffset != region.Offset) continue;
 
             ExtractRegion(outputDirectory, decoder, (uint)region.Id, region.Offset, region.Length,
                 region.FirstSegmentIndex, IsEncrypted && region.KeyId != ushort.MaxValue, onProgress, token);
