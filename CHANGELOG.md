@@ -5,11 +5,16 @@
 
 ---
 
-## 2.17.7（未发布）
+## 2.17.7（2026-10-24）
+
+### 🐛 问题修复
+
+- 移除档案页「需要先进行一次正版验证才能使用其他验证方式」的黄色提示条
 
 ### 📄 文档
 
 - README 三语致谢补充 [BedrockBoot](https://github.com/Round-Studio/BedrockBoot) 仓库链接
+- CI 生成的 Release 正文补充 `<summary>` 更新摘要
 
 ---
 
