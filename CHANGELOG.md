@@ -5,6 +5,14 @@
 
 ---
 
+## 2.17.7（未发布）
+
+### 📄 文档
+
+- README 三语致谢补充 [BedrockBoot](https://github.com/Round-Studio/BedrockBoot) 仓库链接
+
+---
+
 ## 2.17.6（2026-10-24）
 
 ### ✨ 新功能
