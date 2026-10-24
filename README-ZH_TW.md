@@ -6,7 +6,7 @@
 
 # PCL Symbio Edition
 
-[![Stars](https://img.shields.io/github/stars/Hydrogen-Peroxide/PCL-Symbio-Edition?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTggLjI1YS43NS43NSAwIDAgMSAuNjczLjQxOGwxLjg4MiAzLjgxNSA0LjIxLjYxMmEuNzUuNzUgMCAwIDEgLjQxNiAxLjI3OWwtMy4wNDYgMi45Ny43MTkgNC4xOTJhLjc1MS43NTEgMCAwIDEtMS4wODguNzkxTDggMTIuMzQ3bC0zLjc2NiAxLjk4YS43NS43NSAwIDAgMS0xLjA4OC0uNzlsLjcyLTQuMTk0TC44MTggNi4zNzRhLjc1Ljc1IDAgMCAxIC40MTYtMS4yOGw0LjIxLS42MTFMNy4zMjcuNjY4QS43NS43NSAwIDAgMSA4IC4yNVoiIGZpbGw9IiNlYWM1NGYiLz48L3N2Zz4=&logoSize=auto&label=stars&labelColor=444444&color=eac54f)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/)
+[![Stars](https://img.shields.io/github/stars/Hydrogen-Peroxide/PCL-Symbio-Edition?style=for-the-badge&logo=github&label=stars&labelColor=444444&color=eac54f)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/stargazers)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Hydrogen-Peroxide/PCL-Symbio-Edition/build-test.yml?style=for-the-badge)
 
 [![Pull requests](https://img.shields.io/github/issues-pr/Hydrogen-Peroxide/PCL-Symbio-Edition?style=for-the-badge&label=pull%20requests&labelColor=444444&color=1F883D&logo=github)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/pulls)
@@ -155,7 +155,3 @@ dotnet publish "Plain Craft Launcher 2/Plain Craft Launcher 2.csproj" `
 [![Star History Chart](https://api.star-history.com/svg?repos=Hydrogen-Peroxide/PCL-Symbio-Edition&type=Date)](https://www.star-history.com/#Hydrogen-Peroxide/PCL-Symbio-Edition&Date)
 
 **本頁瀏覽量**（總計 / 今日）：[![Hits](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition)](https://hits.zkitefly.eu.org/?tag=https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition&web=true)
-
-## 貢獻者
-
-[![](https://contrib.rocks/image?repo=Hydrogen-Peroxide/PCL-Symbio-Edition)](https://github.com/Hydrogen-Peroxide/PCL-Symbio-Edition/graphs/contributors)
