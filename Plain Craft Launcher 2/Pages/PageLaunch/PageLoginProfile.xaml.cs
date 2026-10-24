@@ -45,7 +45,6 @@ public partial class PageLoginProfile
         {
             foreach (var p in ModProfile.profileList)
                 ProfileCollection.Add(new ProfileItem(p));
-            HintMicrosoft.Visibility = ModProfile.profileList.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             ModBase.Log("[Profile] 档案列表刷新完成");
         }
         catch (Exception ex)
