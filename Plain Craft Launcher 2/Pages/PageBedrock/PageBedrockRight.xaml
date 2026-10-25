@@ -118,13 +118,22 @@
             <!-- 下载 -->
             <local:MyCard Margin="0,12,0,0" Title="{DynamicResource Bedrock.Download.Title}">
                 <StackPanel Margin="16,38,16,14">
-                    <Grid>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <local:MyRadioButton x:Name="FilterAll" Text="{DynamicResource Bedrock.Filter.All}" ColorType="Highlight" Checked="True" />
-                            <local:MyRadioButton x:Name="FilterUwp" Text="{DynamicResource Bedrock.Filter.Uwp}" ColorType="Highlight" Margin="8,0,0,0" />
-                            <local:MyRadioButton x:Name="FilterGdk" Text="{DynamicResource Bedrock.Filter.Gdk}" ColorType="Highlight" Margin="8,0,0,0" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <local:MyRadioButton x:Name="FilterAll" Text="{DynamicResource Bedrock.Filter.All}" ColorType="Highlight" Checked="True" />
+                        <local:MyRadioButton x:Name="FilterUwp" Text="{DynamicResource Bedrock.Filter.Uwp}" ColorType="Highlight" Margin="8,0,0,0" />
+                        <local:MyRadioButton x:Name="FilterGdk" Text="{DynamicResource Bedrock.Filter.Gdk}" ColorType="Highlight" Margin="8,0,0,0" />
+                    </StackPanel>
+                    <!-- 版本数与来源分列摆放，避免来源文字在窄窗口下压到筛选按钮上 -->
+                    <Grid Margin="2,8,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="LabVersionSummary" Grid.Column="0" Text="{DynamicResource Bedrock.Download.Loading}" FontSize="12"
+                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                   Foreground="{DynamicResource ColorBrushGray3}" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    Margin="8,0,0,0">
                             <TextBlock Text="{DynamicResource Bedrock.Download.SourceLabel}" FontSize="12"
                                        VerticalAlignment="Center"
                                        Foreground="{DynamicResource ColorBrushGray3}" />
@@ -134,9 +143,6 @@
                                                 local:CustomEventService.EventData="https://www.mcappx.com/" />
                         </StackPanel>
                     </Grid>
-                    <TextBlock x:Name="LabVersionSummary" Text="{DynamicResource Bedrock.Download.Loading}" FontSize="12"
-                               Margin="2,8,0,0"
-                               Foreground="{DynamicResource ColorBrushGray3}" />
                 </StackPanel>
             </local:MyCard>
 
