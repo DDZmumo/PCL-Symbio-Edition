@@ -96,6 +96,28 @@ public partial class MyMsgSelect
                 }
             }
         }
+
+        // 预选项不会触发 Check 事件，这里补上选中索引，否则确定按钮会一直不可用
+        if (myConverter.MultiSelect)
+        {
+            UpdateCheckedState();
+        }
+        else
+        {
+            for (var i = 0; i < PanSelection.Children.Count; i++)
+            {
+                var isChecked = PanSelection.Children[i] switch
+                {
+                    MyListItem listItem => listItem.Checked,
+                    MyRadioBox radioBox => radioBox.Checked,
+                    _ => false
+                };
+                if (!isChecked) continue;
+                selectedIndex = i;
+                Btn1.IsEnabled = true;
+                break;
+            }
+        }
     }
 
     private void Load(object sender, EventArgs e)

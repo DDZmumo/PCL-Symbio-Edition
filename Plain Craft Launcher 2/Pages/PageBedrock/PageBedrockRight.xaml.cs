@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -16,8 +17,10 @@ using System.Windows.Threading;
 using System.Xml.Linq;
 using PCL.Core.App;
 using PCL.Core.App.Localization;
+using PCL.Core.UI;
 using PCL.Network;
 using PCL.Network.Loaders;
+using SvgIconControl = PCL.Core.UI.Controls.SvgIcon.SvgIcon;
 
 namespace PCL;
 
@@ -37,6 +40,9 @@ public partial class PageBedrockRight
     // 因此“共存”体现为每个版本各占一个解压目录，启动时按目录切换注册。
     private string? _registeredVersionId;
     private bool _switchingVersion;
+
+    // 状态行当前展示「点击复制安装路径」时，保存可复制的路径；其它状态文案下为 null
+    private string? _detailCopyPath;
 
     // 启动进度：实际阶段进度 + 100ms 平滑显示（与 Java 版启动页一致）
     private readonly DispatcherTimer _launchProgressTimer;
@@ -69,7 +75,35 @@ public partial class PageBedrockRight
         SearchBox.TextChanged += (_, _) => ApplyVersionFilter();
         _launchProgressTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
         _launchProgressTimer.Tick += LaunchProgressTimer_Tick;
+        // 状态文案会被启动、安装等流程频繁改写，统一在这里同步“路径可复制”的提示与悬停内容
+        DependencyPropertyDescriptor.FromProperty(TextBlock.TextProperty, typeof(TextBlock))
+            .AddValueChanged(LabDetail, (_, _) => UpdateDetailCopyState());
         Loaded += PageBedrockRight_Loaded;
+    }
+
+    /// <summary>状态行是否为「点击复制安装路径」，据此决定鼠标指针与悬停显示的路径。</summary>
+    private void UpdateDetailCopyState()
+    {
+        var isPathHint = LabDetail.Text == Lang.Text("Bedrock.Status.CopyPathHint");
+        _detailCopyPath = isPathHint ? BedrockInstallPath : null;
+        LabDetail.ToolTip = string.IsNullOrEmpty(_detailCopyPath) ? null : _detailCopyPath;
+        LabDetail.Cursor = string.IsNullOrEmpty(_detailCopyPath) ? null : Cursors.Hand;
+    }
+
+    private void LabDetail_Click(object sender, MouseButtonEventArgs e)
+    {
+        if (string.IsNullOrEmpty(_detailCopyPath)) return;
+
+        try
+        {
+            Clipboard.SetText(_detailCopyPath);
+            HintService.Hint(Lang.Text("Bedrock.Status.PathCopied"), HintType.Success);
+        }
+        catch (Exception ex)
+        {
+            ModBase.Log(ex, "[Bedrock] 复制安装路径失败");
+            HintService.Hint(Lang.Text("Bedrock.Status.PathCopyFailed"), HintType.Error);
+        }
     }
 
     private void PageBedrockRight_Loaded(object sender, RoutedEventArgs e)
@@ -141,11 +175,10 @@ public partial class PageBedrockRight
         {
             ShapeStatusDot.Fill = (Brush)FindResource("ColorBrush3");
             LabStatus.Text = Lang.Text("Bedrock.Status.Detected");
-            LabDetail.Text = bedrockPath;
+            LabDetail.Text = Lang.Text("Bedrock.Status.CopyPathHint");
             LabVersion.Text = string.IsNullOrEmpty(bedrockVersion)
                 ? "Minecraft Bedrock Edition"
                 : Lang.Text("Bedrock.Status.Version", bedrockVersion);
-            UpdateSelectedVersionHint();
             BtnLaunch.IsEnabled = true;
             BtnLaunch.Text = Lang.Text("Bedrock.Action.Launch");
         }
@@ -155,7 +188,6 @@ public partial class PageBedrockRight
             LabStatus.Text = Lang.Text("Bedrock.Status.NotFound");
             LabDetail.Text = Lang.Text("Bedrock.Status.DownloadOrImportHint");
             LabVersion.Text = Lang.Text("Bedrock.Status.NotInstalled");
-            LabSelectedVersion.Text = Lang.Text("Bedrock.Status.NotFound");
             BtnLaunch.IsEnabled = true;
             BtnLaunch.Text = Lang.Text("Bedrock.Action.Download");
         }
@@ -165,15 +197,6 @@ public partial class PageBedrockRight
         RefreshUpdateHint();
         // 同步刷新左侧页面的状态，否则左侧会一直停留在检测前的“未检测到”
         ModMain.frmBedrockLeft?.RefreshStatus();
-    }
-
-    /// <summary>已记住的版本会跟随启动按钮，界面上同步给出提示。</summary>
-    private void UpdateSelectedVersionHint()
-    {
-        var selected = Config.Launch.BedrockSelectedVersion;
-        LabSelectedVersion.Text = string.IsNullOrEmpty(selected)
-            ? Lang.Text("Bedrock.Status.Ready")
-            : Lang.Text("Bedrock.Status.SelectedVersion", selected);
     }
 
     /// <summary>
@@ -471,6 +494,7 @@ public partial class PageBedrockRight
         ProgressBedrockFinished.Width = new GridLength(0d, GridUnitType.Star);
         ProgressBedrockUnfinished.Width = new GridLength(1d, GridUnitType.Star);
         PanLaunchProgress.Visibility = Visibility.Visible;
+        LoadLaunching.State.LoadingState = MyLoading.MyLoadingState.Run;
         BtnLaunch.IsEnabled = false;
         LabStatus.Text = Lang.Text("Bedrock.Status.Launching");
         LabDetail.Text = detail;
@@ -498,6 +522,7 @@ public partial class PageBedrockRight
         {
             LabStatus.Text = status;
             LabDetail.Text = detail;
+            LoadLaunching.State.LoadingState = MyLoading.MyLoadingState.Stop;
 
             if (!success)
             {
@@ -539,12 +564,16 @@ public partial class PageBedrockRight
             _launchShownProgress = _launchActualProgress;
         if (_launchShownProgress > 1d) _launchShownProgress = 1d;
 
-        ModAnimation.AaGridLengthWidth(ProgressBedrockFinished,
-            _launchShownProgress - ProgressBedrockFinished.Width.Value, 260,
-            ease: new ModAnimation.AniEaseOutFluent());
-        ModAnimation.AaGridLengthWidth(ProgressBedrockUnfinished,
-            1d - _launchShownProgress - ProgressBedrockUnfinished.Width.Value, 260,
-            ease: new ModAnimation.AniEaseOutFluent());
+        // 每次 Tick 用同名动画覆盖上一帧，让两列宽度平滑跟随
+        ModAnimation.AniStart(new[]
+        {
+            ModAnimation.AaGridLengthWidth(ProgressBedrockFinished,
+                _launchShownProgress - ProgressBedrockFinished.Width.Value, 260,
+                ease: new ModAnimation.AniEaseOutFluent()),
+            ModAnimation.AaGridLengthWidth(ProgressBedrockUnfinished,
+                1d - _launchShownProgress - ProgressBedrockUnfinished.Width.Value, 260,
+                ease: new ModAnimation.AniEaseOutFluent())
+        }, "Bedrock Launch Progress");
     }
 
     /// <summary>等待游戏窗口出现；拿不到进程句柄时（注册式启动）按进程名查找。</summary>
@@ -888,7 +917,7 @@ public partial class PageBedrockRight
         foreach (var item in items)
         {
             _localVersionIds.Add(item.Id);
-            PanLocalVersions.Children.Add(BuildLocalRow(item.Id, item.FilePath));
+            PanLocalVersions.Children.Add(BuildLocalCard(item.Id, item.FilePath));
         }
 
         if (items.Count == 0)
@@ -925,7 +954,10 @@ public partial class PageBedrockRight
         }
     }
 
-    private MyListItem BuildLocalRow(string versionId, string filePath)
+    /// <summary>
+    ///     构建一个版本实例卡片：版本号、构建类型、包版本与注册状态，右侧常显启动与操作按钮。
+    /// </summary>
+    private FrameworkElement BuildLocalCard(string versionId, string filePath)
     {
         var fileName = Path.GetFileName(filePath);
         var fileSize = "";
@@ -933,21 +965,160 @@ public partial class PageBedrockRight
         {
             fileSize = FormatFileSize(new FileInfo(filePath).Length);
         }
-        catch { }
+        catch
+        {
+            // 安装包被占用或已删除时忽略大小
+        }
 
         var isInstalling = _installingVersions.Contains(versionId);
         // GDK 便携版只要解包完成就可以直接运行，不需要注册系统包
         var isGdk = IsGdkVersion(versionId);
         var gdkReady = isGdk && ModBedrockGdk.IsInstalled(
             ModBedrockUwp.GetVersionDirectory(Path.Combine(BedrockVersionsDir, "extracted"), versionId));
-        var isInstalled = !isInstalling &&
-                          (gdkReady ||
-                           string.Equals(_registeredVersionId, versionId, StringComparison.OrdinalIgnoreCase));
+        var isRegistered = string.Equals(_registeredVersionId, versionId, StringComparison.OrdinalIgnoreCase);
+        var isInstalled = !isInstalling && (gdkReady || isRegistered);
+        var isSelected = string.Equals(Config.Launch.BedrockSelectedVersion, versionId, StringComparison.OrdinalIgnoreCase);
+
+        var icon = new SvgIconControl
+        {
+            Icon = isGdk ? "lucide/gamepad-2" : "lucide/box",
+            Width = 17,
+            Height = 17,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        icon.SetResourceReference(SvgIconControl.IconBrushProperty,
+            isSelected ? "ColorBrushWhite" : isInstalled ? "ColorBrush3" : "ColorBrushGray2");
+
+        // 圆角图标底：当前选中的版本用实色突出，未解包的版本用灰底弱化
+        var iconTile = new Border
+        {
+            Width = 32,
+            Height = 32,
+            CornerRadius = new CornerRadius(7),
+            Margin = new Thickness(0, 0, 12, 0),
+            VerticalAlignment = VerticalAlignment.Center,
+            Child = icon
+        };
+        iconTile.SetResourceReference(Border.BackgroundProperty,
+            isSelected ? "ColorBrush3" : isInstalled ? "ColorBrush6" : "ColorBrushGray7");
+
+        var title = new TextBlock
+        {
+            Text = versionId,
+            FontSize = 14.5,
+            FontWeight = FontWeights.Bold,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        title.SetResourceReference(TextBlock.ForegroundProperty, "ColorBrush1");
+
+        // 构建类型与安装状态都放在标题行，副标题才能独占整行显示版本信息
+        var titleRow = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            VerticalAlignment = VerticalAlignment.Center,
+            Children =
+            {
+                title,
+                CreateChip(isGdk ? "GDK" : "UWP",
+                    isGdk ? "ColorBrush6" : "ColorBrushGray7",
+                    isGdk ? "ColorBrush2" : "ColorBrushGray2",
+                    new Thickness(8, 0, 0, 0)),
+                isInstalling
+                    ? CreateChip(Lang.Text("Bedrock.Local.Tag.Installing"), "ColorBrushGray7", "ColorBrushGray2",
+                        new Thickness(6, 0, 0, 0))
+                    : isInstalled
+                        ? CreateChip(Lang.Text("Bedrock.Local.Tag.Installed"), "ColorBrush6", "ColorBrush2",
+                            new Thickness(6, 0, 0, 0))
+                        : CreateChip(Lang.Text("Bedrock.Local.Tag.Downloaded"), "ColorBrushGray7", "ColorBrushGray2",
+                            new Thickness(6, 0, 0, 0))
+            }
+        };
+        // 跟随启动按钮的版本需要明确标出，否则只看图标底色难以分辨
+        if (isSelected)
+            titleRow.Children.Add(CreateChip(Lang.Text("Bedrock.Local.Tag.Selected"), "ColorBrush3", "ColorBrushWhite",
+                new Thickness(6, 0, 0, 0)));
+
+        var detailParts = new List<string>();
+        if (isInstalled)
+        {
+            var packageVersion = TryReadExtractedIdentityVersion(versionId);
+            if (!string.IsNullOrEmpty(packageVersion)) detailParts.Add(packageVersion);
+        }
+
+        if (!string.IsNullOrEmpty(fileSize)) detailParts.Add(fileSize);
+        // 版本信息始终包含安装包文件名，方便与下载的包对照
+        detailParts.Add(fileName);
+        if (gdkReady)
+            detailParts.Add(ModBedrockLoader.GetDisplayName(ModBedrockLoader.GetLoader(versionId)));
+
+        var detailText = string.Join("  ·  ", detailParts);
+        var detail = new TextBlock
+        {
+            Text = detailText,
+            ToolTip = string.IsNullOrEmpty(detailText) ? null : detailText,
+            FontSize = 11,
+            Margin = new Thickness(0, 2, 0, 0),
+            TextWrapping = TextWrapping.NoWrap,
+            TextTrimming = TextTrimming.CharacterEllipsis
+        };
+        detail.SetResourceReference(TextBlock.ForegroundProperty, "ColorBrushGray3");
+
+        var info = new StackPanel
+        {
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(0, 0, 10, 0),
+            Children = { titleRow, detail }
+        };
+
+        // 每个已下载的版本都可以直接启动：未注册的版本会先切换注册再启动
+        var launchBtn = new MyButton
+        {
+            Text = Lang.Text("Bedrock.Local.LaunchButton"),
+            ColorType = MyButton.ColorState.Highlight,
+            Height = 30,
+            MinWidth = 70,
+            Padding = new Thickness(12, 0, 12, 0),
+            VerticalAlignment = VerticalAlignment.Center,
+            IsEnabled = !isInstalling,
+            ToolTip = isGdk
+                ? Lang.Text("Bedrock.Local.LaunchGdk")
+                : isInstalled
+                    ? Lang.Text("Bedrock.Local.Launch")
+                    : Lang.Text("Bedrock.Local.SwitchLaunch")
+        };
+        launchBtn.Click += (_, _) => LaunchLocalVersion(versionId);
+
+        var buttons = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            VerticalAlignment = VerticalAlignment.Center,
+            Children = { launchBtn }
+        };
+
+        // GDK 便携版解包完成后可以在版本卡片里选择加载器：原版不注入，LeviLamina 注入 mods 内的 DLL
+        if (gdkReady)
+        {
+            var loader = ModBedrockLoader.GetLoader(versionId);
+            var loaderBtn = new MyIconButton
+            {
+                SvgIcon = "lucide/puzzle",
+                Tag = versionId,
+                Height = 30,
+                Margin = new Thickness(8, 0, 0, 0),
+                IsEnabled = !isInstalling,
+                ToolTip = Lang.Text("Bedrock.Loader.Tooltip", ModBedrockLoader.GetDisplayName(loader))
+            };
+            loaderBtn.Click += LocalLoader_Click;
+            buttons.Children.Add(loaderBtn);
+        }
 
         var installBtn = new MyIconButton
         {
             SvgIcon = "lucide/package-plus",
             Tag = versionId,
+            Height = 30,
+            Margin = new Thickness(8, 0, 0, 0),
             IsEnabled = !isInstalling
         };
         installBtn.ToolTip = isInstalling
@@ -956,77 +1127,95 @@ public partial class PageBedrockRight
                 ? Lang.Text("Bedrock.Local.Reinstall")
                 : Lang.Text("Bedrock.Local.Install");
         installBtn.Click += LocalInstall_Click;
-
-        // 每个已下载的版本都可以直接启动：未注册的版本会先切换注册再启动
-        var launchBtn = new MyIconButton
-        {
-            SvgIcon = "lucide/play",
-            Tag = versionId,
-            IsEnabled = !isInstalling
-        };
-        launchBtn.ToolTip = isGdk
-            ? Lang.Text("Bedrock.Local.LaunchGdk")
-            : isInstalled
-                ? Lang.Text("Bedrock.Local.Launch")
-                : Lang.Text("Bedrock.Local.SwitchLaunch");
-        launchBtn.Click += LocalLaunch_Click;
-
-        var buttons = new List<MyIconButton> { launchBtn };
-
-        // GDK 便携版解包完成后可以在版本列表里选择加载器：原版不注入，LeviLamina 注入 mods 内的 DLL
-        var loader = gdkReady ? ModBedrockLoader.GetLoader(versionId) : ModBedrockLoader.Vanilla;
-        if (gdkReady)
-        {
-            var loaderBtn = new MyIconButton
-            {
-                SvgIcon = "lucide/puzzle",
-                Tag = versionId,
-                IsEnabled = !isInstalling
-            };
-            loaderBtn.ToolTip = Lang.Text("Bedrock.Loader.Tooltip", ModBedrockLoader.GetDisplayName(loader));
-            loaderBtn.Click += LocalLoader_Click;
-            buttons.Add(loaderBtn);
-        }
-
-        buttons.Add(installBtn);
+        buttons.Children.Add(installBtn);
 
         var deleteBtn = new MyIconButton
         {
             SvgIcon = "lucide/trash-2",
             Theme = MyIconButton.Themes.Red,
             Tag = versionId,
+            Height = 30,
+            Margin = new Thickness(8, 0, 0, 0),
             IsEnabled = !isInstalling
         };
         deleteBtn.ToolTip = isInstalled
             ? Lang.Text("Bedrock.Local.DeleteRegistered")
             : Lang.Text("Bedrock.Local.Delete");
         deleteBtn.Click += LocalDelete_Click;
-        buttons.Add(deleteBtn);
+        buttons.Children.Add(deleteBtn);
 
-        var stateTag = isInstalling
-            ? Lang.Text("Bedrock.Local.Tag.Installing")
-            : isInstalled
-                ? Lang.Text("Bedrock.Local.Tag.Installed")
-                : Lang.Text("Bedrock.Local.Tag.Downloaded");
-        if (isGdk) stateTag = Lang.Text("Bedrock.Local.Tag.Gdk") + " · " + stateTag;
-        if (loader == ModBedrockLoader.LeviLamina)
-            stateTag += " · " + ModBedrockLoader.GetDisplayName(loader);
-        if (string.Equals(Config.Launch.BedrockSelectedVersion, versionId, StringComparison.OrdinalIgnoreCase))
-            stateTag += " · " + Lang.Text("Bedrock.Local.Tag.Selected");
+        var grid = new Grid();
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
-        var row = new MyListItem
+        Grid.SetColumn(iconTile, 0);
+        Grid.SetColumn(info, 1);
+        Grid.SetColumn(buttons, 2);
+        grid.Children.Add(iconTile);
+        grid.Children.Add(info);
+        grid.Children.Add(buttons);
+
+        var card = new Border
         {
-            Title = versionId,
-            Info = $"{fileSize}  ·  {fileName}",
-            Tags = stateTag,
-            Type = MyListItem.CheckType.Clickable,
-            Height = 42,
-            SvgIcon = "lucide/box",
-            Tag = versionId
+            CornerRadius = new CornerRadius(8),
+            Padding = new Thickness(14, 10, 0, 10),
+            Margin = new Thickness(0, 0, 0, 8),
+            Child = grid,
+            Cursor = Cursors.Hand
         };
-        row.Buttons = buttons.ToArray();
-        row.Click += (_, _) => LocalInstall_Click(installBtn, EventArgs.Empty);
-        return row;
+        card.SetResourceReference(Border.BackgroundProperty, "ColorBrush8");
+        card.MouseEnter += (_, _) => card.SetResourceReference(Border.BackgroundProperty, "ColorBrush7");
+        card.MouseLeave += (_, _) => card.SetResourceReference(Border.BackgroundProperty, "ColorBrush8");
+        // 与旧版一致：点击版本实例的空白处直接安装（已安装时为重新安装）
+        card.MouseLeftButtonUp += (_, _) => LocalInstall_Click(installBtn, EventArgs.Empty);
+        return card;
+    }
+
+    /// <summary>
+    ///     版本卡片上的小标签。
+    /// </summary>
+    private static Border CreateChip(string text, string backgroundKey, string foregroundKey,
+        Thickness? margin = null)
+    {
+        var label = new TextBlock
+        {
+            Text = text,
+            FontSize = 10.5,
+            FontWeight = FontWeights.Bold
+        };
+        label.SetResourceReference(TextBlock.ForegroundProperty, foregroundKey);
+
+        var chip = new Border
+        {
+            CornerRadius = new CornerRadius(4),
+            Padding = new Thickness(6, 1, 6, 2),
+            Margin = margin ?? new Thickness(0),
+            VerticalAlignment = VerticalAlignment.Center,
+            Child = label
+        };
+        chip.SetResourceReference(Border.BackgroundProperty, backgroundKey);
+        return chip;
+    }
+
+    /// <summary>
+    ///     读取解包目录中 AppxManifest 的 Identity 版本号，用于版本卡片的副标题。
+    /// </summary>
+    private static string? TryReadExtractedIdentityVersion(string versionId)
+    {
+        var (_, manifestPath) = FindExtractedVersion(versionId);
+        if (manifestPath is null) return null;
+
+        try
+        {
+            var identity = XDocument.Load(manifestPath).Descendants()
+                .FirstOrDefault(element => element.Name.LocalName == "Identity");
+            return identity?.Attribute("Version")?.Value;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -1045,18 +1234,6 @@ public partial class PageBedrockRight
     }
 
     /// <summary>
-    ///     启动指定本地版本。
-    ///     参考 BedrockBoot：UWP 包的 PFN 固定，同一时刻只能注册一个版本，
-    ///     所以启动其他版本时先把该版本目录重新注册，再启动。
-    /// </summary>
-    private void LocalLaunch_Click(object sender, EventArgs e)
-    {
-        if (sender is not MyIconButton btn || btn.Tag is not string versionId)
-            return;
-        LaunchLocalVersion(versionId);
-    }
-
-    /// <summary>
     ///     选择该 GDK 版本的模组加载器：原版不做注入，LeviLamina 注入 mods 目录内的 DLL。
     /// </summary>
     private void LocalLoader_Click(object sender, EventArgs e)
@@ -1065,16 +1242,28 @@ public partial class PageBedrockRight
             return;
 
         var current = ModBedrockLoader.GetLoader(versionId);
-        // 预选中的单选框不会触发 Check 事件，弹窗里的确定按钮会一直不可用，因此这里不预选，
-        // 只把当前加载器显示在标题里
-        List<IMyRadio> selections =
+        var isLeviLamina = current == ModBedrockLoader.LeviLamina;
+        List<MyMsgCardOption> options =
         [
-            new MyRadioBox { Text = Lang.Text("Bedrock.Loader.Vanilla") },
-            new MyRadioBox { Text = Lang.Text("Bedrock.Loader.LeviLamina") }
+            new()
+            {
+                Title = Lang.Text("Bedrock.Loader.Vanilla"),
+                Description = Lang.Text("Bedrock.Loader.Vanilla.Description"),
+                SvgIcon = "lucide/box",
+                Tag = isLeviLamina ? "" : Lang.Text("Bedrock.Loader.CurrentTag")
+            },
+            new()
+            {
+                Title = Lang.Text("Bedrock.Loader.LeviLamina"),
+                Description = Lang.Text("Bedrock.Loader.LeviLamina.Description"),
+                SvgIcon = "lucide/puzzle",
+                Tag = isLeviLamina ? Lang.Text("Bedrock.Loader.CurrentTag") : ""
+            }
         ];
 
-        var selected = ModMain.MyMsgBoxSelect(selections,
-            Lang.Text("Bedrock.Loader.Title", ModBedrockLoader.GetDisplayName(current)),
+        var selected = ModMain.MyMsgBoxCardSelect(options, isLeviLamina ? 1 : 0,
+            Lang.Text("Bedrock.Loader.SelectTitle"),
+            Lang.Text("Bedrock.Loader.SelectCaption", versionId),
             button2: Lang.Text("Common.Action.Cancel"));
         if (selected is null) return;
 
@@ -1227,7 +1416,6 @@ public partial class PageBedrockRight
     private void SelectVersion(string versionId)
     {
         Config.Launch.BedrockSelectedVersion = versionId;
-        UpdateSelectedVersionHint();
     }
 
     private void LocalInstall_Click(object sender, EventArgs e)
@@ -1332,9 +1520,8 @@ public partial class PageBedrockRight
                     BtnUpdate.Visibility = Visibility.Collapsed;
                     ShapeStatusDot.Fill = (Brush)FindResource("ColorBrush3");
                     LabStatus.Text = Lang.Text("Bedrock.Gdk.Extracted");
-                    LabDetail.Text = extractDir;
+                    LabDetail.Text = Lang.Text("Bedrock.Status.CopyPathHint");
                     LabVersion.Text = Lang.Text("Bedrock.Status.Version", versionId);
-                    LabSelectedVersion.Text = Lang.Text("Bedrock.Status.Ready");
                     BtnLaunch.IsEnabled = true;
                     BtnLaunch.Text = Lang.Text("Bedrock.Action.Launch");
                     RefreshLocalVersions();

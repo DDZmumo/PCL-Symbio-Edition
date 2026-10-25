@@ -24,7 +24,7 @@ namespace PCL;
 public static class ModMain
 {
     public static FormMain? frmMain;
-    public static SplashScreen? frmStart;
+    public static StartupSplash? frmStart;
     public static PageLaunchLeft? frmLaunchLeft;
     public static PageLaunchRight? frmLaunchRight;
     public static PageLogLeft? frmLogLeft;
@@ -274,6 +274,21 @@ public static class ModMain
         public bool MultiSelect;
 
         /// <summary>
+        ///     卡片选择模式：可选项。
+        /// </summary>
+        public List<MyMsgCardOption> CardOptions;
+
+        /// <summary>
+        ///     卡片选择模式：初始选中项，-1 表示不选中。
+        /// </summary>
+        public int CardSelectedIndex = -1;
+
+        /// <summary>
+        ///     卡片选择模式：选项上方的说明文本。
+        /// </summary>
+        public string Caption = "";
+
+        /// <summary>
         ///     有多个按钮时，是否给第一个按钮加高亮。
         /// </summary>
         public bool HighLight;
@@ -315,7 +330,8 @@ public static class ModMain
         Select,
         Input,
         Login,
-        Markdown
+        Markdown,
+        CardSelect
     }
 
     private static string GetDefaultDialogTitle() => Lang.Text("Common.Dialog.Title");
@@ -593,7 +609,46 @@ public static class ModMain
     }
 
     /// <summary>
-    ///     显示多选选择框并返回勾选的所有项索引（从 0 开始）。若点击第二个按钮，则返回 Nothing。
+    ///     显示卡片选择框并返回选择的第几项（从 0 开始）。若点击第二个按钮，则返回 Nothing。
+    /// </summary>
+    /// <param name="options">需要展示的卡片选项。</param>
+    /// <param name="selectedIndex">初始选中项，-1 表示不选中。</param>
+    /// <param name="title">弹窗的标题。</param>
+    /// <param name="caption">选项上方的说明文本。</param>
+    /// <param name="button1">显示的第一个按钮，默认为“确定”。</param>
+    /// <param name="button2">显示的第二个按钮，默认为空。</param>
+    /// <param name="isWarn">是否为警告弹窗，若为 True，弹窗配色和背景会变为红色。</param>
+    public static int? MyMsgBoxCardSelect(List<MyMsgCardOption> options, int selectedIndex = -1,
+        string? title = null, string? caption = null, string? button1 = null, string? button2 = "",
+        bool isWarn = false)
+    {
+        title ??= GetDefaultDialogTitle();
+        button1 ??= GetDefaultConfirmText();
+        button2 ??= "";
+        var converter = new MyMsgBoxConverter
+        {
+            Type = MyMsgBoxType.CardSelect, Button1 = button1, Button2 = button2, CardOptions = options,
+            CardSelectedIndex = selectedIndex, Caption = caption ?? "", IsWarn = isWarn, Title = title
+        };
+        WaitingMyMsgBox.Add(converter);
+        try
+        {
+            if (frmMain is not null)
+                frmMain.DragStop();
+            ComponentDispatcher.PushModal();
+            Dispatcher.PushFrame(converter.WaitFrame);
+        }
+        finally
+        {
+            ComponentDispatcher.PopModal();
+        }
+
+        ModBase.Log($"[Control] 卡片选择弹框返回：{converter.Result ?? "null"}");
+        return (int?)converter.Result;
+    }
+
+    /// <summary>
+    ///     显示多选选择框并返回勾选的所有项索引（从 0 开始）。若点击了第二个按钮，则返回 Nothing。
     /// </summary>
     /// <param name="selections">需要展示的可勾选列表项。</param>
     /// <param name="title">弹窗的标题。</param>
@@ -670,6 +725,11 @@ public static class ModMain
                     case MyMsgBoxType.Markdown:
                     {
                         frmMain.PanMsg.Children.Add(new MyMsgMarkdown(WaitingMyMsgBox[0]));
+                        break;
+                    }
+                    case MyMsgBoxType.CardSelect:
+                    {
+                        frmMain.PanMsg.Children.Add(new MyMsgCardSelect(WaitingMyMsgBox[0]));
                         break;
                     }
                 }

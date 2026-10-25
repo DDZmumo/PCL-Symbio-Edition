@@ -106,11 +106,16 @@
     <sys:String x:Key="Bedrock.Isolation.Hint">Give each GDK portable build its own saves and resources. When enabled, the data folder is switched to this version's own folder; existing data is kept in "Minecraft Bedrock.pcl-shared" and restored when isolation is disabled. Not supported for UWP.</sys:String>
     <sys:String x:Key="Bedrock.Isolation.RunningHint">Close the running Minecraft Bedrock before switching version isolation</sys:String>
     <sys:String x:Key="Bedrock.Isolation.Title">Version isolation</sys:String>
+    <sys:String x:Key="Bedrock.Loader.CurrentTag">Current</sys:String>
     <sys:String x:Key="Bedrock.Loader.LeviLamina">LeviLamina</sys:String>
+    <sys:String x:Key="Bedrock.Loader.LeviLamina.Description">Injects DLL mods from the mods folder</sys:String>
     <sys:String x:Key="Bedrock.Loader.Missing">LeviLamina is selected but no DLL mods were found; launching vanilla this time</sys:String>
+    <sys:String x:Key="Bedrock.Loader.SelectCaption">Choose the loader used when launching version {0}. Changes take effect on the next launch.</sys:String>
+    <sys:String x:Key="Bedrock.Loader.SelectTitle">Select mod loader</sys:String>
     <sys:String x:Key="Bedrock.Loader.Title">Select mod loader (current: {0})</sys:String>
     <sys:String x:Key="Bedrock.Loader.Tooltip">Loader: {0} (click to change)</sys:String>
     <sys:String x:Key="Bedrock.Loader.Vanilla">Vanilla</sys:String>
+    <sys:String x:Key="Bedrock.Loader.Vanilla.Description">Launches the game as-is with no mods injected</sys:String>
     <sys:String x:Key="Bedrock.Launch.Error">Bedrock launch error</sys:String>
     <sys:String x:Key="Bedrock.Launch.Exited">The game exited right after launch (code {0})</sys:String>
     <sys:String x:Key="Bedrock.Launch.Stage.Isolation">Preparing version isolation</sys:String>
@@ -135,11 +140,12 @@
     <sys:String x:Key="Bedrock.Local.DeleteRegistered">Uninstall and delete this version (keep saves)</sys:String>
     <sys:String x:Key="Bedrock.Local.Deleted">Deleted Bedrock {0}</sys:String>
     <sys:String x:Key="Bedrock.Local.DeleteFailed">Delete failed: {0}</sys:String>
-    <sys:String x:Key="Bedrock.Local.Description">Packages are saved here. Hover over a version row to install, launch or delete it. For older versions, download the package manually from the mcappx website and click the button on the right to import it.</sys:String>
+    <sys:String x:Key="Bedrock.Local.Description">Packages are stored in .minecraft\bedrock\versions, one folder per version; launching switches the registered version automatically. Older versions can be downloaded from mcappx and imported.</sys:String>
     <sys:String x:Key="Bedrock.Local.Empty">No downloaded versions yet. Download one online or click "Import package" to add one.</sys:String>
     <sys:String x:Key="Bedrock.Local.Install">Install this version</sys:String>
     <sys:String x:Key="Bedrock.Local.Installing">Installing...</sys:String>
     <sys:String x:Key="Bedrock.Local.Launch">Launch this version</sys:String>
+    <sys:String x:Key="Bedrock.Local.LaunchButton">Launch</sys:String>
     <sys:String x:Key="Bedrock.Local.LaunchGdk">Launch directly (portable build, can run alongside other versions)</sys:String>
     <sys:String x:Key="Bedrock.Local.PackageMissing">The package file has been deleted, so this version cannot be switched to</sys:String>
     <sys:String x:Key="Bedrock.Local.Reinstall">Reinstall this version</sys:String>
@@ -149,7 +155,7 @@
     <sys:String x:Key="Bedrock.Local.Tag.Installed">Installed</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Installing">Installing</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Selected">Selected</sys:String>
-    <sys:String x:Key="Bedrock.Local.Title">Downloaded versions</sys:String>
+    <sys:String x:Key="Bedrock.Local.Title">Version instances</sys:String>
     <sys:String x:Key="Bedrock.Register.Failed">Failed to register the game package; fell back to direct launch (may ask to unlock the full game)</sys:String>
     <sys:String x:Key="Bedrock.Register.NoDeveloperMode">Developer mode is off; fell back to direct launch (may ask to unlock the full game)</sys:String>
     <sys:String x:Key="Bedrock.Search.Hint">Search Bedrock versions...</sys:String>
@@ -160,6 +166,7 @@
     <sys:String x:Key="Bedrock.Shortcuts.Title">Quick actions</sys:String>
     <sys:String x:Key="Bedrock.Status.AvailableToDownload">Download and install any version on the right</sys:String>
     <sys:String x:Key="Bedrock.Status.CallingSystem">Calling system API</sys:String>
+    <sys:String x:Key="Bedrock.Status.CopyPathHint">Click to copy install path</sys:String>
     <sys:String x:Key="Bedrock.Status.Detected">Bedrock detected</sys:String>
     <sys:String x:Key="Bedrock.Status.Detecting">Detecting Bedrock…</sys:String>
     <sys:String x:Key="Bedrock.Status.DownloadOrImportHint">Download or import a package, then install it under "Downloaded versions"</sys:String>
@@ -169,6 +176,8 @@
     <sys:String x:Key="Bedrock.Status.NotInstalled">Not installed</sys:String>
     <sys:String x:Key="Bedrock.Status.NotFound">Bedrock not detected</sys:String>
     <sys:String x:Key="Bedrock.Status.NotSelected">No version selected</sys:String>
+    <sys:String x:Key="Bedrock.Status.PathCopyFailed">Failed to copy install path</sys:String>
+    <sys:String x:Key="Bedrock.Status.PathCopied">Install path copied</sys:String>
     <sys:String x:Key="Bedrock.Status.PleaseWait">Please wait...</sys:String>
     <sys:String x:Key="Bedrock.Status.Ready">Ready</sys:String>
     <sys:String x:Key="Bedrock.Status.SelectedVersion">Following version {0}</sys:String>

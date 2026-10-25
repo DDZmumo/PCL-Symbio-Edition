@@ -85,7 +85,8 @@
                             <TextBlock x:Name="LabStatus" Text="{DynamicResource Bedrock.Status.Detecting}" FontSize="13" FontWeight="Bold" />
                         </StackPanel>
                         <TextBlock x:Name="LabDetail" Text="" FontSize="10.5" Margin="15,4,0,0"
-                                   TextWrapping="Wrap" Foreground="{DynamicResource ColorBrushGray4}" />
+                                   TextWrapping="Wrap" MouseLeftButtonUp="LabDetail_Click"
+                                   Foreground="{DynamicResource ColorBrushGray4}" />
                     </StackPanel>
                 </Border>
             </StackPanel>

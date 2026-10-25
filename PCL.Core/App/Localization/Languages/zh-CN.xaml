@@ -106,11 +106,16 @@
     <sys:String x:Key="Bedrock.Isolation.Hint">为每个 GDK 便携版使用独立的存档与资源目录。启用后会把数据目录切换到该版本自己的目录，原有数据保留在 Minecraft Bedrock.pcl-shared 中，关闭隔离即恢复。UWP 版本不支持。</sys:String>
     <sys:String x:Key="Bedrock.Isolation.RunningHint">请先关闭正在运行的基岩版，再切换版本隔离</sys:String>
     <sys:String x:Key="Bedrock.Isolation.Title">版本隔离</sys:String>
+    <sys:String x:Key="Bedrock.Loader.CurrentTag">当前</sys:String>
     <sys:String x:Key="Bedrock.Loader.LeviLamina">LeviLamina</sys:String>
+    <sys:String x:Key="Bedrock.Loader.LeviLamina.Description">从 mods 目录注入 DLL 模组</sys:String>
     <sys:String x:Key="Bedrock.Loader.Missing">已选择 LeviLamina，但没有找到 DLL 模组，本次按原版启动</sys:String>
+    <sys:String x:Key="Bedrock.Loader.SelectCaption">为版本 {0} 选择启动时使用的加载器，修改后下次启动生效</sys:String>
+    <sys:String x:Key="Bedrock.Loader.SelectTitle">选择加载器</sys:String>
     <sys:String x:Key="Bedrock.Loader.Title">选择加载器（当前：{0}）</sys:String>
     <sys:String x:Key="Bedrock.Loader.Tooltip">加载器：{0}（点击切换）</sys:String>
     <sys:String x:Key="Bedrock.Loader.Vanilla">原版</sys:String>
+    <sys:String x:Key="Bedrock.Loader.Vanilla.Description">直接启动游戏本体，不注入模组</sys:String>
     <sys:String x:Key="Bedrock.Launch.Error">基岩版启动错误</sys:String>
     <sys:String x:Key="Bedrock.Launch.Exited">游戏启动后立即退出（代码 {0}）</sys:String>
     <sys:String x:Key="Bedrock.Launch.Stage.Isolation">正在准备版本隔离</sys:String>
@@ -135,11 +140,12 @@
     <sys:String x:Key="Bedrock.Local.DeleteRegistered">卸载并删除此版本（保留存档）</sys:String>
     <sys:String x:Key="Bedrock.Local.Deleted">已删除基岩版 {0}</sys:String>
     <sys:String x:Key="Bedrock.Local.DeleteFailed">删除失败: {0}</sys:String>
-    <sys:String x:Key="Bedrock.Local.Description">安装包会保存在这里，鼠标移到版本行上即可安装、启动或删除。旧版本可先在 mcappx 网页手动下载，再点击右侧按钮导入。</sys:String>
+    <sys:String x:Key="Bedrock.Local.Description">安装包保存在 .minecraft\bedrock\versions，每个版本独立存放；启动时会自动切换到对应版本注册。旧版本可在 mcappx 网页下载后导入。</sys:String>
     <sys:String x:Key="Bedrock.Local.Empty">暂无已下载的版本，可在线下载或点击「导入安装包」添加</sys:String>
     <sys:String x:Key="Bedrock.Local.Install">安装此版本</sys:String>
     <sys:String x:Key="Bedrock.Local.Installing">正在安装...</sys:String>
     <sys:String x:Key="Bedrock.Local.Launch">启动此版本</sys:String>
+    <sys:String x:Key="Bedrock.Local.LaunchButton">启动</sys:String>
     <sys:String x:Key="Bedrock.Local.LaunchGdk">直接启动（便携版，可与其它版本同时运行）</sys:String>
     <sys:String x:Key="Bedrock.Local.PackageMissing">安装包已被删除，无法切换到该版本</sys:String>
     <sys:String x:Key="Bedrock.Local.Reinstall">重新安装此版本</sys:String>
@@ -149,7 +155,7 @@
     <sys:String x:Key="Bedrock.Local.Tag.Installed">已安装</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Installing">安装中</sys:String>
     <sys:String x:Key="Bedrock.Local.Tag.Selected">已选中</sys:String>
-    <sys:String x:Key="Bedrock.Local.Title">已下载版本</sys:String>
+    <sys:String x:Key="Bedrock.Local.Title">版本实例</sys:String>
     <sys:String x:Key="Bedrock.Register.Failed">注册游戏包失败，已回退为直接启动（可能提示解锁完整游戏）</sys:String>
     <sys:String x:Key="Bedrock.Register.NoDeveloperMode">未开启开发者模式，已回退为直接启动（可能提示解锁完整游戏）</sys:String>
     <sys:String x:Key="Bedrock.Search.Hint">搜索基岩版版本号...</sys:String>
@@ -160,6 +166,7 @@
     <sys:String x:Key="Bedrock.Shortcuts.Title">快捷操作</sys:String>
     <sys:String x:Key="Bedrock.Status.AvailableToDownload">可在右侧下载并安装任意版本</sys:String>
     <sys:String x:Key="Bedrock.Status.CallingSystem">正在调用系统接口</sys:String>
+    <sys:String x:Key="Bedrock.Status.CopyPathHint">点击复制安装路径</sys:String>
     <sys:String x:Key="Bedrock.Status.Detected">已检测到基岩版</sys:String>
     <sys:String x:Key="Bedrock.Status.Detecting">正在检测基岩版…</sys:String>
     <sys:String x:Key="Bedrock.Status.DownloadOrImportHint">下载或导入安装包后，在「已下载版本」中安装即可</sys:String>
@@ -169,6 +176,8 @@
     <sys:String x:Key="Bedrock.Status.NotInstalled">未安装</sys:String>
     <sys:String x:Key="Bedrock.Status.NotFound">未检测到基岩版</sys:String>
     <sys:String x:Key="Bedrock.Status.NotSelected">未选择版本</sys:String>
+    <sys:String x:Key="Bedrock.Status.PathCopyFailed">复制安装路径失败</sys:String>
+    <sys:String x:Key="Bedrock.Status.PathCopied">已复制安装路径</sys:String>
     <sys:String x:Key="Bedrock.Status.PleaseWait">请稍候...</sys:String>
     <sys:String x:Key="Bedrock.Status.Ready">已就绪</sys:String>
     <sys:String x:Key="Bedrock.Status.SelectedVersion">跟随版本 {0}</sys:String>
