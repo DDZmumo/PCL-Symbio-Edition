@@ -946,6 +946,16 @@ public partial class PageBedrockRight
         if (_installingVersions.Contains(versionId))
             return;
 
+        try
+        {
+            ModBedrockGdk.EnsureExtractionAvailable(filePath);
+        }
+        catch (GdkContentKeyUnavailableException error)
+        {
+            ShowGdkInstallUnavailable(error);
+            return;
+        }
+
         _installingVersions.Add(versionId);
         RefreshLocalVersions();
 
@@ -954,6 +964,16 @@ public partial class PageBedrockRight
         BtnLaunch.IsEnabled = false;
 
         InstallGdkPackage(filePath, versionId);
+    }
+
+    private void ShowGdkInstallUnavailable(GdkContentKeyUnavailableException error)
+    {
+        // Only capability names are logged; never include key material or turn this expected limitation into feedback.
+        ModBase.Log("[Bedrock] 当前构建缺少安装组件: " +
+                    (error.IsPreview ? "BEDROCK_PREVIEW_CIK" : "BEDROCK_RELEASE_CIK"), ModBase.LogLevel.Normal);
+        LabStatus.Text = Lang.Text("Bedrock.Gdk.InstallUnavailable");
+        LabDetail.Text = error.Message;
+        HintService.Hint(error.Message, HintType.Error);
     }
 
     private void LocalDelete_Click(object sender, EventArgs e)

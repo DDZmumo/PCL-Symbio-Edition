@@ -79,6 +79,8 @@
     <sys:String x:Key="Bedrock.Gdk.Extracting">正在解包 GDK 版本...</sys:String>
     <sys:String x:Key="Bedrock.Gdk.ExtractingDetail">正在解密并解包 {0}，请勿关闭启动器...</sys:String>
     <sys:String x:Key="Bedrock.Gdk.ExtractingFile">正在解包 {0}（{1}%）</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.InstallUnavailable">此构建不支持安装加密 GDK 包</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.InstallUnavailableDetail">当前构建缺少 GDK 安装组件，请联系发布者获取完整构建。登录 Xbox 账号无法补齐此组件。</sys:String>
     <sys:String x:Key="Bedrock.Import.DialogTitle">选择基岩版安装包</sys:String>
     <sys:String x:Key="Bedrock.Import.Error">导入基岩版安装包失败</sys:String>
     <sys:String x:Key="Bedrock.Import.Failed">导入失败</sys:String>

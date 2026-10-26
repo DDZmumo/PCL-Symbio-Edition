@@ -63,18 +63,27 @@ public static class ModBedrockGdk
     public static void Extract(string packagePath, string targetDirectory,
         Action<string, int, int>? onProgress = null, CancellationToken token = default)
     {
-        var keyBytes = packagePath.Contains("preview", StringComparison.OrdinalIgnoreCase) ||
-                       packagePath.Contains("beta", StringComparison.OrdinalIgnoreCase)
-            ? Secrets.BedrockPreviewCik
-            : Secrets.BedrockReleaseCik;
-        if (keyBytes is not { Length: >= 48 })
-            throw new InvalidOperationException("当前构建未包含基岩版 GDK 内容密钥（CIK），无法解包安装包。");
-
-        var key = new XvcContentKey(keyBytes);
+        token.ThrowIfCancellationRequested();
+        var key = new XvcContentKey(RequireContentKey(packagePath));
 
         using var container = new XvcContainer(packagePath);
         container.Parse();
         container.Extract(targetDirectory, key, onProgress, token);
+    }
+
+    /// <summary>Check the build capability before changing installation state or creating directories.</summary>
+    internal static void EnsureExtractionAvailable(string packagePath) => _ = RequireContentKey(packagePath);
+
+    private static byte[] RequireContentKey(string packagePath)
+    {
+        var isPreview = packagePath.Contains("preview", StringComparison.OrdinalIgnoreCase) ||
+                        packagePath.Contains("beta", StringComparison.OrdinalIgnoreCase);
+        var keyBytes = isPreview
+            ? Secrets.BedrockPreviewCik
+            : Secrets.BedrockReleaseCik;
+        if (keyBytes is not { Length: >= 48 })
+            throw new GdkContentKeyUnavailableException(isPreview);
+        return keyBytes;
     }
 
     /// <summary>
@@ -130,6 +139,13 @@ public static class ModBedrockGdk
             catch { }
         }
     }
+}
+
+/// <summary>Expected capability limitation of a build, not an Xbox authentication or package-corruption error.</summary>
+internal sealed class GdkContentKeyUnavailableException(bool isPreview)
+    : InvalidOperationException(Lang.Text("Bedrock.Gdk.InstallUnavailableDetail"))
+{
+    internal bool IsPreview { get; } = isPreview;
 }
 
 #region XVC 容器解析（移植自 BedrockLauncher.Core.GdkDecode）

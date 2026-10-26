@@ -79,6 +79,8 @@
     <sys:String x:Key="Bedrock.Gdk.Extracting">Extracting GDK version...</sys:String>
     <sys:String x:Key="Bedrock.Gdk.ExtractingDetail">Decrypting and extracting {0}. Please do not close the launcher...</sys:String>
     <sys:String x:Key="Bedrock.Gdk.ExtractingFile">Extracting {0} ({1}%)</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.InstallUnavailable">This build cannot install encrypted GDK packages</sys:String>
+    <sys:String x:Key="Bedrock.Gdk.InstallUnavailableDetail">This build is missing a GDK installation component. Contact the publisher for a complete build. Signing in to Xbox cannot supply this component.</sys:String>
     <sys:String x:Key="Bedrock.Import.DialogTitle">Select a Bedrock package</sys:String>
     <sys:String x:Key="Bedrock.Import.Error">Failed to import Bedrock package</sys:String>
     <sys:String x:Key="Bedrock.Import.Failed">Import failed</sys:String>

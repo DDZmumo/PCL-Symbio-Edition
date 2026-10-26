@@ -42,6 +42,8 @@ PCL SE has no affiliation with the official PCL, so please do not report PCL SE 
 - Built-in Xbox account sign-in, so you can launch right after logging in
 - Filter by version type, search by version number and manage local installs
 
+Extracting encrypted GDK packages (`.msixvc` / `.xvc`) requires matching GDK content components (CIKs) injected at build time. Local and fork builds can compile without these keys, but cannot extract those packages; Xbox sign-in cannot supply the missing build component. A maintainer must configure GitHub Secrets and rebuild an incomplete release. See [release workflow configuration](CONTRIBUTING.md#发布工作流配置).
+
 ### Resource downloads
 
 - Dual-source search across CurseForge and Modrinth

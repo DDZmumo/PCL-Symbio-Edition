@@ -38,6 +38,7 @@ jobs:
     with:
       configuration: ${{ matrix.configuration }}
       architecture: ${{ matrix.architecture }}
+      require_gdk_content_keys: true
     secrets: inherit
 
   changelog:

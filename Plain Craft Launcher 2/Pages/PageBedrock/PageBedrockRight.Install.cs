@@ -69,6 +69,14 @@ public partial class PageBedrockRight
                     ModMain.frmBedrockLeft?.RefreshStatus();
                 });
             }
+            catch (GdkContentKeyUnavailableException error)
+            {
+                ModBase.RunInUi(() =>
+                {
+                    ShowGdkInstallUnavailable(error);
+                    BtnLaunch.IsEnabled = true;
+                });
+            }
             catch (Exception ex)
             {
                 ModBase.Log(ex, "GDK 版本解包失败",

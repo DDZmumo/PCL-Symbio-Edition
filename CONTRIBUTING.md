@@ -23,6 +23,9 @@ dotnet run --project tests/BedrockDataRegression -c Release
 
 # 外部进程、配置落盘、注入生命周期及更新快照回归（Windows；不运行真实游戏）
 dotnet run --project tests/LauncherServicesRegression -c Release
+
+# GDK 构建能力回归（Windows、Linux；不读取真实密钥或启动游戏）
+dotnet run --project tests/BedrockGdkCapabilityRegression -c Release
 ```
 
 解决方案默认不构建 `PCL.Core.Test`，因此仅构建解决方案不能代替运行测试。CI 分别运行基岩版安装回归、Windows 核心离线测试、数据安全回归、包注册归属回归、启动器服务回归，以及 x64 / ARM64 主程序构建。新增回归的受控替身、临时目录与验收边界详见各测试目录的 README。
@@ -32,6 +35,25 @@ dotnet run --project tests/LauncherServicesRegression -c Release
 ## 发布工作流配置
 
 Release / Beta 发布必须提供仓库机密 `GPG_PRIVATE_KEY`；私钥若有口令，还需提供 `GPG_PASSPHRASE`。工作流会在构建前检查私钥是否配置，签名并验证成功后才上传二进制文件和对应的 `.asc` 签名。缺少私钥或签名失败会使发布失败。
+
+完整 Release / Beta 发布还需要维护者在 GitHub Secrets 中分别配置 GDK 正式版和预览版的内容组件：
+
+| 仓库 Secret | 构建环境变量 |
+|---|---|
+| `BEDROCK_RELEASE_CIK` | `PCL_BEDROCK_RELEASE_CIK` |
+| `BEDROCK_PREVIEW_CIK` | `PCL_BEDROCK_PREVIEW_CIK` |
+
+两项均须为裸 ASCII 十六进制，不带 `0x`、引号、空白、换行或分隔符，长度为偶数且至少 96 个字符（48 字节）。这里按运行时的 `>= 48` 字节契约校验，允许更长的有效十六进制值。源生成器仅在环境中存在 `PCL_WRITE_SECRET` 时注入组件，工作流在校验与构建步骤均将其设为 `1`。
+
+可复用构建的 `require_gdk_content_keys` 输入默认 `false`，普通 PR / CI 可以在无密钥环境中编译；Release / Beta 调用将其设为 `true`，在 `publish` 前执行 [配置校验脚本](.github/scripts/validate_gdk_content_keys.py)。两项分别校验，失败只报告变量名和修复方向，不输出值。这是格式与注入配置检查，不能证明组件与某个真实安装包匹配。
+
+本地无密钥构建可以编译，但不能解包加密 GDK 安装包。Xbox 登录不能补齐构建时缺失的内容组件；已经发布的缺组件程序需要维护者配置 Secrets 后重新构建，登录或重新下载同一个旧程序不会改变其构建能力。不要将真实密钥写入代码、命令行、日志或测试 fixture。
+
+校验逻辑的回归测试仅使用受控子进程环境与合成值，不继承或备份父进程中的密钥，也不构建主程序：
+
+```powershell
+python .github/scripts/test_validate_gdk_content_keys.py
+```
 
 MirrorChyan 同步默认关闭。仅在仓库维护者已确认自己的镜像目标后，配置仓库变量 `MIRRORCHYAN_ENABLED=true`、`MIRRORCHYAN_RID` 和机密 `MirrorChyanUploadToken`。同步从当前仓库读取发布产物，资源 ID 不预设为上游项目。启用但缺少资源 ID 或令牌时，同步工作流会给出明确错误。该可选同步开关不会取消 Release / Beta 发布的签名要求。
 

@@ -31,6 +31,17 @@ jobs:
       - name: Test Bedrock installation safeguards
         run: dotnet run --project tests/BedrockInstallRegression -c Release
 
+  gdk-capability-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+      - name: Test missing GDK build capabilities without real keys or packages
+        run: dotnet run --project tests/BedrockGdkCapabilityRegression -c Release
+
   core-tests:
     runs-on: windows-latest
     timeout-minutes: 20

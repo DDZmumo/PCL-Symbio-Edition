@@ -12,6 +12,11 @@ on:
       architecture:
         required: true
         type: string
+      require_gdk_content_keys:
+        description: Require both GDK content keys before publishing a complete build
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -29,6 +34,17 @@ jobs:
         run: |
           describe=`git describe --tags --always`
           echo "describe=$describe" >> $GITHUB_ENV
+
+      - name: Test GDK content-key configuration validator
+        run: python3 .github/scripts/test_validate_gdk_content_keys.py
+
+      - name: Validate required GDK content keys
+        if: ${{ inputs.require_gdk_content_keys }}
+        env:
+          PCL_WRITE_SECRET: '1'
+          PCL_BEDROCK_RELEASE_CIK: ${{ secrets.BEDROCK_RELEASE_CIK }}
+          PCL_BEDROCK_PREVIEW_CIK: ${{ secrets.BEDROCK_PREVIEW_CIK }}
+        run: python3 .github/scripts/validate_gdk_content_keys.py
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v5
