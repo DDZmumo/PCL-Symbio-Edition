@@ -169,6 +169,8 @@ public partial class PageBedrockRight
         }
 
         var tags = new List<string> { buildType };
+        if (buildType.Equals("GDK", StringComparison.OrdinalIgnoreCase))
+            tags.Add(Lang.Text("Bedrock.List.GdkPortable"));
         var row = new MyListItem
         {
             Title = versionId,
