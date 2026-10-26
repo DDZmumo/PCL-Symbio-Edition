@@ -23,7 +23,7 @@
             UseAeroCaptionButtons="False"
             ResizeBorderThickness="0"
             CornerRadius="12"
-            GlassFrameThickness="0" />
+            GlassFrameThickness="-1" />
     </WindowChrome.WindowChrome>
     <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
         <Grid.RenderTransform>

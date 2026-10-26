@@ -483,21 +483,11 @@ public partial class FormMain
         var source = HwndSource.FromHwnd(hwnd);
         if (source is not null)
         {
-            // 渲染层允许 Alpha 通道通过
-            source.CompositionTarget.BackgroundColor = Colors.Transparent;
             // 魔改窗口边缘判定
             source.AddHook(_SizeWndProc);
         }
-
-        // 设置 DWM 窗口框架
-        try
-        {
-            WindowInterop.ExtendFrameIntoClientArea(hwnd, -1);
-        }
-        catch (Exception ex)
-        {
-            LogWrapper.Error("DWM 窗口框架应用失败: " + ex.Message);
-        }
+        // 全客户区透明由 XAML 中的 WindowChrome.GlassFrameThickness=-1 统一维护。
+        // 不在这里单次覆盖背景色/DWM 边距，避免它们与后续 DPI、主题及合成状态更新脱节。
     }
 
     // 关闭
