@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using Microsoft.Win32;
 using PCL.Core.App.Localization;
 using PCL.Core.UI;
@@ -20,9 +19,6 @@ public partial class PageBedrockLeft
     ];
 
     private bool isLoad;
-
-    // 状态行展示「点击复制安装路径」时保存可复制的路径
-    private string? _detailCopyPath;
 
     public PageBedrockLeft()
     {
@@ -107,6 +103,7 @@ public partial class PageBedrockLeft
         }
 
         LabAccountHint.Text = Lang.Text("Bedrock.Account.OpenXboxFailed");
+        HintService.Hint(LabAccountHint.Text, HintType.Error);
         ModBase.OpenWebsite("https://account.microsoft.com/");
     }
 
@@ -234,49 +231,16 @@ public partial class PageBedrockLeft
         if (right is null)
         {
             // 右侧页面尚未创建时也要把状态重置为“未检测到”，避免显示上一次的残留信息
-            ShapeStatusDot.Fill = (Brush)FindResource("ColorBrushGray4");
-            LabStatus.Text = Lang.Text("Bedrock.Status.NotFound");
-            SetDetailPath(null);
             LabVersionText.Text = Lang.Text("Bedrock.Status.NotFound");
             return;
         }
 
         var installed = right.IsBedrockInstalled;
-        ShapeStatusDot.Fill = (Brush)FindResource(installed ? "ColorBrush3" : "ColorBrushGray4");
-        LabStatus.Text = installed ? Lang.Text("Bedrock.Status.Detected") : Lang.Text("Bedrock.Status.NotFound");
-        SetDetailPath(installed ? right.BedrockInstallPath : null);
         LabVersionText.Text = installed
             ? string.IsNullOrEmpty(right.BedrockVersion)
                 ? Lang.Text("Bedrock.Status.Ready")
                 : Lang.Text("Bedrock.Status.Version", right.BedrockVersion)
             : Lang.Text("Bedrock.Status.NotFound");
-    }
-
-    /// <summary>路径不直接展示，悬停查看、点击复制。</summary>
-    private void SetDetailPath(string? path)
-    {
-        _detailCopyPath = string.IsNullOrEmpty(path) ? null : path;
-        LabDetail.Text = _detailCopyPath is null
-            ? Lang.Text("Bedrock.Status.AvailableToDownload")
-            : Lang.Text("Bedrock.Status.CopyPathHint");
-        LabDetail.ToolTip = _detailCopyPath;
-        LabDetail.Cursor = _detailCopyPath is null ? null : Cursors.Hand;
-    }
-
-    private void LabDetail_Click(object sender, MouseButtonEventArgs e)
-    {
-        if (string.IsNullOrEmpty(_detailCopyPath)) return;
-
-        try
-        {
-            Clipboard.SetText(_detailCopyPath);
-            HintService.Hint(Lang.Text("Bedrock.Status.PathCopied"), HintType.Success);
-        }
-        catch (Exception ex)
-        {
-            ModBase.Log(ex, "[Bedrock] 复制安装路径失败");
-            HintService.Hint(Lang.Text("Bedrock.Status.PathCopyFailed"), HintType.Error);
-        }
     }
 
     #endregion

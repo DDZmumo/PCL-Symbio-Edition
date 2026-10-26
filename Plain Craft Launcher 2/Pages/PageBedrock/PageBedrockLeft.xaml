@@ -23,7 +23,7 @@
             <StackPanel x:Name="PanSide" Margin="0,12,0,0">
 
                 <!-- 当前 Xbox 账号 -->
-                <Border Background="{DynamicResource ColorBrushTransparentBackground}" CornerRadius="5" Padding="12,10">
+                <Border Padding="12,10">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -37,9 +37,9 @@
                                        Foreground="{DynamicResource ColorBrushWhite}" />
                         </Grid>
                         <StackPanel Grid.Column="1" Margin="10,0,6,0" VerticalAlignment="Center">
-                            <TextBlock x:Name="LabGamertag" Text="{DynamicResource Bedrock.Account.Loading}" FontSize="14" FontWeight="Bold"
+                            <TextBlock x:Name="LabGamertag" Text="{DynamicResource Bedrock.Account.Loading}" FontSize="14"
                                        TextTrimming="CharacterEllipsis" />
-                            <TextBlock x:Name="LabAccountMail" Text="" FontSize="11" Margin="0,2,0,0"
+                            <TextBlock x:Name="LabAccountMail" Text="" Margin="0,3,0,0"
                                        TextTrimming="CharacterEllipsis"
                                        Foreground="{DynamicResource ColorBrushGray3}" />
                         </StackPanel>
@@ -51,10 +51,9 @@
                                             Click="RefreshAccount_Click" />
                     </Grid>
                 </Border>
-                <TextBlock x:Name="LabAccountHint" Margin="3,6,3,0" FontSize="10.5" TextWrapping="Wrap"
-                           Text="{DynamicResource Bedrock.Account.Hint}"
-                           Foreground="{DynamicResource ColorBrushGray4}" />
-                <local:MyButton x:Name="BtnSwitchAccount" Height="32" Margin="0,8,0,0"
+                <TextBlock x:Name="LabAccountHint" Visibility="Collapsed" Text="{DynamicResource Bedrock.Account.Hint}" />
+                <local:MyButton x:Name="BtnSwitchAccount" Height="35" Margin="0,8,0,0"
+                                ToolTip="{Binding Text, ElementName=LabAccountHint}"
                                 Text="{DynamicResource Bedrock.Account.Switch}" Click="BtnSwitchAccount_Click" />
 
                 <!-- 快捷操作 -->
@@ -75,20 +74,6 @@
                                   Type="Clickable" Title="{DynamicResource Bedrock.Shortcuts.OpenXbox}"
                                   SvgIcon="lucide/play" Click="OpenXboxApp_Click" />
 
-                <!-- 基岩版状态 -->
-                <TextBlock Text="{DynamicResource Bedrock.Status.Title}" Margin="13,10,5,4" Opacity="0.6" FontSize="12" />
-                <Border Background="{DynamicResource ColorBrushTransparentBackground}" CornerRadius="5" Padding="12,10">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Ellipse x:Name="ShapeStatusDot" Width="8" Height="8" Margin="0,0,7,0"
-                                     VerticalAlignment="Center" Fill="{DynamicResource ColorBrushGray4}" />
-                            <TextBlock x:Name="LabStatus" Text="{DynamicResource Bedrock.Status.Detecting}" FontSize="13" FontWeight="Bold" />
-                        </StackPanel>
-                        <TextBlock x:Name="LabDetail" Text="" FontSize="10.5" Margin="15,4,0,0"
-                                   TextWrapping="Wrap" MouseLeftButtonUp="LabDetail_Click"
-                                   Foreground="{DynamicResource ColorBrushGray4}" />
-                    </StackPanel>
-                </Border>
             </StackPanel>
         </local:MyScrollViewer>
 
@@ -108,7 +93,12 @@
                        IsHitTestVisible="False"
                        VerticalAlignment="Bottom" HorizontalAlignment="Center"
                        TextTrimming="CharacterEllipsis"
-                       FontSize="11" Foreground="{DynamicResource ColorBrushGray3}" />
+                       FontSize="11" Foreground="{DynamicResource ColorBrushGray3}" RenderTransformOrigin="0.5,-0.2">
+                <TextBlock.RenderTransform>
+                    <ScaleTransform ScaleX="{Binding RealRenderTransform.ScaleX, ElementName=BtnLaunch, Mode=OneWay}"
+                                    ScaleY="{Binding RealRenderTransform.ScaleY, ElementName=BtnLaunch, Mode=OneWay}" />
+                </TextBlock.RenderTransform>
+            </TextBlock>
         </Grid>
     </Grid>
 </local:MyPageLeft>
